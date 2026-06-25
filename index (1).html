@@ -12,20 +12,19 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --blue: #378ADD;
-      --blue-dark: #0C447C;
-      --blue-mid: #185FA5;
-      --blue-light: #B5D4F4;
-      --blue-pale: #E6F1FB;
-      --line: #B5D4F4;
-      --line-thick: #85B7EB;
-      --bg: #FAFCFF;
-      --sidebar-bg: #EBF4FD;
-      --text-body: #1a3a5c;
-      --red-margin: #F09595;
-      --mono: 'JetBrains Mono', 'Courier New', monospace;
-      --sidebar-w: 220px;
-      --topbar-h: 90px;
+      --purple:      #534AB7;
+      --purple-dark: #3C3489;
+      --purple-mid:  #7F77DD;
+      --purple-light:#AFA9EC;
+      --purple-pale: #EEEDFE;
+      --purple-border:#CECBF6;
+      --bg:          #FAFAFE;
+      --sidebar-bg:  #F4F3FD;
+      --text-body:   #26215C;
+      --text-muted:  #534AB7;
+      --red-margin:  #ED93B1;
+      --mono:        'JetBrains Mono', 'Courier New', monospace;
+      --sidebar-w:   220px;
     }
 
     html, body { height: 100%; }
@@ -40,7 +39,6 @@
       overflow: hidden;
     }
 
-    /* ── LAYOUT ── */
     .layout {
       display: flex;
       flex: 1;
@@ -53,29 +51,29 @@
       width: var(--sidebar-w);
       flex-shrink: 0;
       background: var(--sidebar-bg);
-      border-right: 1.5px solid var(--line-thick);
+      border-right: 1.5px solid var(--purple-border);
       display: flex;
       flex-direction: column;
       overflow-y: auto;
     }
 
     .sidebar-logo {
-      padding: 1rem 1.25rem 1rem;
-      border-bottom: 1px solid var(--line);
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--purple-border);
       margin-bottom: 0.25rem;
       flex-shrink: 0;
     }
     .sidebar-logo .logo-name {
       font-size: 15px;
       font-weight: 700;
-      color: var(--blue-dark);
+      color: var(--purple-dark);
       line-height: 1.2;
       letter-spacing: -0.02em;
       display: block;
     }
     .sidebar-logo small {
       font-size: 10px;
-      color: var(--blue);
+      color: var(--purple);
       letter-spacing: 0.06em;
       text-transform: uppercase;
     }
@@ -85,7 +83,7 @@
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--blue);
+      color: var(--purple);
       padding: 0.85rem 1.25rem 0.25rem;
       display: block;
     }
@@ -103,47 +101,40 @@
       text-decoration: none;
       font-family: var(--mono);
     }
-    .sidebar-item i { font-size: 13px; color: var(--blue); flex-shrink: 0; }
-    .sidebar-item:hover { background: #D4E9F7; color: var(--blue-dark); }
+    .sidebar-item i { font-size: 13px; color: var(--purple); flex-shrink: 0; }
+    .sidebar-item:hover { background: #E5E3FA; color: var(--purple-dark); }
     .sidebar-item.active {
-      color: var(--blue-dark);
+      color: var(--purple-dark);
       font-weight: 700;
-      border-left-color: var(--blue-dark);
-      background: #C9E3F5;
+      border-left-color: var(--purple-dark);
+      background: var(--purple-pale);
     }
 
-    /* margin line */
+    /* margin line — sits in the left gutter of the main area, before text */
     .margin-line {
-      position: fixed;
-      left: calc(var(--sidebar-w) + 42px);
-      top: 0;
-      bottom: 0;
+      position: absolute;
+      left: 18px;
+      top: 0; bottom: 0;
       width: 1px;
       background: var(--red-margin);
-      opacity: 0.32;
+      opacity: 0.4;
       pointer-events: none;
-      z-index: 10;
     }
 
     /* ── MAIN ── */
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 
     /* ── TOPBAR ── */
     .topbar {
       padding: 1.25rem 1.75rem 0;
-      border-bottom: 2px solid var(--line-thick);
+      border-bottom: 2px solid var(--purple-border);
       background: var(--bg);
       flex-shrink: 0;
     }
     .topbar h1 {
       font-size: 17px;
       font-weight: 700;
-      color: var(--blue);
+      color: var(--purple);
       letter-spacing: -0.02em;
       margin-bottom: 0.85rem;
     }
@@ -154,31 +145,20 @@
       font-size: 12px;
       cursor: pointer;
       border-bottom: 3px solid transparent;
-      color: var(--blue);
+      color: var(--purple);
       font-family: var(--mono);
       transition: color 0.12s, border-color 0.12s, background 0.12s;
       white-space: nowrap;
     }
-    .tab:hover:not(.active) { background: #EBF4FD; }
+    .tab:hover:not(.active) { background: var(--purple-pale); }
     .tab.active {
-      color: var(--blue-dark);
-      border-bottom-color: var(--blue-dark);
+      color: var(--purple-dark);
+      border-bottom-color: var(--purple-dark);
       font-weight: 700;
     }
 
     /* ── CONTENT ── */
-    .content {
-      flex: 1;
-      overflow-y: auto;
-      background-image: repeating-linear-gradient(
-        to bottom,
-        transparent,
-        transparent 39px,
-        var(--line) 39px,
-        var(--line) 40px
-      );
-      background-size: 100% 40px;
-    }
+    .content { flex: 1; overflow-y: auto; background: var(--bg); }
     .content-inner { padding: 1.25rem 1.75rem 2rem; }
 
     .tab-panel { display: none; }
@@ -186,7 +166,7 @@
 
     /* ── TYPOGRAPHY ── */
     .intro-text {
-      font-size: 12.5px;
+      font-size: 20px;
       line-height: 1.95;
       color: var(--text-body);
       margin-bottom: 1rem;
@@ -194,13 +174,13 @@
     }
 
     .section-title {
-      font-size: 11.5px;
+      font-size: 15px;
       font-weight: 700;
-      color: var(--blue);
+      color: var(--purple);
       letter-spacing: 0.07em;
       text-transform: uppercase;
       margin: 1.4rem 0 0.6rem;
-      border-bottom: 1px solid var(--line);
+      border-bottom: 1px solid var(--purple-border);
       padding-bottom: 5px;
     }
 
@@ -212,54 +192,15 @@
       margin-top: 0.5rem;
     }
     .card {
-      background: rgba(255, 255, 255, 0.88);
-      border: 1px solid var(--line-thick);
-      border-top: 3px solid var(--blue);
+      background: #fff;
+      border: 1px solid var(--purple-border);
+      border-top: 3px solid var(--purple);
       border-radius: 6px;
       padding: 0.9rem;
     }
-    .card-icon { font-size: 20px; color: var(--blue); margin-bottom: 8px; }
-    .card-title { font-size: 12px; font-weight: 700; color: var(--blue-dark); margin-bottom: 4px; }
+    .card-icon { font-size: 20px; color: var(--purple); margin-bottom: 8px; }
+    .card-title { font-size: 12px; font-weight: 700; color: var(--purple-dark); margin-bottom: 4px; }
     .card-desc { font-size: 11px; color: var(--text-body); line-height: 1.65; }
-
-    /* ── CHECKLIST ── */
-    .check-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 9px;
-      padding: 0.38rem 0;
-      font-size: 12px;
-      color: var(--text-body);
-      line-height: 1.7;
-    }
-    .check-row i { color: var(--blue); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
-
-    /* ── BADGES ── */
-    .badge {
-      display: inline-block;
-      font-size: 10.5px;
-      font-weight: 700;
-      background: var(--blue-pale);
-      color: var(--blue-dark);
-      border: 0.5px solid var(--line-thick);
-      border-radius: 100px;
-      padding: 2px 11px;
-      margin-right: 6px;
-      margin-top: 6px;
-    }
-
-    /* ── CODE BLOCK ── */
-    .code-block {
-      background: var(--blue-pale);
-      border-left: 3px solid var(--blue);
-      border-radius: 0 6px 6px 0;
-      padding: 0.7rem 1.1rem;
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--blue-dark);
-      margin: 0.8rem 0;
-      white-space: pre;
-    }
 
     /* ── EMPTY STATE ── */
     .empty-state {
@@ -269,7 +210,7 @@
       justify-content: center;
       padding: 3rem 1rem;
       gap: 0.6rem;
-      color: var(--line-thick);
+      color: var(--purple-light);
       text-align: center;
     }
     .empty-state i { font-size: 36px; }
@@ -277,21 +218,18 @@
 
     /* ── FAQ ── */
     .faq-list { display: flex; flex-direction: column; gap: 1.1rem; margin-top: 0.5rem; }
-    .faq-q { font-size: 12.5px; font-weight: 700; color: var(--blue); margin-bottom: 3px; }
+    .faq-q { font-size: 12.5px; font-weight: 700; color: var(--purple); margin-bottom: 3px; }
     .faq-a { font-size: 12px; color: var(--text-body); line-height: 1.75; }
 
     /* ── SCROLLBAR ── */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--line-thick); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb { background: var(--purple-light); border-radius: 3px; }
   </style>
 </head>
 <body>
 
 <div class="layout">
-
-  <!-- MARGIN LINE -->
-  <div class="margin-line" aria-hidden="true"></div>
 
   <!-- SIDEBAR -->
   <nav class="sidebar" aria-label="Navegación principal">
@@ -310,16 +248,16 @@
 
     <span class="sidebar-label">// módulos</span>
     <a class="sidebar-item" onclick="activeSide(this); setTab('mod', null)">
-      <i class="ti ti-database" aria-hidden="true"></i>01_datos-cultura
+      <i class="ti ti-database" aria-hidden="true"></i>01_ejemplos-proyectos-hd
     </a>
     <a class="sidebar-item" onclick="activeSide(this); setTab('mod', null)">
-      <i class="ti ti-chart-bar" aria-hidden="true"></i>02_visualización
+      <i class="ti ti-chart-bar" aria-hidden="true"></i>02_recomendaciones-hd
     </a>
     <a class="sidebar-item" onclick="activeSide(this); setTab('mod', null)">
-      <i class="ti ti-file-text" aria-hidden="true"></i>03_texto-lenguaje
+      <i class="ti ti-file-text" aria-hidden="true"></i>03_formacion-humanistica
     </a>
     <a class="sidebar-item" onclick="activeSide(this); setTab('mod', null)">
-      <i class="ti ti-network" aria-hidden="true"></i>04_redes-mapas
+      <i class="ti ti-network" aria-hidden="true"></i>04_próximos-módulos
     </a>
 
     <span class="sidebar-label">// recursos</span>
@@ -335,11 +273,11 @@
   </nav>
 
   <!-- MAIN -->
-  <div class="main">
+  <div class="main" style="position:relative;">
+    <div class="margin-line" aria-hidden="true"></div>
 
-    <!-- TOPBAR -->
     <div class="topbar">
-      <h1>// humanidades_digitales_para_docentes</h1>
+      <h1>// humanidades_digitales_y_formacion_humanistica</h1>
       <div class="tabs" role="tablist">
         <div class="tab active" id="tab-btn-descripcion" role="tab"
              onclick="setTab('descripcion', this)">descripcion.md</div>
@@ -350,38 +288,41 @@
       </div>
     </div>
 
-    <!-- CONTENT -->
     <div class="content">
       <div class="content-inner">
 
         <!-- DESCRIPCIÓN -->
         <div id="tab-descripcion" class="tab-panel active">
           <p class="intro-text">
-            Las Humanidades Digitales integran métodos computacionales con preguntas propias
-            de las humanidades. Este espacio está diseñado para que los docentes exploren
-            estas herramientas y las incorporen en sus aulas.
+            Las Humanidades Digitales representan la intersección entre los métodos computacionales
+            y las preguntas propias de las humanidades. Su finalidad es analizar fenómenos y
+            artefactos culturales desde esta intersección.
           </p>
+          <p class="intro-text">
+            Este espacio está diseñado para que explores su significado y aplicaciones. 
+          </p>
+          <p> Para ver detalles de lo que es formación humanística, haz clic en el botón correspondiente en la parte superior.</p>
           <p class="section-title">// ¿qué encontrarás aquí?</p>
           <div class="card-grid">
             <div class="card">
               <div class="card-icon"><i class="ti ti-chart-dots" aria-hidden="true"></i></div>
-              <div class="card-title">análisis_datos</div>
-              <div class="card-desc">Trabaja con conjuntos de datos culturales e históricos.</div>
+              <div class="card-title">proyectos HD</div>
+              <div class="card-desc">Ejemplos de cómo se aplican las Humanidades Digitales en contextos diversos.</div>
             </div>
             <div class="card">
               <div class="card-icon"><i class="ti ti-map-2" aria-hidden="true"></i></div>
-              <div class="card-title">visualización</div>
-              <div class="card-desc">Representa información de forma gráfica e interactiva.</div>
+              <div class="card-title">lecturas</div>
+              <div class="card-desc">Recursos y textos fundamentales sobre las Humanidades Digitales.</div>
             </div>
             <div class="card">
               <div class="card-icon"><i class="ti ti-file-search" aria-hidden="true"></i></div>
-              <div class="card-title">análisis_texto</div>
-              <div class="card-desc">Explora corpus literarios con herramientas NLP.</div>
+              <div class="card-title">recomendaciones</div>
+              <div class="card-desc">Sugerencias de cómo incorporar las HD en tu práctica docente.</div>
             </div>
             <div class="card">
-              <div class="card-icon"><i class="ti ti-share-2" aria-hidden="true"></i></div>
-              <div class="card-title">redes</div>
-              <div class="card-desc">Modela relaciones entre personas, obras e ideas.</div>
+              <div class="card-icon"><i class="ti ti-users" aria-hidden="true"></i></div>
+              <div class="card-title">formación humanística</div>
+              <div class="card-desc">Una noción básica sobre la formación humanística para incorporar en la práctica docente.</div>
             </div>
           </div>
         </div>
@@ -391,7 +332,7 @@
           <p class="intro-text">Contenido por definir.</p>
         </div>
 
-        <!-- MÓDULOS / RECURSOS (en construcción) -->
+        <!-- MÓDULOS / RECURSOS -->
         <div id="tab-mod" class="tab-panel">
           <div class="empty-state">
             <i class="ti ti-file-plus" aria-hidden="true"></i>
@@ -421,11 +362,10 @@
           </div>
         </div>
 
-      </div><!-- /content-inner -->
-    </div><!-- /content -->
-
-  </div><!-- /main -->
-</div><!-- /layout -->
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
   const TAB_MAP = {
@@ -433,19 +373,16 @@
     formacion:   'tab-btn-formacion',
     faq:         'tab-btn-faq'
   };
-
   function setTab(id, el) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.getElementById('tab-' + id).classList.add('active');
-    if (el) {
-      el.classList.add('active');
-    } else {
+    if (el) { el.classList.add('active'); }
+    else {
       const btn = document.getElementById(TAB_MAP[id] || 'tab-btn-descripcion');
       if (btn) btn.classList.add('active');
     }
   }
-
   function activeSide(el) {
     document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
     el.classList.add('active');
