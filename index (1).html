@@ -27,7 +27,6 @@
     }
 
     html, body { height: 100%; }
-
     body {
       font-family: var(--mono);
       background: var(--bg);
@@ -42,19 +41,15 @@
 
     /* ── SIDEBAR ── */
     .sidebar {
-      width: var(--sidebar-w);
-      flex-shrink: 0;
+      width: var(--sidebar-w); flex-shrink: 0;
       background: var(--sidebar-bg);
       border-right: 1.5px solid var(--purple-border);
-      display: flex;
-      flex-direction: column;
-      overflow-y: auto;
+      display: flex; flex-direction: column; overflow-y: auto;
     }
     .sidebar-logo {
       padding: 1rem 1.25rem;
       border-bottom: 1px solid var(--purple-border);
-      margin-bottom: 0.25rem;
-      flex-shrink: 0;
+      margin-bottom: 0.25rem; flex-shrink: 0;
     }
     .sidebar-logo .logo-name {
       font-size: 15px; font-weight: 700; color: var(--purple-dark);
@@ -121,24 +116,17 @@
 
     /* ── TYPOGRAPHY ── */
     .intro-text {
-      font-size: 23px;
-      line-height: 1.95;
-      color: var(--text-body);
-      margin-bottom: 1rem;
-      max-width: 560px;
+      font-size: 16px; line-height: 1.95;
+      color: var(--text-body); margin-bottom: 1rem; max-width: 560px;
     }
-
     p {
-      font-size: 14px;
-      line-height: 1.8;
-      color: var(--text-body);
-      margin-bottom: 0.75rem;
+      font-size: 14px; line-height: 1.8;
+      color: var(--text-body); margin-bottom: 0.75rem;
     }
-
     .section-title {
       font-size: 13px; font-weight: 700; color: var(--purple);
       letter-spacing: 0.07em; text-transform: uppercase;
-      margin: 1.4rem 0 0.6rem;
+      margin: 1.6rem 0 0.6rem;
       border-bottom: 1px solid var(--purple-border); padding-bottom: 5px;
     }
 
@@ -149,14 +137,44 @@
       gap: 10px; margin-top: 0.5rem;
     }
     .card {
-      background: #fff;
-      border: 1px solid var(--purple-border);
-      border-top: 3px solid var(--purple);
-      border-radius: 6px; padding: 0.9rem;
+      background: #fff; border: 1px solid var(--purple-border);
+      border-top: 3px solid var(--purple); border-radius: 6px; padding: 0.9rem;
     }
     .card-icon { font-size: 22px; color: var(--purple); margin-bottom: 8px; }
     .card-title { font-size: 13px; font-weight: 700; color: var(--purple-dark); margin-bottom: 4px; }
     .card-desc { font-size: 12px; color: var(--text-body); line-height: 1.65; }
+
+    /* ── HIGHLIGHT BOX ── */
+    .highlight-box {
+      background: var(--purple-pale);
+      border-left: 3px solid var(--purple);
+      border-radius: 0 6px 6px 0;
+      padding: 0.9rem 1.1rem;
+      margin: 1rem 0;
+      font-size: 14px; line-height: 1.8; color: var(--text-body);
+      max-width: 640px;
+    }
+
+    /* ── METHOD LIST ── */
+    .method-list { display: flex; flex-direction: column; gap: 0.6rem; margin: 0.5rem 0 1rem; }
+    .method-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; line-height: 1.7; color: var(--text-body);
+    }
+    .method-item i { font-size: 16px; color: var(--purple); flex-shrink: 0; margin-top: 2px; }
+    .method-name { font-weight: 700; color: var(--purple-dark); }
+
+    /* ── TOOL PILLS ── */
+    .tool-grid { display: flex; flex-direction: column; gap: 0.5rem; margin: 0.5rem 0; }
+    .tool-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      background: #fff; border: 1px solid var(--purple-border);
+      border-radius: 6px; padding: 0.65rem 0.9rem;
+      font-size: 14px; color: var(--text-body); line-height: 1.65;
+      max-width: 640px;
+    }
+    .tool-item i { font-size: 16px; color: var(--purple); flex-shrink: 0; margin-top: 2px; }
+    .tool-name { font-weight: 700; color: var(--purple-dark); }
 
     /* ── EMPTY STATE ── */
     .empty-state {
@@ -253,6 +271,7 @@
             Este espacio está diseñado para que explores su significado y aplicaciones.
           </p>
           <p>Para ver detalles de lo que es formación humanística, haz clic en el botón correspondiente en la parte superior.</p>
+
           <p class="section-title">// ¿qué encontrarás aquí?</p>
           <div class="card-grid">
             <div class="card">
@@ -274,6 +293,51 @@
               <div class="card-icon"><i class="ti ti-users" aria-hidden="true"></i></div>
               <div class="card-title">formación humanística</div>
               <div class="card-desc">Una noción básica sobre la formación humanística para incorporar en la práctica docente.</div>
+            </div>
+          </div>
+
+          <p class="section-title">// el concepto central</p>
+          <div class="highlight-box">
+            En lugar de simplemente leer un libro para averiguar cuántas veces aparece una palabra,
+            un humanista digital podría usar software para escanear 10,000 libros digitalizados en
+            segundos y graficar con qué frecuencia y en qué contexto se usó esa palabra a lo largo
+            de dos siglos.
+          </div>
+
+          <p class="section-title">// métodos comunes en HD</p>
+          <div class="method-list">
+            <div class="method-item">
+              <i class="ti ti-scan" aria-hidden="true"></i>
+              <div><span class="method-name">Análisis de texto (minería de datos):</span> uso de algoritmos para encontrar frecuencias de palabras, temas y el tono emocional en colecciones masivas de texto.</div>
+            </div>
+            <div class="method-item">
+              <i class="ti ti-chart-bar" aria-hidden="true"></i>
+              <div><span class="method-name">Visualización de datos:</span> convertir datos históricos, sociales o geográficos complejos en tablas, gráficos o modelos interactivos.</div>
+            </div>
+            <div class="method-item">
+              <i class="ti ti-map-pin" aria-hidden="true"></i>
+              <div><span class="method-name">Mapeo digital:</span> trazar ubicaciones reales o ficticias —como los escenarios de novelas del siglo XIX o las rutas de migración de poblaciones históricas— en mapas interactivos.</div>
+            </div>
+            <div class="method-item">
+              <i class="ti ti-share-2" aria-hidden="true"></i>
+              <div><span class="method-name">Análisis de redes:</span> mapear relaciones y conexiones, como el círculo social de una figura histórica o las citas entre diferentes filósofos.</div>
+            </div>
+          </div>
+
+          <p class="section-title">// herramientas populares para principiantes</p>
+          <p>No necesitas ser programador para hacer HD. Muchas plataformas están diseñadas específicamente para principiantes:</p>
+          <div class="tool-grid">
+            <div class="tool-item">
+              <i class="ti ti-eye" aria-hidden="true"></i>
+              <div><span class="tool-name">Voyant Tools:</span> herramienta gratuita basada en la web donde puedes pegar cualquier texto para visualizar instantáneamente patrones de frecuencia de palabras y temas.</div>
+            </div>
+            <div class="tool-item">
+              <i class="ti ti-archive" aria-hidden="true"></i>
+              <div><span class="tool-name">Omeka:</span> plataforma web utilizada por museos e investigadores para crear colecciones digitales y exhibiciones interactivas en línea.</div>
+            </div>
+            <div class="tool-item">
+              <i class="ti ti-timeline" aria-hidden="true"></i>
+              <div><span class="tool-name">TimelineJS:</span> herramienta de código abierto que te permite construir líneas de tiempo interactivas y ricas en contenido multimedia.</div>
             </div>
           </div>
         </div>
