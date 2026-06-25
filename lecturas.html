@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lecturas — HD Docentes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple:        #534AB7;
+      --purple-dark:   #3C3489;
+      --purple-mid:    #7F77DD;
+      --purple-light:  #AFA9EC;
+      --purple-pale:   #EEEDFE;
+      --purple-border: #CECBF6;
+      --bg:            #FAFAFE;
+      --sidebar-bg:    #F4F3FD;
+      --text-body:     #26215C;
+      --red-margin:    #ED93B1;
+      --mono:          'JetBrains Mono', 'Courier New', monospace;
+      --sidebar-w:     220px;
+    }
+
+    html, body { height: 100%; }
+    body {
+      font-family: var(--mono);
+      background: var(--bg);
+      color: var(--text-body);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .layout { display: flex; flex: 1; overflow: hidden; position: relative; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      background: var(--sidebar-bg);
+      border-right: 1.5px solid var(--purple-border);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    .sidebar-logo {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--purple-border);
+      margin-bottom: 0.25rem;
+      flex-shrink: 0;
+    }
+    .sidebar-logo .logo-name {
+      font-size: 15px; font-weight: 700; color: var(--purple-dark);
+      line-height: 1.2; letter-spacing: -0.02em; display: block;
+    }
+    .sidebar-logo small {
+      font-size: 10px; color: var(--purple);
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .sidebar-label {
+      font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--purple);
+      padding: 0.85rem 1.25rem 0.25rem; display: block;
+    }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 0.3rem 1.25rem; font-size: 12px; color: var(--text-body);
+      cursor: pointer; border-left: 3px solid transparent;
+      transition: background 0.12s, color 0.12s;
+      text-decoration: none; font-family: var(--mono);
+    }
+    .sidebar-item i { font-size: 13px; color: var(--purple); flex-shrink: 0; }
+    .sidebar-item:hover { background: #E5E3FA; color: var(--purple-dark); }
+    .sidebar-item.active {
+      color: var(--purple-dark); font-weight: 700;
+      border-left-color: var(--purple-dark); background: var(--purple-pale);
+    }
+
+    /* ── MARGIN LINE ── */
+    .margin-line {
+      position: absolute; left: 18px; top: 0; bottom: 0;
+      width: 1px; background: var(--red-margin); opacity: 0.4; pointer-events: none;
+    }
+
+    /* ── MAIN ── */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      padding: 1.25rem 1.75rem 0;
+      border-bottom: 2px solid var(--purple-border);
+      background: var(--bg); flex-shrink: 0;
+    }
+    .topbar h1 {
+      font-size: 17px; font-weight: 700; color: var(--purple);
+      letter-spacing: -0.02em; margin-bottom: 0.85rem;
+    }
+    .tabs { display: flex; }
+    .tab {
+      padding: 0.45rem 1.1rem; font-size: 12px; cursor: pointer;
+      border-bottom: 3px solid transparent; color: var(--purple);
+      font-family: var(--mono);
+      transition: color 0.12s, border-color 0.12s, background 0.12s;
+      white-space: nowrap;
+    }
+    .tab:hover:not(.active) { background: var(--purple-pale); }
+    .tab.active { color: var(--purple-dark); border-bottom-color: var(--purple-dark); font-weight: 700; }
+
+    /* ── CONTENT ── */
+    .content { flex: 1; overflow-y: auto; background: var(--bg); }
+    .content-inner { padding: 1.25rem 1.75rem 2rem; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      font-size: 11.5px; font-weight: 700; color: var(--purple);
+      letter-spacing: 0.07em; text-transform: uppercase;
+      margin: 1.6rem 0 0.75rem;
+      border-bottom: 1px solid var(--purple-border); padding-bottom: 5px;
+    }
+    .section-title:first-child { margin-top: 0.25rem; }
+
+    /* ── RESOURCE ROW ── */
+    .resource-list { display: flex; flex-direction: column; gap: 2px; }
+
+    .resource-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 0.65rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      transition: background 0.12s, border-color 0.12s;
+      text-decoration: none; color: inherit;
+    }
+    .resource-item:hover {
+      background: var(--purple-pale);
+      border-color: var(--purple-border);
+    }
+
+    .resource-icon {
+      font-size: 18px; color: var(--purple);
+      flex-shrink: 0; margin-top: 1px;
+    }
+
+    .resource-body { flex: 1; min-width: 0; }
+
+    .resource-title {
+      font-size: 12.5px; font-weight: 700;
+      color: var(--purple-dark); margin-bottom: 2px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .resource-item:hover .resource-title { color: var(--purple); }
+
+    .resource-meta {
+      font-size: 11px; color: var(--purple-mid); line-height: 1.5;
+    }
+
+    .resource-desc {
+      font-size: 11.5px; color: var(--text-body);
+      line-height: 1.65; margin-top: 3px;
+    }
+
+    /* type badge */
+    .type-badge {
+      flex-shrink: 0; align-self: flex-start; margin-top: 2px;
+      font-size: 10px; font-weight: 700;
+      border-radius: 100px; padding: 2px 9px;
+      letter-spacing: 0.04em;
+    }
+    .badge-article { background: var(--purple-pale); color: var(--purple-dark); border: 0.5px solid var(--purple-border); }
+    .badge-video   { background: #FAECE7; color: #993C1D; border: 0.5px solid #F0997B; }
+    .badge-podcast { background: #EAF3DE; color: #3B6D11; border: 0.5px solid #97C459; }
+
+    /* empty placeholder row */
+    .resource-empty {
+      font-size: 11.5px; color: var(--purple-light);
+      padding: 0.65rem 0.75rem; font-style: italic;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--purple-light); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" aria-label="Navegación principal">
+    <div class="sidebar-logo">
+      <span class="logo-name">HD_DOCENTES/</span>
+      <small>Tec de Monterrey</small>
+    </div>
+
+    <span class="sidebar-label">// inicio</span>
+    <a class="sidebar-item" href="index.html">
+      <i class="ti ti-home" aria-hidden="true"></i>¿qué son las HD?
+    </a>
+    <a class="sidebar-item" href="index.html#formacion">
+      <i class="ti ti-users" aria-hidden="true"></i>formación humanística
+    </a>
+
+    <span class="sidebar-label">// módulos</span>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-database" aria-hidden="true"></i>01_datos-cultura
+    </a>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-chart-bar" aria-hidden="true"></i>02_visualización
+    </a>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-file-text" aria-hidden="true"></i>03_texto-lenguaje
+    </a>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-network" aria-hidden="true"></i>04_redes-mapas
+    </a>
+
+    <span class="sidebar-label">// recursos</span>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-tool" aria-hidden="true"></i>herramientas
+    </a>
+    <a class="sidebar-item active" href="lecturas.html">
+      <i class="ti ti-books" aria-hidden="true"></i>lecturas
+    </a>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-pencil" aria-hidden="true"></i>ejercicios
+    </a>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="margin-line" aria-hidden="true"></div>
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <h1>// recursos/lecturas</h1>
+      <div class="tabs" role="tablist">
+        <div class="tab active" id="tab-btn-articulos" role="tab"
+             onclick="setTab('articulos', this)">articulos.md</div>
+        <div class="tab" id="tab-btn-videos" role="tab"
+             onclick="setTab('videos', this)">videos.md</div>
+        <div class="tab" id="tab-btn-podcasts" role="tab"
+             onclick="setTab('podcasts', this)">podcasts.md</div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+      <div class="content-inner">
+
+        <!-- ARTÍCULOS -->
+        <div id="tab-articulos" class="tab-panel active">
+
+          <p class="section-title">// introducción a las HD</p>
+          <div class="resource-list">
+            <a class="resource-item" href="#" target="_blank" rel="noopener">
+              <i class="ti ti-article resource-icon" aria-hidden="true"></i>
+              <div class="resource-body">
+                <div class="resource-title">Título del artículo</div>
+                <div class="resource-meta">Autor(a) · Revista · Año</div>
+                <div class="resource-desc">Breve descripción del contenido y por qué es relevante para la práctica docente.</div>
+              </div>
+              <span class="type-badge badge-article">artículo</span>
+            </a>
+            <a class="resource-item" href="#" target="_blank" rel="noopener">
+              <i class="ti ti-article resource-icon" aria-hidden="true"></i>
+              <div class="resource-body">
+                <div class="resource-title">Título del artículo</div>
+                <div class="resource-meta">Autor(a) · Revista · Año</div>
+                <div class="resource-desc">Breve descripción del contenido y por qué es relevante para la práctica docente.</div>
+              </div>
+              <span class="type-badge badge-article">artículo</span>
+            </a>
+          </div>
+
+          <p class="section-title">// métodos y herramientas</p>
+          <div class="resource-list">
+            <a class="resource-item" href="#" target="_blank" rel="noopener">
+              <i class="ti ti-article resource-icon" aria-hidden="true"></i>
+              <div class="resource-body">
+                <div class="resource-title">Título del artículo</div>
+                <div class="resource-meta">Autor(a) · Revista · Año</div>
+                <div class="resource-desc">Breve descripción del contenido y por qué es relevante para la práctica docente.</div>
+              </div>
+              <span class="type-badge badge-article">artículo</span>
+            </a>
+            <a class="resource-item" href="#" target="_blank" rel="noopener">
+              <i class="ti ti-article resource-icon" aria-hidden="true"></i>
+              <div class="resource-body">
+                <div class="resource-title">Título del artículo</div>
+                <div class="resource-meta">Autor(a) · Revista · Año</div>
+                <div class="resource-desc">Breve descripción del contenido y por qué es relevante para la práctica docente.</div>
+              </div>
+              <span class="type-badge badge-article">artículo</span>
+            </a>
+          </div>
+
+          <p class="section-title">// contexto latinoamericano</p>
+          <div class="resource-list">
+            <a class="resource-item" href="#" target="_blank" rel="noopener">
+              <i class="ti ti-article resource-icon" aria-hidden="true"></i>
+              <div class="resource-body">
+                <div class="resource-title">Título del artículo</div>
+                <div class="resource-meta">Autor(a) · Revista · Año</div>
+                <div class="resource-desc">Breve descripción del contenido y por qué es relevante para la práctica docente.</div>
+              </div>
+              <span class="type-badge badge-article">artículo</span>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- VIDEOS -->
+        <div id="tab-videos" class="tab-panel">
+
+          <p class="section-title">// conferencias y charlas</p>
+          <div class="resource-list">
+            <a class="resource-item" href="#" target="_blank" rel="noopener">
+              <i class="ti ti-player-play resource-icon" aria-hidden="true"></i>
+              <div class="resource-body">
+                <div class="resource-title">Título del video</div>
+                <div class="resource-meta">Ponente · Canal · Duración</div>
+                <div class="resource-desc">Breve descripción del contenido y por qué es relevante para la práctica docente.</div>
+              </div>
+              <span class="type-badge badge-video">video</span>
+            </a>
+            <a class="resource-item" href="#" target="_blank" rel="noopener">
+              <i class="ti ti-player-play resource-icon" aria-hidden="true"></i>
+              <div class="resource-body">
+                <div class="resource-title">Título del video</div>
+                <div class="resource-meta">Ponente · Canal · Duración</div>
+                <div class="resource-desc">Breve descripción del contenido y por qué es relevante para la práctica docente.</div>
+              </div>
+              <span class="type-badge badge-video">video</span>
+            </a>
+          </div>
+
+          <p class="section-title">// tutoriales y demos</p>
+          <div class="resource-list">
+            <a class="resource-item" href="#" target="_blank" rel="noopener">
+              <i class="ti ti-player-play resource-icon" aria-hidden="true"></i>
+              <div class="resource-body">
+                <div class="resource-title">Título del video</div>
+                <div class="resource-meta">Ponente · Canal · Duración</div>
+                <div class="resource-desc">Breve descripción del contenido y por qué es relevante para la práctica docente.</div>
+              </div>
+              <span class="type-badge badge-video">video</span>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- PODCASTS -->
+        <div id="tab-podcasts" class="tab-panel">
+
+          <p class="section-title">// episodios recomendados</p>
+          <div class="resource-list">
+            <a class="resource-item" href="#" target="_blank" rel="noopener">
+              <i class="ti ti-microphone resource-icon" aria-hidden="true"></i>
+              <div class="resource-body">
+                <div class="resource-title">Título del episodio</div>
+                <div class="resource-meta">Podcast · Temporada / Ep. · Duración</div>
+                <div class="resource-desc">Breve descripción del contenido y por qué es relevante para la práctica docente.</div>
+              </div>
+              <span class="type-badge badge-podcast">podcast</span>
+            </a>
+            <a class="resource-item" href="#" target="_blank" rel="noopener">
+              <i class="ti ti-microphone resource-icon" aria-hidden="true"></i>
+              <div class="resource-body">
+                <div class="resource-title">Título del episodio</div>
+                <div class="resource-meta">Podcast · Temporada / Ep. · Duración</div>
+                <div class="resource-desc">Breve descripción del contenido y por qué es relevante para la práctica docente.</div>
+              </div>
+              <span class="type-badge badge-podcast">podcast</span>
+            </a>
+          </div>
+
+          <p class="section-title">// series completas</p>
+          <div class="resource-list">
+            <a class="resource-item" href="#" target="_blank" rel="noopener">
+              <i class="ti ti-microphone resource-icon" aria-hidden="true"></i>
+              <div class="resource-body">
+                <div class="resource-title">Nombre del podcast</div>
+                <div class="resource-meta">Productor(a) · Plataforma</div>
+                <div class="resource-desc">Breve descripción de la serie y por qué es relevante para la práctica docente.</div>
+              </div>
+              <span class="type-badge badge-podcast">podcast</span>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const TAB_MAP = {
+    articulos: 'tab-btn-articulos',
+    videos:    'tab-btn-videos',
+    podcasts:  'tab-btn-podcasts'
+  };
+  function setTab(id, el) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    if (el) { el.classList.add('active'); }
+    else {
+      const btn = document.getElementById(TAB_MAP[id] || 'tab-btn-articulos');
+      if (btn) btn.classList.add('active');
+    }
+  }
+</script>
+
+</body>
+</html>
