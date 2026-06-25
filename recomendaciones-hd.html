@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recomendaciones HD — HD Docentes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple:        #534AB7;
+      --purple-dark:   #3C3489;
+      --purple-mid:    #7F77DD;
+      --purple-light:  #AFA9EC;
+      --purple-pale:   #EEEDFE;
+      --purple-border: #CECBF6;
+      --bg:            #FAFAFE;
+      --sidebar-bg:    #F4F3FD;
+      --text-body:     #26215C;
+      --red-margin:    #ED93B1;
+      --mono:          'JetBrains Mono', 'Courier New', monospace;
+      --sidebar-w:     220px;
+    }
+
+    html, body { height: 100%; }
+    body {
+      font-family: var(--mono);
+      background: var(--bg); color: var(--text-body);
+      display: flex; flex-direction: column;
+      height: 100vh; overflow: hidden;
+    }
+
+    .layout { display: flex; flex: 1; overflow: hidden; position: relative; }
+
+    .sidebar {
+      width: var(--sidebar-w); flex-shrink: 0;
+      background: var(--sidebar-bg);
+      border-right: 1.5px solid var(--purple-border);
+      display: flex; flex-direction: column; overflow-y: auto;
+    }
+    .sidebar-logo {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--purple-border);
+      margin-bottom: 0.25rem; flex-shrink: 0;
+    }
+    .sidebar-logo .logo-name {
+      font-size: 15px; font-weight: 700; color: var(--purple-dark);
+      line-height: 1.2; letter-spacing: -0.02em; display: block;
+    }
+    .sidebar-logo small {
+      font-size: 10px; color: var(--purple);
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .sidebar-label {
+      font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--purple);
+      padding: 0.85rem 1.25rem 0.25rem; display: block;
+    }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 0.3rem 1.25rem; font-size: 12px; color: var(--text-body);
+      cursor: pointer; border-left: 3px solid transparent;
+      transition: background 0.12s, color 0.12s;
+      text-decoration: none; font-family: var(--mono);
+    }
+    .sidebar-item i { font-size: 13px; color: var(--purple); flex-shrink: 0; }
+    .sidebar-item:hover { background: #E5E3FA; color: var(--purple-dark); }
+    .sidebar-item.active {
+      color: var(--purple-dark); font-weight: 700;
+      border-left-color: var(--purple-dark); background: var(--purple-pale);
+    }
+
+    .margin-line {
+      position: absolute; left: 18px; top: 0; bottom: 0;
+      width: 1px; background: var(--red-margin); opacity: 0.4; pointer-events: none;
+    }
+
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+
+    .topbar {
+      padding: 1.25rem 1.75rem 0;
+      border-bottom: 2px solid var(--purple-border);
+      background: var(--bg); flex-shrink: 0;
+    }
+    .topbar h1 {
+      font-size: 17px; font-weight: 700; color: var(--purple);
+      letter-spacing: -0.02em; margin-bottom: 0.85rem;
+    }
+    .tabs { display: flex; overflow-x: auto; }
+    .tabs::-webkit-scrollbar { height: 0; }
+    .tab {
+      padding: 0.45rem 1rem; font-size: 11px; cursor: pointer;
+      border-bottom: 3px solid transparent; color: var(--purple);
+      font-family: var(--mono);
+      transition: color 0.12s, border-color 0.12s, background 0.12s;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .tab:hover:not(.active) { background: var(--purple-pale); }
+    .tab.active { color: var(--purple-dark); border-bottom-color: var(--purple-dark); font-weight: 700; }
+
+    .content { flex: 1; overflow-y: auto; background: var(--bg); }
+    .content-inner { padding: 1.25rem 1.75rem 2rem; max-width: 760px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .intro-text {
+      font-size: 14px; line-height: 1.9;
+      color: var(--text-body); margin-bottom: 1.25rem;
+    }
+    .section-title {
+      font-size: 13px; font-weight: 700; color: var(--purple);
+      letter-spacing: 0.07em; text-transform: uppercase;
+      margin: 1.6rem 0 0.75rem;
+      border-bottom: 1px solid var(--purple-border); padding-bottom: 5px;
+    }
+    .section-title:first-child { margin-top: 0; }
+
+    .mat-badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      border-radius: 100px; padding: 2px 10px; margin-bottom: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    .badge-prog  { background: #EAF3DE; color: #3B6D11; border: 0.5px solid #97C459; }
+    .badge-homo  { background: #FAECE7; color: #993C1D; border: 0.5px solid #F0997B; }
+    .badge-ia    { background: var(--purple-pale); color: var(--purple-dark); border: 0.5px solid var(--purple-border); }
+    .badge-expl  { background: #FDF3E3; color: #7A4F10; border: 0.5px solid #E9B96E; }
+    .badge-prod  { background: #E8F4F8; color: #1A5C7A; border: 0.5px solid #7BC4DC; }
+
+    /* ── REC CARD ── */
+    .rec-list { display: flex; flex-direction: column; gap: 10px; }
+    .rec-card {
+      background: #fff;
+      border: 1px solid var(--purple-border);
+      border-left: 3px solid var(--purple);
+      border-radius: 0 6px 6px 0;
+      padding: 0.9rem 1rem;
+    }
+    .rec-header { display: flex; align-items: center; gap: 8px; margin-bottom: 0.4rem; }
+    .rec-header i { font-size: 16px; color: var(--purple); flex-shrink: 0; }
+    .rec-title { font-size: 14px; font-weight: 700; color: var(--purple-dark); }
+    .rec-body { font-size: 13px; color: var(--text-body); line-height: 1.75; }
+    .rec-body a { color: var(--purple); text-decoration: underline; }
+    .rec-body a:hover { color: var(--purple-dark); }
+    .rec-tool {
+      display: inline-block; margin-top: 6px;
+      font-size: 11px; font-weight: 700;
+      background: var(--purple-pale); color: var(--purple-dark);
+      border: 0.5px solid var(--purple-border);
+      border-radius: 100px; padding: 2px 9px; margin-right: 4px;
+    }
+
+    /* ── EMPTY ── */
+    .empty-state {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 3rem 1rem; gap: 0.6rem;
+      color: var(--purple-light); text-align: center;
+    }
+    .empty-state i { font-size: 36px; }
+    .empty-state span { font-size: 13px; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--purple-light); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="Navegación principal">
+    <div class="sidebar-logo">
+      <span class="logo-name">HD_DOCENTES/</span>
+      <small>Tec de Monterrey</small>
+    </div>
+    <span class="sidebar-label">// inicio</span>
+    <a class="sidebar-item" href="./index.html">
+      <i class="ti ti-home" aria-hidden="true"></i>¿qué son las HD?
+    </a>
+    <a class="sidebar-item" href="./index.html">
+      <i class="ti ti-users" aria-hidden="true"></i>formación humanística
+    </a>
+    <span class="sidebar-label">// módulos</span>
+    <a class="sidebar-item" href="./ejemplos-proyectos-hd.html">
+      <i class="ti ti-database" aria-hidden="true"></i>01_ejemplos-proyectos-hd
+    </a>
+    <a class="sidebar-item active" href="./recomendaciones-hd.html">
+      <i class="ti ti-chart-bar" aria-hidden="true"></i>02_recomendaciones-hd
+    </a>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-file-text" aria-hidden="true"></i>03_formacion-humanistica
+    </a>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-network" aria-hidden="true"></i>04_proximos-modulos
+    </a>
+    <span class="sidebar-label">// recursos</span>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-tool" aria-hidden="true"></i>herramientas
+    </a>
+    <a class="sidebar-item" href="./lecturas.html">
+      <i class="ti ti-books" aria-hidden="true"></i>lecturas
+    </a>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-pencil" aria-hidden="true"></i>ejercicios
+    </a>
+  </nav>
+
+  <div class="main">
+    <div class="margin-line" aria-hidden="true"></div>
+
+    <div class="topbar">
+      <h1>// módulos/02_recomendaciones-hd</h1>
+      <div class="tabs" role="tablist">
+        <div class="tab active" id="tab-btn-prog" role="tab" onclick="setTab('prog',this)">programacion.md</div>
+        <div class="tab" id="tab-btn-homo" role="tab" onclick="setTab('homo',this)">homo-sapiens.md</div>
+        <div class="tab" id="tab-btn-ia" role="tab" onclick="setTab('ia',this)">cultura-digital-ia.md</div>
+        <div class="tab" id="tab-btn-expl" role="tab" onclick="setTab('expl',this)">exploracion.md</div>
+        <div class="tab" id="tab-btn-prod" role="tab" onclick="setTab('prod',this)">produccion-contenidos.md</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="content-inner">
+
+        <!-- PROGRAMACIÓN PARA HD -->
+        <div id="tab-prog" class="tab-panel active">
+          <p class="intro-text">Recomendaciones para incorporar proyectos de HD en la materia de Programación para Humanidades Digitales.</p>
+          <span class="mat-badge badge-prog">Programación para humanidades digitales</span>
+          <div class="empty-state">
+            <i class="ti ti-file-plus" aria-hidden="true"></i>
+            <span>// contenido por definir</span>
+          </div>
+        </div>
+
+        <!-- DEL HOMO SAPIENS AL HUMANO POSTDIGITAL -->
+        <div id="tab-homo" class="tab-panel">
+          <p class="intro-text">Recomendaciones para incorporar proyectos de HD en la materia Del homo sapiens al humano postdigital.</p>
+          <span class="mat-badge badge-homo">Del homo sapiens al humano postdigital</span>
+          <div class="empty-state">
+            <i class="ti ti-file-plus" aria-hidden="true"></i>
+            <span>// contenido por definir</span>
+          </div>
+        </div>
+
+        <!-- CULTURA DIGITAL E IA -->
+        <div id="tab-ia" class="tab-panel">
+          <p class="intro-text">Recomendaciones para incorporar proyectos de HD en la materia Cultura digital e inteligencia artificial.</p>
+          <span class="mat-badge badge-ia">Cultura digital e inteligencia artificial</span>
+
+          <p class="section-title">// ejemplos</p>
+          <div class="rec-list">
+            <div class="rec-card">
+              <div class="rec-header">
+                <i class="ti ti-brain" aria-hidden="true"></i>
+                <div class="rec-title">Clasificador de imágenes con machine learning</div>
+              </div>
+              <div class="rec-body">
+                El estudiantado aprende a entrenar y usar un clasificador de imágenes sin necesidad de programar, explorando de forma práctica cómo funcionan los modelos de aprendizaje automático.
+                <br><span class="rec-tool"><a href="https://teachablemachine.withgoogle.com/" target="_blank" rel="noopener">Teachable Machine</a></span>
+              </div>
+            </div>
+            <div class="rec-card">
+              <div class="rec-header">
+                <i class="ti ti-robot" aria-hidden="true"></i>
+                <div class="rec-title">Creación de un GPT como herramienta de repaso</div>
+              </div>
+              <div class="rec-body">
+                El estudiantado diseña y configura un GPT personalizado como herramienta de repaso de la materia. El proceso permite comprender el funcionamiento de los modelos de lenguaje de gran escala (LLMs) desde adentro.
+                <br><span class="rec-tool">ChatGPT (GPTs)</span>
+              </div>
+            </div>
+            <div class="rec-card">
+              <div class="rec-header">
+                <i class="ti ti-layout" aria-hidden="true"></i>
+                <div class="rec-title">Interfaz digital para transmitir conocimientos</div>
+              </div>
+              <div class="rec-body">
+                A partir de un proceso de bocetado, prototipado y sistema de diseño, el estudiantado genera una interfaz digital orientada a transmitir ciertos conocimientos a sus usuarios.
+                <br><span class="rec-tool">Figma</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- EXPLORACIÓN DE PRÁCTICAS -->
+        <div id="tab-expl" class="tab-panel">
+          <p class="intro-text">Recomendaciones para incorporar proyectos de HD en la materia Exploración de prácticas, tendencias y audiencias.</p>
+          <span class="mat-badge badge-expl">Exploración de prácticas, tendencias y audiencias</span>
+
+          <p class="section-title">// ejemplos</p>
+          <div class="rec-list">
+            <div class="rec-card">
+              <div class="rec-header">
+                <i class="ti ti-trending-up" aria-hidden="true"></i>
+                <div class="rec-title">Análisis de tendencias en un corpus de comentarios</div>
+              </div>
+              <div class="rec-body">
+                El estudiantado utiliza Voyant Trends para identificar y visualizar cómo evolucionan ciertos términos o temas a lo largo de un corpus de comentarios.
+                <br><span class="rec-tool"><a href="https://voyant-tools.org/" target="_blank" rel="noopener">Voyant Trends</a></span>
+              </div>
+            </div>
+            <div class="rec-card">
+              <div class="rec-header">
+                <i class="ti ti-cloud" aria-hidden="true"></i>
+                <div class="rec-title">Nube de palabras con textos de audiencias</div>
+              </div>
+              <div class="rec-body">
+                El estudiantado utiliza Voyant Cirrus para analizar las palabras más frecuentes en un corpus de textos y visualizarlas en una nube de palabras, identificando patrones de lenguaje en sus audiencias.
+                <br><span class="rec-tool"><a href="https://voyant-tools.org/" target="_blank" rel="noopener">Voyant Cirrus</a></span>
+              </div>
+            </div>
+            <div class="rec-card">
+              <div class="rec-header">
+                <i class="ti ti-network" aria-hidden="true"></i>
+                <div class="rec-title">Mapeo de redes de audiencias y preferencias</div>
+              </div>
+              <div class="rec-body">
+                El estudiantado mapea y analiza redes de información — audiencias, preferencias, conexiones — visualizando relaciones que de otro modo serían difíciles de percibir.
+                <br><span class="rec-tool"><a href="https://graphcommons.com/" target="_blank" rel="noopener">Graph Commons</a></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCCIÓN DE CONTENIDOS -->
+        <div id="tab-prod" class="tab-panel">
+          <p class="intro-text">Recomendaciones para incorporar proyectos de HD en la materia Producción de contenidos I: texto-imagen-sonido.</p>
+          <span class="mat-badge badge-prod">Producción de contenidos I: texto-imagen-sonido</span>
+
+          <p class="section-title">// ejemplos</p>
+          <div class="rec-list">
+            <div class="rec-card">
+              <div class="rec-header">
+                <i class="ti ti-git-branch" aria-hidden="true"></i>
+                <div class="rec-title">Historia interactiva con múltiples opciones</div>
+              </div>
+              <div class="rec-body">
+                Después de un proceso de bocetado y prototipado, el estudiantado crea una historia interactiva con herramientas que permiten al lector seleccionar diferentes opciones y caminos narrativos.
+              </div>
+            </div>
+            <div class="rec-card">
+              <div class="rec-header">
+                <i class="ti ti-video" aria-hidden="true"></i>
+                <div class="rec-title">Video-pitch con IA y generador de voz</div>
+              </div>
+              <div class="rec-body">
+                Después de un proceso de bocetado y prototipado, el estudiantado crea un video-pitch utilizando inteligencia artificial para el video y un generador de voz para la narración.
+                <br><span class="rec-tool"><a href="https://elevenlabs.io/" target="_blank" rel="noopener">ElevenLabs</a></span>
+              </div>
+            </div>
+            <div class="rec-card">
+              <div class="rec-header">
+                <i class="ti ti-photo-album" aria-hidden="true"></i>
+                <div class="rec-title">Repositorio digital de imágenes</div>
+              </div>
+              <div class="rec-body">
+                El estudiantado crea y organiza un repositorio digital de imágenes, aplicando criterios de catalogación, metadatos y accesibilidad propios de las humanidades digitales.
+              </div>
+            </div>
+            <div class="rec-card">
+              <div class="rec-header">
+                <i class="ti ti-brain" aria-hidden="true"></i>
+                <div class="rec-title">Clasificador de imágenes, poses o sonidos</div>
+              </div>
+              <div class="rec-body">
+                El estudiantado aprende a entrenar un clasificador de imágenes, poses o sonidos, explorando aplicaciones creativas del machine learning en producción de contenidos.
+                <br><span class="rec-tool"><a href="https://teachablemachine.withgoogle.com/" target="_blank" rel="noopener">Teachable Machine</a></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const TAB_MAP = {
+    prog: 'tab-btn-prog',
+    homo: 'tab-btn-homo',
+    ia:   'tab-btn-ia',
+    expl: 'tab-btn-expl',
+    prod: 'tab-btn-prod'
+  };
+  function setTab(id, el) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    if (el) { el.classList.add('active'); }
+    else {
+      const btn = document.getElementById(TAB_MAP[id] || 'tab-btn-prog');
+      if (btn) btn.classList.add('active');
+    }
+  }
+</script>
+
+</body>
+</html>
