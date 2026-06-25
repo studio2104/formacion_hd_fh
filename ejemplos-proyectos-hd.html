@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ejemplos y Proyectos HD — HD Docentes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple:        #534AB7;
+      --purple-dark:   #3C3489;
+      --purple-mid:    #7F77DD;
+      --purple-light:  #AFA9EC;
+      --purple-pale:   #EEEDFE;
+      --purple-border: #CECBF6;
+      --bg:            #FAFAFE;
+      --sidebar-bg:    #F4F3FD;
+      --text-body:     #26215C;
+      --red-margin:    #ED93B1;
+      --mono:          'JetBrains Mono', 'Courier New', monospace;
+      --sidebar-w:     220px;
+    }
+
+    html, body { height: 100%; }
+    body {
+      font-family: var(--mono);
+      background: var(--bg);
+      color: var(--text-body);
+      display: flex; flex-direction: column;
+      height: 100vh; overflow: hidden;
+    }
+
+    .layout { display: flex; flex: 1; overflow: hidden; position: relative; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w); flex-shrink: 0;
+      background: var(--sidebar-bg);
+      border-right: 1.5px solid var(--purple-border);
+      display: flex; flex-direction: column; overflow-y: auto;
+    }
+    .sidebar-logo {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--purple-border);
+      margin-bottom: 0.25rem; flex-shrink: 0;
+    }
+    .sidebar-logo .logo-name {
+      font-size: 15px; font-weight: 700; color: var(--purple-dark);
+      line-height: 1.2; letter-spacing: -0.02em; display: block;
+    }
+    .sidebar-logo small {
+      font-size: 10px; color: var(--purple);
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .sidebar-label {
+      font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--purple);
+      padding: 0.85rem 1.25rem 0.25rem; display: block;
+    }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 0.3rem 1.25rem; font-size: 12px; color: var(--text-body);
+      cursor: pointer; border-left: 3px solid transparent;
+      transition: background 0.12s, color 0.12s;
+      text-decoration: none; font-family: var(--mono);
+    }
+    .sidebar-item i { font-size: 13px; color: var(--purple); flex-shrink: 0; }
+    .sidebar-item:hover { background: #E5E3FA; color: var(--purple-dark); }
+    .sidebar-item.active {
+      color: var(--purple-dark); font-weight: 700;
+      border-left-color: var(--purple-dark); background: var(--purple-pale);
+    }
+
+    /* ── MARGIN LINE ── */
+    .margin-line {
+      position: absolute; left: 18px; top: 0; bottom: 0;
+      width: 1px; background: var(--red-margin); opacity: 0.4; pointer-events: none;
+    }
+
+    /* ── MAIN ── */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      padding: 1.25rem 1.75rem 0;
+      border-bottom: 2px solid var(--purple-border);
+      background: var(--bg); flex-shrink: 0;
+    }
+    .topbar h1 {
+      font-size: 17px; font-weight: 700; color: var(--purple);
+      letter-spacing: -0.02em; margin-bottom: 0.85rem;
+    }
+    .tabs { display: flex; }
+    .tab {
+      padding: 0.45rem 1.1rem; font-size: 12px; cursor: pointer;
+      border-bottom: 3px solid transparent; color: var(--purple);
+      font-family: var(--mono);
+      transition: color 0.12s, border-color 0.12s, background 0.12s;
+      white-space: nowrap;
+    }
+    .tab:hover:not(.active) { background: var(--purple-pale); }
+    .tab.active { color: var(--purple-dark); border-bottom-color: var(--purple-dark); font-weight: 700; }
+
+    /* ── CONTENT ── */
+    .content { flex: 1; overflow-y: auto; background: var(--bg); }
+    .content-inner { padding: 1.25rem 1.75rem 2rem; max-width: 760px; }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── TYPOGRAPHY ── */
+    .intro-text {
+      font-size: 14px; line-height: 1.9;
+      color: var(--text-body); margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-size: 13px; font-weight: 700; color: var(--purple);
+      letter-spacing: 0.07em; text-transform: uppercase;
+      margin: 1.8rem 0 0.75rem;
+      border-bottom: 1px solid var(--purple-border); padding-bottom: 5px;
+    }
+    .section-title:first-child { margin-top: 0; }
+
+    /* ── OLA BADGE ── */
+    .ola-badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      border-radius: 100px; padding: 2px 10px; margin-bottom: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    .ola-1 { background: #EAF3DE; color: #3B6D11; border: 0.5px solid #97C459; }
+    .ola-2 { background: #FAECE7; color: #993C1D; border: 0.5px solid #F0997B; }
+    .ola-3 { background: var(--purple-pale); color: var(--purple-dark); border: 0.5px solid var(--purple-border); }
+    .ola-latam { background: #FDF3E3; color: #7A4F10; border: 0.5px solid #E9B96E; }
+    .ola-inst { background: #E8F4F8; color: #1A5C7A; border: 0.5px solid #7BC4DC; }
+
+    /* ── PROJECT LIST ── */
+    .project-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 0.5rem; }
+
+    .project-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 0.6rem 0.75rem;
+      border-radius: 6px; border: 1px solid transparent;
+      transition: background 0.12s, border-color 0.12s;
+      text-decoration: none; color: inherit;
+    }
+    .project-item:hover {
+      background: var(--purple-pale);
+      border-color: var(--purple-border);
+    }
+    .project-item i {
+      font-size: 16px; color: var(--purple); flex-shrink: 0; margin-top: 2px;
+    }
+    .project-body { flex: 1; }
+    .project-title {
+      font-size: 14px; font-weight: 700; color: var(--purple-dark);
+      margin-bottom: 1px;
+    }
+    .project-item:hover .project-title { color: var(--purple); }
+    .project-year {
+      font-size: 11.5px; color: var(--purple-mid);
+    }
+    .project-desc {
+      font-size: 13px; color: var(--text-body); line-height: 1.6; margin-top: 2px;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--purple-light); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" aria-label="Navegación principal">
+    <div class="sidebar-logo">
+      <span class="logo-name">HD_DOCENTES/</span>
+      <small>Tec de Monterrey</small>
+    </div>
+
+    <span class="sidebar-label">// inicio</span>
+    <a class="sidebar-item" href="./index.html">
+      <i class="ti ti-home" aria-hidden="true"></i>¿qué son las HD?
+    </a>
+    <a class="sidebar-item" href="./index.html">
+      <i class="ti ti-users" aria-hidden="true"></i>formación humanística
+    </a>
+
+    <span class="sidebar-label">// módulos</span>
+    <a class="sidebar-item active" href="./ejemplos-proyectos-hd.html">
+      <i class="ti ti-database" aria-hidden="true"></i>01_ejemplos-proyectos-hd
+    </a>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-chart-bar" aria-hidden="true"></i>02_recomendaciones-hd
+    </a>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-file-text" aria-hidden="true"></i>03_formacion-humanistica
+    </a>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-network" aria-hidden="true"></i>04_próximos-módulos
+    </a>
+
+    <span class="sidebar-label">// recursos</span>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-tool" aria-hidden="true"></i>herramientas
+    </a>
+    <a class="sidebar-item" href="./lecturas.html">
+      <i class="ti ti-books" aria-hidden="true"></i>lecturas
+    </a>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-pencil" aria-hidden="true"></i>ejercicios
+    </a>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="margin-line" aria-hidden="true"></div>
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <h1>// módulos/01_ejemplos-proyectos-hd</h1>
+      <div class="tabs" role="tablist">
+        <div class="tab active" id="tab-btn-referentes" role="tab"
+             onclick="setTab('referentes', this)">referentes.md</div>
+        <div class="tab" id="tab-btn-latam" role="tab"
+             onclick="setTab('latam', this)">latinoamerica.md</div>
+        <div class="tab" id="tab-btn-instituciones" role="tab"
+             onclick="setTab('instituciones', this)">instituciones.md</div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+      <div class="content-inner">
+
+        <!-- REFERENTES -->
+        <div id="tab-referentes" class="tab-panel active">
+          <p class="intro-text">
+            Las Humanidades Digitales están transformando la manera en que exploramos y difundimos
+            el conocimiento, integrando tecnología y tradición para abrir nuevos caminos en la
+            investigación cultural y social. Los proyectos que se presentan están organizados por
+            temporalidad, de acuerdo con las "olas de las HD".
+          </p>
+
+          <p class="section-title">// primera ola</p>
+          <span class="ola-badge ola-1">1940s – 1980s</span>
+          <div class="project-list">
+            <a class="project-item" href="https://www.corpusthomisticum.org/" target="_blank" rel="noopener">
+              <i class="ti ti-book" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">Corpus Thomisticum</div>
+                <div class="project-year">1949 / 2013</div>
+              </div>
+            </a>
+            <a class="project-item" href="https://www.wwp.northeastern.edu/" target="_blank" rel="noopener">
+              <i class="ti ti-writing" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">Women Writers Project</div>
+                <div class="project-year">1986 / 1995</div>
+              </div>
+            </a>
+            <a class="project-item" href="https://valley.lib.virginia.edu/" target="_blank" rel="noopener">
+              <i class="ti ti-archive" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">The Valley of the Shadow</div>
+                <div class="project-year">1993 / 2007</div>
+              </div>
+            </a>
+          </div>
+
+          <p class="section-title">// segunda ola</p>
+          <span class="ola-badge ola-2">2000s – 2010s</span>
+          <div class="project-list">
+            <a class="project-item" href="https://voyant-tools.org/" target="_blank" rel="noopener">
+              <i class="ti ti-eye" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">Voyant Tools</div>
+                <div class="project-year">2003</div>
+              </div>
+            </a>
+            <a class="project-item" href="https://www.oldbaileyonline.org/index.jsp" target="_blank" rel="noopener">
+              <i class="ti ti-gavel" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">The Proceedings of the Old Bailey</div>
+                <div class="project-year">2003 / 2023</div>
+              </div>
+            </a>
+            <a class="project-item" href="https://omeka.org/" target="_blank" rel="noopener">
+              <i class="ti ti-layout-grid" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">Omeka</div>
+                <div class="project-year">2007</div>
+              </div>
+            </a>
+            <a class="project-item" href="https://programminghistorian.org/" target="_blank" rel="noopener">
+              <i class="ti ti-history" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">The Programming Historian</div>
+                <div class="project-year">2008</div>
+              </div>
+            </a>
+          </div>
+
+          <p class="section-title">// tercera ola</p>
+          <span class="ola-badge ola-3">2020s</span>
+          <div class="project-list">
+            <a class="project-item" href="https://www.framingluxembourg.lu/" target="_blank" rel="noopener">
+              <i class="ti ti-photo" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">Framing Luxembourg</div>
+                <div class="project-year">2022</div>
+              </div>
+            </a>
+            <a class="project-item" href="https://valley.newamericanhistory.org/" target="_blank" rel="noopener">
+              <i class="ti ti-archive" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">The Valley of the Shadow (nueva edición)</div>
+                <div class="project-year">2022</div>
+              </div>
+            </a>
+            <a class="project-item" href="https://www.cdh.cam.ac.uk/research/projects/gaming-the-industrial-revolution/" target="_blank" rel="noopener">
+              <i class="ti ti-device-gamepad-2" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">Gaming the Industrial Revolution</div>
+                <div class="project-year">2021 / 2022</div>
+              </div>
+            </a>
+            <a class="project-item" href="https://radio.lu/en/home/" target="_blank" rel="noopener">
+              <i class="ti ti-radio" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">Radio Luxembourg</div>
+                <div class="project-year">2023 / 2026</div>
+              </div>
+            </a>
+            <a class="project-item" href="https://uclab.fh-potsdam.de/3dstories/" target="_blank" rel="noopener">
+              <i class="ti ti-box" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">3D Stories</div>
+                <div class="project-year">2024</div>
+              </div>
+            </a>
+            <a class="project-item" href="https://www.c2dh.uni.lu/projects/history-cd-rom-cd-hist" target="_blank" rel="noopener">
+              <i class="ti ti-clock" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">A History of the CD-ROM (CD-Hist)</div>
+                <div class="project-year">2024 / 2026</div>
+              </div>
+            </a>
+            <a class="project-item" href="https://www.timemachine.eu/" target="_blank" rel="noopener">
+              <i class="ti ti-time-duration-60" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">Time Machine</div>
+                <div class="project-year">En curso</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- LATINOAMÉRICA -->
+        <div id="tab-latam" class="tab-panel">
+          <p class="intro-text">
+            Proyectos y plataformas que sitúan las Humanidades Digitales en el contexto
+            latinoamericano y del sur global.
+          </p>
+          <p class="section-title">// proyectos</p>
+          <span class="ola-badge ola-latam">Latinoamérica</span>
+          <div class="project-list">
+            <a class="project-item" href="https://bdpn.unam.mx/es" target="_blank" rel="noopener">
+              <i class="ti ti-building-library" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">Biblioteca Digital del Pensamiento Novohispano</div>
+                <div class="project-desc">UNAM — archivo digital del pensamiento colonial novohispano.</div>
+              </div>
+            </a>
+            <a class="project-item" href="https://pasadoimpreso.uniandes.edu.co/" target="_blank" rel="noopener">
+              <i class="ti ti-news" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">Pasado Impreso. Historias digitales de la cultura escrita</div>
+                <div class="project-desc">Universidad de los Andes — historia digital de la cultura escrita en Colombia.</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- INSTITUCIONES -->
+        <div id="tab-instituciones" class="tab-panel">
+          <p class="intro-text">
+            Centros, laboratorios y redes que lideran la investigación y formación en
+            Humanidades Digitales a nivel global y regional.
+          </p>
+          <p class="section-title">// centros e instituciones</p>
+          <span class="ola-badge ola-inst">Internacional</span>
+          <div class="project-list">
+            <a class="project-item" href="https://www.cdh.cam.ac.uk/" target="_blank" rel="noopener">
+              <i class="ti ti-school" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">Cambridge Digital Humanities</div>
+                <div class="project-desc">Universidad de Cambridge</div>
+              </div>
+            </a>
+            <a class="project-item" href="https://shc.stanford.edu/digital-humanities" target="_blank" rel="noopener">
+              <i class="ti ti-school" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">Stanford Humanities Today</div>
+                <div class="project-desc">Universidad de Stanford</div>
+              </div>
+            </a>
+            <a class="project-item" href="https://www.c2dh.uni.lu/" target="_blank" rel="noopener">
+              <i class="ti ti-school" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">Luxembourg Centre for Contemporary and Digital History (C²DH)</div>
+                <div class="project-desc">Universidad de Luxemburgo</div>
+              </div>
+            </a>
+            <a class="project-item" href="https://rrchnm.org/" target="_blank" rel="noopener">
+              <i class="ti ti-news" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">Roy Rosenzweig Center for History and New Media</div>
+                <div class="project-desc">George Mason University</div>
+              </div>
+            </a>
+          </div>
+          <p class="section-title">// redes</p>
+          <span class="ola-badge ola-latam">Latinoamérica</span>
+          <div class="project-list">
+            <a class="project-item" href="https://humanidadesdigitales.net/" target="_blank" rel="noopener">
+              <i class="ti ti-network" aria-hidden="true"></i>
+              <div class="project-body">
+                <div class="project-title">Red Humanidades Digitales — RedHD</div>
+                <div class="project-desc">México — principal red latinoamericana de HD.</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const TAB_MAP = {
+    referentes:    'tab-btn-referentes',
+    latam:         'tab-btn-latam',
+    instituciones: 'tab-btn-instituciones'
+  };
+  function setTab(id, el) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    if (el) { el.classList.add('active'); }
+    else {
+      const btn = document.getElementById(TAB_MAP[id] || 'tab-btn-referentes');
+      if (btn) btn.classList.add('active');
+    }
+  }
+</script>
+
+</body>
+</html>
