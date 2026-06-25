@@ -31,10 +31,8 @@
       font-family: var(--mono);
       background: var(--bg);
       color: var(--text-body);
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
+      display: flex; flex-direction: column;
+      height: 100vh; overflow: hidden;
     }
 
     .layout { display: flex; flex: 1; overflow: hidden; position: relative; }
@@ -139,7 +137,10 @@
     .card {
       background: #fff; border: 1px solid var(--purple-border);
       border-top: 3px solid var(--purple); border-radius: 6px; padding: 0.9rem;
+      text-decoration: none; color: inherit; display: block;
+      transition: background 0.12s, border-color 0.12s;
     }
+    .card:hover { background: var(--purple-pale); }
     .card-icon { font-size: 22px; color: var(--purple); margin-bottom: 8px; }
     .card-title { font-size: 13px; font-weight: 700; color: var(--purple-dark); margin-bottom: 4px; }
     .card-desc { font-size: 12px; color: var(--text-body); line-height: 1.65; }
@@ -164,7 +165,7 @@
     .method-item i { font-size: 16px; color: var(--purple); flex-shrink: 0; margin-top: 2px; }
     .method-name { font-weight: 700; color: var(--purple-dark); }
 
-    /* ── TOOL PILLS ── */
+    /* ── TOOL GRID ── */
     .tool-grid { display: flex; flex-direction: column; gap: 0.5rem; margin: 0.5rem 0; }
     .tool-item {
       display: flex; align-items: flex-start; gap: 10px;
@@ -175,6 +176,8 @@
     }
     .tool-item i { font-size: 16px; color: var(--purple); flex-shrink: 0; margin-top: 2px; }
     .tool-name { font-weight: 700; color: var(--purple-dark); }
+    .tool-name a { color: var(--purple); text-decoration: underline; }
+    .tool-name a:hover { color: var(--purple-dark); }
 
     /* ── EMPTY STATE ── */
     .empty-state {
@@ -219,7 +222,7 @@
     <a class="sidebar-item" href="./ejemplos-proyectos-hd.html">
       <i class="ti ti-database" aria-hidden="true"></i>01_ejemplos-proyectos-hd
     </a>
-    <a class="sidebar-item" href="./ejemplos-proyectos-hd.html">
+    <a class="sidebar-item" href="./recomendaciones-hd.html">
       <i class="ti ti-chart-bar" aria-hidden="true"></i>02_recomendaciones-hd
     </a>
     <a class="sidebar-item" onclick="activeSide(this); setTab('mod', null)">
@@ -274,32 +277,34 @@
 
           <p class="section-title">// ¿qué encontrarás aquí?</p>
           <div class="card-grid">
-            <div class="card">
+            <a class="card" href="./ejemplos-proyectos-hd.html">
               <div class="card-icon"><i class="ti ti-chart-dots" aria-hidden="true"></i></div>
               <div class="card-title">proyectos HD</div>
               <div class="card-desc">Ejemplos de cómo se aplican las Humanidades Digitales en contextos diversos.</div>
-            </div>
-            <div class="card">
+            </a>
+            <a class="card" href="./lecturas.html">
               <div class="card-icon"><i class="ti ti-map-2" aria-hidden="true"></i></div>
               <div class="card-title">lecturas</div>
               <div class="card-desc">Recursos y textos fundamentales sobre las Humanidades Digitales.</div>
-            </div>
-            <div class="card">
+            </a>
+            <a class="card" href="./recomendaciones-hd.html">
               <div class="card-icon"><i class="ti ti-file-search" aria-hidden="true"></i></div>
               <div class="card-title">recomendaciones</div>
               <div class="card-desc">Sugerencias de cómo incorporar las HD en tu práctica docente.</div>
-            </div>
-            <div class="card">
+            </a>
+            <a class="card" onclick="activeSide(document.querySelector('.sidebar-item:nth-child(3)')); setTab('formacion', null)">
               <div class="card-icon"><i class="ti ti-users" aria-hidden="true"></i></div>
               <div class="card-title">formación humanística</div>
               <div class="card-desc">Una noción básica sobre la formación humanística para incorporar en la práctica docente.</div>
-            </div>
+            </a>
           </div>
 
           <p class="section-title">// el concepto central</p>
           <div class="highlight-box">
-           Implementar Humanidades Digitales no significa que todo el proyecto deba ser digital. 
-           Se trata de usar herramientas digitales para explorar preguntas humanísticas, como la historia, la literatura, la filosofía o el arte en determinados momentos de un proyecto, ya sea en la planeación, el proceso y/o el producto.
+            Implementar Humanidades Digitales no significa que todo el proyecto deba ser digital.
+            Se trata de usar herramientas digitales para explorar preguntas humanísticas, como la historia,
+            la literatura, la filosofía o el arte en determinados momentos de un proyecto, ya sea en la
+            planeación, el proceso y/o el producto.<br><br>
             En lugar de simplemente leer un libro para averiguar cuántas veces aparece una palabra,
             un humanista digital podría usar software para escanear 10,000 libros digitalizados en
             segundos y graficar con qué frecuencia y en qué contexto se usó esa palabra a lo largo
@@ -371,13 +376,11 @@
             </div>
             <div>
               <div class="faq-q">¿Cuánto tiempo requiere cada módulo?</div>
-              <div class="faq-a">Cada módulo está pensado para 2–3 horas de trabajo autónomo,
-                más ejercicios opcionales para profundizar.</div>
+              <div class="faq-a">Cada módulo está pensado para 2–3 horas de trabajo autónomo, más ejercicios opcionales para profundizar.</div>
             </div>
             <div>
               <div class="faq-q">¿Puedo contribuir con materiales?</div>
-              <div class="faq-a">¡Sí! El sitio vive en GitHub y aceptamos pull requests.
-                Consulta la sección de colaboración.</div>
+              <div class="faq-a">¡Sí! El sitio vive en GitHub y aceptamos pull requests. Consulta la sección de colaboración.</div>
             </div>
           </div>
         </div>
