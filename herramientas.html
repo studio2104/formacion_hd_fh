@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Herramientas — HD Docentes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple:        #534AB7;
+      --purple-dark:   #3C3489;
+      --purple-mid:    #7F77DD;
+      --purple-light:  #AFA9EC;
+      --purple-pale:   #EEEDFE;
+      --purple-border: #CECBF6;
+      --bg:            #FAFAFE;
+      --sidebar-bg:    #F4F3FD;
+      --text-body:     #26215C;
+      --red-margin:    #ED93B1;
+      --mono:          'JetBrains Mono', 'Courier New', monospace;
+      --sidebar-w:     220px;
+    }
+
+    html, body { height: 100%; }
+    body {
+      font-family: var(--mono);
+      background: var(--bg); color: var(--text-body);
+      display: flex; flex-direction: column;
+      height: 100vh; overflow: hidden;
+    }
+
+    .layout { display: flex; flex: 1; overflow: hidden; position: relative; }
+
+    .sidebar {
+      width: var(--sidebar-w); flex-shrink: 0;
+      background: var(--sidebar-bg);
+      border-right: 1.5px solid var(--purple-border);
+      display: flex; flex-direction: column; overflow-y: auto;
+    }
+    .sidebar-logo {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--purple-border);
+      margin-bottom: 0.25rem; flex-shrink: 0;
+    }
+    .sidebar-logo .logo-name {
+      font-size: 15px; font-weight: 700; color: var(--purple-dark);
+      line-height: 1.2; letter-spacing: -0.02em; display: block;
+    }
+    .sidebar-logo small {
+      font-size: 10px; color: var(--purple);
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .sidebar-label {
+      font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--purple);
+      padding: 0.85rem 1.25rem 0.25rem; display: block;
+    }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 0.3rem 1.25rem; font-size: 12px; color: var(--text-body);
+      cursor: pointer; border-left: 3px solid transparent;
+      transition: background 0.12s, color 0.12s;
+      text-decoration: none; font-family: var(--mono);
+    }
+    .sidebar-item i { font-size: 13px; color: var(--purple); flex-shrink: 0; }
+    .sidebar-item:hover { background: #E5E3FA; color: var(--purple-dark); }
+    .sidebar-item.active {
+      color: var(--purple-dark); font-weight: 700;
+      border-left-color: var(--purple-dark); background: var(--purple-pale);
+    }
+
+    .margin-line {
+      position: absolute; left: 18px; top: 0; bottom: 0;
+      width: 1px; background: var(--red-margin); opacity: 0.4; pointer-events: none;
+    }
+
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+
+    .topbar {
+      padding: 1.25rem 1.75rem 0;
+      border-bottom: 2px solid var(--purple-border);
+      background: var(--bg); flex-shrink: 0;
+    }
+    .topbar h1 {
+      font-size: 17px; font-weight: 700; color: var(--purple);
+      letter-spacing: -0.02em; margin-bottom: 0.85rem;
+    }
+    .tabs { display: flex; overflow-x: auto; }
+    .tabs::-webkit-scrollbar { height: 0; }
+    .tab {
+      padding: 0.45rem 1rem; font-size: 11px; cursor: pointer;
+      border-bottom: 3px solid transparent; color: var(--purple);
+      font-family: var(--mono);
+      transition: color 0.12s, border-color 0.12s, background 0.12s;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .tab:hover:not(.active) { background: var(--purple-pale); }
+    .tab.active { color: var(--purple-dark); border-bottom-color: var(--purple-dark); font-weight: 700; }
+
+    .content { flex: 1; overflow-y: auto; background: var(--bg); }
+    .content-inner { padding: 1.25rem 1.75rem 2rem; max-width: 760px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .intro-text {
+      font-size: 14px; line-height: 1.9;
+      color: var(--text-body); margin-bottom: 1.25rem;
+    }
+    .section-title {
+      font-size: 13px; font-weight: 700; color: var(--purple);
+      letter-spacing: 0.07em; text-transform: uppercase;
+      margin: 1.6rem 0 0.75rem;
+      border-bottom: 1px solid var(--purple-border); padding-bottom: 5px;
+    }
+    .section-title:first-child { margin-top: 0; }
+
+    /* ── TOOL CARD ── */
+    .tool-list { display: flex; flex-direction: column; gap: 4px; }
+
+    .tool-card {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 0.7rem 0.75rem;
+      border-radius: 6px; border: 1px solid transparent;
+      transition: background 0.12s, border-color 0.12s;
+      text-decoration: none; color: inherit;
+    }
+    .tool-card:hover {
+      background: var(--purple-pale);
+      border-color: var(--purple-border);
+    }
+    .tool-card i { font-size: 18px; color: var(--purple); flex-shrink: 0; margin-top: 2px; }
+    .tool-body { flex: 1; }
+    .tool-name {
+      font-size: 14px; font-weight: 700; color: var(--purple-dark); margin-bottom: 2px;
+    }
+    .tool-card:hover .tool-name { color: var(--purple); }
+    .tool-desc { font-size: 13px; color: var(--text-body); line-height: 1.65; }
+    .tool-tag {
+      display: inline-block; margin-top: 5px;
+      font-size: 10.5px; font-weight: 700;
+      background: var(--purple-pale); color: var(--purple-dark);
+      border: 0.5px solid var(--purple-border);
+      border-radius: 100px; padding: 1px 8px; margin-right: 4px;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--purple-light); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="Navegación principal">
+    <div class="sidebar-logo">
+      <span class="logo-name">HD_DOCENTES/</span>
+      <small>Tec de Monterrey</small>
+    </div>
+    <span class="sidebar-label">// inicio</span>
+    <a class="sidebar-item" href="./index.html">
+      <i class="ti ti-home" aria-hidden="true"></i>¿qué son las HD?
+    </a>
+    <a class="sidebar-item" href="./index.html">
+      <i class="ti ti-users" aria-hidden="true"></i>formación humanística
+    </a>
+    <span class="sidebar-label">// módulos</span>
+    <a class="sidebar-item" href="./ejemplos-proyectos-hd.html">
+      <i class="ti ti-database" aria-hidden="true"></i>01_ejemplos-proyectos-hd
+    </a>
+    <a class="sidebar-item" href="./recomendaciones-hd.html">
+      <i class="ti ti-chart-bar" aria-hidden="true"></i>02_recomendaciones-hd
+    </a>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-file-text" aria-hidden="true"></i>03_formacion-humanistica
+    </a>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-network" aria-hidden="true"></i>04_proximos-modulos
+    </a>
+    <span class="sidebar-label">// recursos</span>
+    <a class="sidebar-item active" href="./herramientas.html">
+      <i class="ti ti-tool" aria-hidden="true"></i>herramientas
+    </a>
+    <a class="sidebar-item" href="./lecturas.html">
+      <i class="ti ti-books" aria-hidden="true"></i>lecturas
+    </a>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-pencil" aria-hidden="true"></i>ejercicios
+    </a>
+  </nav>
+
+  <div class="main">
+    <div class="margin-line" aria-hidden="true"></div>
+
+    <div class="topbar">
+      <h1>// recursos/herramientas</h1>
+      <div class="tabs" role="tablist">
+        <div class="tab active" id="tab-btn-contenido" role="tab" onclick="setTab('contenido',this)">contenido.md</div>
+        <div class="tab" id="tab-btn-analitica" role="tab" onclick="setTab('analitica',this)">analitica.md</div>
+        <div class="tab" id="tab-btn-lectura" role="tab" onclick="setTab('lectura',this)">lectura-distante.md</div>
+        <div class="tab" id="tab-btn-mapas" role="tab" onclick="setTab('mapas',this)">mapas-timelines.md</div>
+        <div class="tab" id="tab-btn-storytelling" role="tab" onclick="setTab('storytelling',this)">storytelling.md</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="content-inner">
+
+        <!-- CREACIÓN Y MANEJO DE CONTENIDO -->
+        <div id="tab-contenido" class="tab-panel active">
+          <p class="intro-text">Herramientas para crear, editar y gestionar contenido digital en proyectos de humanidades.</p>
+
+          <p class="section-title">// creación y manejo de contenido</p>
+          <div class="tool-list">
+            <a class="tool-card" href="https://elevenlabs.io/" target="_blank" rel="noopener">
+              <i class="ti ti-microphone" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">ElevenLabs</div>
+                <div class="tool-desc">Generador de voz con IA de alta calidad. Permite crear narraciones, audiolibros y voces sintéticas a partir de texto, con control de tono, emoción e idioma.</div>
+                <span class="tool-tag">audio</span><span class="tool-tag">IA generativa</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://www.figma.com/" target="_blank" rel="noopener">
+              <i class="ti ti-vector" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Figma</div>
+                <div class="tool-desc">Plataforma de diseño de interfaces y prototipado colaborativo en la nube. Ideal para bocetado, sistemas de diseño y creación de prototipos interactivos sin necesidad de programar.</div>
+                <span class="tool-tag">diseño</span><span class="tool-tag">prototipado</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://firefly.adobe.com/" target="_blank" rel="noopener">
+              <i class="ti ti-sparkles" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Adobe Firefly</div>
+                <div class="tool-desc">Generador de imágenes y efectos visuales con IA de Adobe. Permite crear ilustraciones, fondos y variaciones visuales a partir de instrucciones en lenguaje natural.</div>
+                <span class="tool-tag">imagen</span><span class="tool-tag">IA generativa</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://gemini.google.com/" target="_blank" rel="noopener">
+              <i class="ti ti-robot" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Gemini</div>
+                <div class="tool-desc">Modelo de lenguaje multimodal de Google. Puede procesar texto, imágenes y documentos, útil para investigación, resumen, generación de contenido y análisis de fuentes.</div>
+                <span class="tool-tag">LLM</span><span class="tool-tag">multimodal</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://teachablemachine.withgoogle.com/" target="_blank" rel="noopener">
+              <i class="ti ti-brain" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Teachable Machine</div>
+                <div class="tool-desc">Plataforma de Google para entrenar clasificadores de imágenes, sonidos y poses sin escribir código. Permite experimentar con machine learning de forma intuitiva y accesible.</div>
+                <span class="tool-tag">machine learning</span><span class="tool-tag">no-code</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://omeka.org/" target="_blank" rel="noopener">
+              <i class="ti ti-archive" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Omeka</div>
+                <div class="tool-desc">Plataforma de publicación web para crear colecciones digitales y exhibiciones en línea. Usada por museos, bibliotecas e investigadores para organizar y compartir patrimonio cultural.</div>
+                <span class="tool-tag">archivo</span><span class="tool-tag">colecciones</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- ANALÍTICA CULTURAL Y VISUALIZACIÓN -->
+        <div id="tab-analitica" class="tab-panel">
+          <p class="intro-text">Herramientas para analizar datos culturales, visualizar patrones y explorar corpus a escala.</p>
+
+          <p class="section-title">// analítica cultural y visualización de datos</p>
+          <div class="tool-list">
+            <a class="tool-card" href="https://colab.research.google.com/" target="_blank" rel="noopener">
+              <i class="ti ti-brand-google" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Google Colab</div>
+                <div class="tool-desc">Entorno de notebooks Python en la nube, sin instalación. Permite ejecutar análisis de datos, visualizaciones y modelos de IA directamente en el navegador desde cualquier equipo.</div>
+                <span class="tool-tag">Python</span><span class="tool-tag">análisis de datos</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://observablehq.com/" target="_blank" rel="noopener">
+              <i class="ti ti-chart-line" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Observable</div>
+                <div class="tool-desc">Plataforma de notebooks interactivos para visualización de datos con JavaScript y D3.js. Ideal para crear gráficos exploratorios y dashboards que se actualizan en tiempo real.</div>
+                <span class="tool-tag">visualización</span><span class="tool-tag">JavaScript</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://graphcommons.com/" target="_blank" rel="noopener">
+              <i class="ti ti-network" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Graph Commons</div>
+                <div class="tool-desc">Plataforma para mapear y analizar redes de información de forma visual y colaborativa. Útil para explorar relaciones entre personas, organizaciones, conceptos o audiencias.</div>
+                <span class="tool-tag">redes</span><span class="tool-tag">visualización</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://voyant-tools.org/" target="_blank" rel="noopener">
+              <i class="ti ti-eye" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Voyant Tools</div>
+                <div class="tool-desc">Suite de herramientas para análisis y visualización de textos en línea. Permite explorar frecuencias, tendencias, co-ocurrencias y nubes de palabras en corpus de cualquier tamaño.</div>
+                <span class="tool-tag">análisis de texto</span><span class="tool-tag">lectura distante</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://teachablemachine.withgoogle.com/" target="_blank" rel="noopener">
+              <i class="ti ti-brain" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Teachable Machine</div>
+                <div class="tool-desc">Clasificador visual, de sonido y poses entrenable sin código. En contextos de analítica cultural permite identificar patrones visuales o sonoros en colecciones de medios.</div>
+                <span class="tool-tag">machine learning</span><span class="tool-tag">no-code</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://baserow.io/" target="_blank" rel="noopener">
+              <i class="ti ti-table" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Baserow</div>
+                <div class="tool-desc">Base de datos colaborativa de código abierto con interfaz visual tipo hoja de cálculo. Útil para organizar corpus, catalogar fuentes o gestionar datos de proyectos de investigación.</div>
+                <span class="tool-tag">base de datos</span><span class="tool-tag">no-code</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://gephi.org/" target="_blank" rel="noopener">
+              <i class="ti ti-share-2" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Gephi</div>
+                <div class="tool-desc">Software de escritorio para análisis y visualización de redes complejas. Permite explorar grafos de relaciones con métricas de centralidad, comunidades y distribución espacial.</div>
+                <span class="tool-tag">redes</span><span class="tool-tag">análisis</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://hdlab.stanford.edu/palladio/" target="_blank" rel="noopener">
+              <i class="ti ti-map-2" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Palladio</div>
+                <div class="tool-desc">Herramienta de Stanford para visualizar datos históricos complejos. Combina mapas, redes, líneas de tiempo y filtros en una interfaz pensada para humanistas sin experiencia en programación.</div>
+                <span class="tool-tag">humanidades digitales</span><span class="tool-tag">visualización</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://books.google.com/ngrams" target="_blank" rel="noopener">
+              <i class="ti ti-trending-up" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Google Ngram Viewer</div>
+                <div class="tool-desc">Rastrea la frecuencia de palabras o frases en millones de libros digitalizados entre 1500 y 2019. Útil para observar cómo cambia el uso del lenguaje a lo largo del tiempo.</div>
+                <span class="tool-tag">corpus</span><span class="tool-tag">análisis histórico</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- LECTURA DISTANTE -->
+        <div id="tab-lectura" class="tab-panel">
+          <p class="intro-text">Herramientas para explorar y analizar grandes volúmenes de texto sin leerlos de forma lineal.</p>
+
+          <p class="section-title">// lectura distante</p>
+          <div class="tool-list">
+            <a class="tool-card" href="https://notebooklm.google.com/" target="_blank" rel="noopener">
+              <i class="ti ti-notebook" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">NotebookLM</div>
+                <div class="tool-desc">Herramienta de Google que analiza documentos cargados por el usuario y genera resúmenes, fichas, respuestas a preguntas y resúmenes de audio. Ideal para trabajar con bibliografía densa o corpus teóricos.</div>
+                <span class="tool-tag">análisis de fuentes</span><span class="tool-tag">resumen</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://voyant-tools.org/" target="_blank" rel="noopener">
+              <i class="ti ti-eye" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Voyant Tools</div>
+                <div class="tool-desc">Suite de visualización y análisis textual en línea. Permite identificar frecuencias, tendencias y co-ocurrencias en un corpus sin leerlo íntegramente, revelando patrones que la lectura tradicional no detecta.</div>
+                <span class="tool-tag">análisis de texto</span><span class="tool-tag">corpus</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- MAPAS Y TIMELINES -->
+        <div id="tab-mapas" class="tab-panel">
+          <p class="intro-text">Herramientas para crear mapas interactivos, georreferenciar datos y construir líneas de tiempo multimedia.</p>
+
+          <p class="section-title">// mapas</p>
+          <div class="tool-list">
+            <a class="tool-card" href="https://leafletjs.com/" target="_blank" rel="noopener">
+              <i class="ti ti-map" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Leaflet</div>
+                <div class="tool-desc">Biblioteca JavaScript de código abierto para crear mapas interactivos en la web. Ligera y flexible, permite añadir capas, marcadores y datos geoespaciales con pocas líneas de código.</div>
+                <span class="tool-tag">JavaScript</span><span class="tool-tag">mapas web</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://www.mapbox.com/maps" target="_blank" rel="noopener">
+              <i class="ti ti-map-2" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Mapbox Studio</div>
+                <div class="tool-desc">Plataforma para diseñar mapas personalizados con estilos visuales propios y datos geoespaciales. Ofrece un editor visual y una API potente para integrar mapas en proyectos web.</div>
+                <span class="tool-tag">mapas</span><span class="tool-tag">diseño</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://storymap.knightlab.com/" target="_blank" rel="noopener">
+              <i class="ti ti-map-pin" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">StoryMap JS</div>
+                <div class="tool-desc">Herramienta del Knight Lab para crear narrativas geográficas interactivas. Combina mapas con texto, imágenes y video para contar historias vinculadas a lugares específicos.</div>
+                <span class="tool-tag">narrativa</span><span class="tool-tag">no-code</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://www.qgis.org/" target="_blank" rel="noopener">
+              <i class="ti ti-layers" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">QGIS</div>
+                <div class="tool-desc">Sistema de información geográfica (SIG) de código abierto para analizar y visualizar datos espaciales. Permite trabajar con capas, proyecciones y datos georreferenciados de forma avanzada.</div>
+                <span class="tool-tag">SIG</span><span class="tool-tag">análisis espacial</span>
+              </div>
+            </a>
+          </div>
+
+          <p class="section-title">// timelines</p>
+          <div class="tool-list">
+            <a class="tool-card" href="https://timeline.knightlab.com/" target="_blank" rel="noopener">
+              <i class="ti ti-timeline" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Timeline JS</div>
+                <div class="tool-desc">Herramienta del Knight Lab para construir líneas de tiempo interactivas y ricas en multimedia a partir de una hoja de cálculo de Google. Sin necesidad de programar.</div>
+                <span class="tool-tag">línea de tiempo</span><span class="tool-tag">no-code</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://www.tiki-toki.com/" target="_blank" rel="noopener">
+              <i class="ti ti-clock" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Tiki-Toki</div>
+                <div class="tool-desc">Plataforma web para crear líneas de tiempo en 3D con multimedia integrado. Permite visualizar eventos históricos de forma cronológica con imágenes, video y texto enriquecido.</div>
+                <span class="tool-tag">línea de tiempo</span><span class="tool-tag">multimedia</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- STORYTELLING INTERACTIVO -->
+        <div id="tab-storytelling" class="tab-panel">
+          <p class="intro-text">Herramientas para crear narrativas interactivas, ficción ramificada y experiencias de juego digital.</p>
+
+          <p class="section-title">// narrativa de texto interactivo</p>
+          <div class="tool-list">
+            <a class="tool-card" href="https://twinery.org/" target="_blank" rel="noopener">
+              <i class="ti ti-git-branch" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Twine</div>
+                <div class="tool-desc">Herramienta de código abierto para crear historias interactivas no lineales con bifurcaciones. Ideal para narrativas donde el lector toma decisiones que determinan el rumbo del relato.</div>
+                <span class="tool-tag">texto interactivo</span><span class="tool-tag">no-code</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://squiffystory.com/" target="_blank" rel="noopener">
+              <i class="ti ti-writing" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Squiffy</div>
+                <div class="tool-desc">Herramienta ligera para crear ficciones interactivas basadas en texto con un lenguaje de marcado sencillo. Genera una página web autocontenida que puede publicarse en línea fácilmente.</div>
+                <span class="tool-tag">texto interactivo</span><span class="tool-tag">ficción</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://textadventures.co.uk/quest" target="_blank" rel="noopener">
+              <i class="ti ti-terminal" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Quest</div>
+                <div class="tool-desc">Plataforma para crear y jugar aventuras de texto interactivas. Permite diseñar mundos, objetos y lógica narrativa con una interfaz gráfica o con scripting básico.</div>
+                <span class="tool-tag">aventura de texto</span><span class="tool-tag">juego</span>
+              </div>
+            </a>
+          </div>
+
+          <p class="section-title">// juego digital</p>
+          <div class="tool-list">
+            <a class="tool-card" href="https://fierogameengine.com/" target="_blank" rel="noopener">
+              <i class="ti ti-device-gamepad-2" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Fiero Game Engine</div>
+                <div class="tool-desc">Motor de videojuegos no-code orientado a creadores sin experiencia técnica. Permite diseñar mecánicas, niveles y narrativas de juego mediante bloques visuales y configuración gráfica.</div>
+                <span class="tool-tag">no-code</span><span class="tool-tag">videojuego</span>
+              </div>
+            </a>
+            <a class="tool-card" href="https://www.tabletopsimulator.com/about" target="_blank" rel="noopener">
+              <i class="ti ti-puzzle" aria-hidden="true"></i>
+              <div class="tool-body">
+                <div class="tool-name">Tabletop Simulator</div>
+                <div class="tool-desc">Plataforma para diseñar y jugar juegos de mesa en un entorno 3D digital. Permite crear prototipos de juegos de mesa con físicas realistas, cartas, fichas y tableros personalizados.</div>
+                <span class="tool-tag">juego de mesa</span><span class="tool-tag">prototipado</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const TAB_MAP = {
+    contenido:    'tab-btn-contenido',
+    analitica:    'tab-btn-analitica',
+    lectura:      'tab-btn-lectura',
+    mapas:        'tab-btn-mapas',
+    storytelling: 'tab-btn-storytelling'
+  };
+  function setTab(id, el) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    if (el) { el.classList.add('active'); }
+    else {
+      const btn = document.getElementById(TAB_MAP[id] || 'tab-btn-contenido');
+      if (btn) btn.classList.add('active');
+    }
+  }
+</script>
+
+</body>
+</html>
