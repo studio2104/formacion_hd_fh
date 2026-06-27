@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formación Humanística — HD Docentes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple:        #534AB7;
+      --purple-dark:   #3C3489;
+      --purple-mid:    #7F77DD;
+      --purple-light:  #AFA9EC;
+      --purple-pale:   #EEEDFE;
+      --purple-border: #CECBF6;
+      --bg:            #FAFAFE;
+      --sidebar-bg:    #F4F3FD;
+      --text-body:     #26215C;
+      --red-margin:    #ED93B1;
+      --mono:          'JetBrains Mono', 'Courier New', monospace;
+      --sidebar-w:     220px;
+    }
+
+    html, body { height: 100%; }
+    body {
+      font-family: var(--mono);
+      background: var(--bg); color: var(--text-body);
+      display: flex; flex-direction: column;
+      height: 100vh; overflow: hidden;
+    }
+
+    .layout { display: flex; flex: 1; overflow: hidden; position: relative; }
+
+    .sidebar {
+      width: var(--sidebar-w); flex-shrink: 0;
+      background: var(--sidebar-bg);
+      border-right: 1.5px solid var(--purple-border);
+      display: flex; flex-direction: column; overflow-y: auto;
+    }
+    .sidebar-logo {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--purple-border);
+      margin-bottom: 0.25rem; flex-shrink: 0;
+    }
+    .sidebar-logo .logo-name {
+      font-size: 15px; font-weight: 700; color: var(--purple-dark);
+      line-height: 1.2; letter-spacing: -0.02em; display: block;
+    }
+    .sidebar-logo small {
+      font-size: 10px; color: var(--purple);
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .sidebar-label {
+      font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--purple);
+      padding: 0.85rem 1.25rem 0.25rem; display: block;
+    }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 0.3rem 1.25rem; font-size: 12px; color: var(--text-body);
+      cursor: pointer; border-left: 3px solid transparent;
+      transition: background 0.12s, color 0.12s;
+      text-decoration: none; font-family: var(--mono);
+    }
+    .sidebar-item i { font-size: 13px; color: var(--purple); flex-shrink: 0; }
+    .sidebar-item:hover { background: #E5E3FA; color: var(--purple-dark); }
+    .sidebar-item.active {
+      color: var(--purple-dark); font-weight: 700;
+      border-left-color: var(--purple-dark); background: var(--purple-pale);
+    }
+
+    .margin-line {
+      position: absolute; left: 18px; top: 0; bottom: 0;
+      width: 1px; background: var(--red-margin); opacity: 0.4; pointer-events: none;
+    }
+
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+
+    .topbar {
+      padding: 1.25rem 1.75rem 0;
+      border-bottom: 2px solid var(--purple-border);
+      background: var(--bg); flex-shrink: 0;
+    }
+    .topbar h1 {
+      font-size: 17px; font-weight: 700; color: var(--purple);
+      letter-spacing: -0.02em; margin-bottom: 0.85rem;
+    }
+    .tabs { display: flex; }
+    .tab {
+      padding: 0.45rem 1.1rem; font-size: 12px; cursor: pointer;
+      border-bottom: 3px solid transparent; color: var(--purple);
+      font-family: var(--mono);
+      transition: color 0.12s, border-color 0.12s, background 0.12s;
+      white-space: nowrap;
+    }
+    .tab:hover:not(.active) { background: var(--purple-pale); }
+    .tab.active { color: var(--purple-dark); border-bottom-color: var(--purple-dark); font-weight: 700; }
+
+    .content { flex: 1; overflow-y: auto; background: var(--bg); }
+    .content-inner { padding: 1.25rem 1.75rem 2rem; max-width: 720px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── TYPOGRAPHY ── */
+    .intro-text {
+      font-size: 14px; line-height: 1.95;
+      color: var(--text-body); margin-bottom: 1.1rem;
+    }
+    p {
+      font-size: 14px; line-height: 1.85;
+      color: var(--text-body); margin-bottom: 0.9rem;
+    }
+    .section-title {
+      font-size: 13px; font-weight: 700; color: var(--purple);
+      letter-spacing: 0.07em; text-transform: uppercase;
+      margin: 1.6rem 0 0.75rem;
+      border-bottom: 1px solid var(--purple-border); padding-bottom: 5px;
+    }
+    .section-title:first-child { margin-top: 0; }
+
+    /* ── HIGHLIGHT BOX ── */
+    .highlight-box {
+      background: var(--purple-pale);
+      border-left: 3px solid var(--purple);
+      border-radius: 0 6px 6px 0;
+      padding: 0.9rem 1.1rem;
+      margin: 1rem 0 1.25rem;
+      font-size: 14px; line-height: 1.85; color: var(--text-body);
+    }
+
+    /* ── CAPACIDADES ── */
+    .cap-list { display: flex; flex-direction: column; gap: 8px; margin: 0.5rem 0 1.25rem; }
+    .cap-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: #fff;
+      border: 1px solid var(--purple-border);
+      border-left: 3px solid var(--purple);
+      border-radius: 0 6px 6px 0;
+      padding: 0.75rem 1rem;
+    }
+    .cap-number {
+      font-size: 18px; font-weight: 700; color: var(--purple-light);
+      flex-shrink: 0; line-height: 1; margin-top: 1px; min-width: 20px;
+    }
+    .cap-body { flex: 1; }
+    .cap-name {
+      font-size: 14px; font-weight: 700; color: var(--purple-dark); margin-bottom: 2px;
+    }
+    .cap-desc {
+      font-size: 13px; color: var(--text-body); line-height: 1.65;
+    }
+
+    /* ── DIM LIST (dimensiones HD) ── */
+    .dim-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 8px; margin: 0.5rem 0 1rem;
+    }
+    .dim-item {
+      background: var(--purple-pale);
+      border: 0.5px solid var(--purple-border);
+      border-radius: 6px;
+      padding: 0.7rem 0.9rem;
+      display: flex; align-items: flex-start; gap: 8px;
+    }
+    .dim-item i { font-size: 15px; color: var(--purple); flex-shrink: 0; margin-top: 1px; }
+    .dim-text { font-size: 13px; color: var(--text-body); line-height: 1.5; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--purple-light); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="Navegación principal">
+    <div class="sidebar-logo">
+      <span class="logo-name">HD_DOCENTES/</span>
+      <small>Tec de Monterrey</small>
+    </div>
+    <span class="sidebar-label">// inicio</span>
+    <a class="sidebar-item" href="./index.html">
+      <i class="ti ti-home" aria-hidden="true"></i>¿qué son las HD?
+    </a>
+    <a class="sidebar-item" href="./formacion-humanistica.html">
+      <i class="ti ti-users" aria-hidden="true"></i>formación humanística
+    </a>
+    <span class="sidebar-label">// módulos</span>
+    <a class="sidebar-item" href="./ejemplos-proyectos-hd.html">
+      <i class="ti ti-database" aria-hidden="true"></i>01_ejemplos-proyectos-hd
+    </a>
+    <a class="sidebar-item" href="./recomendaciones-hd.html">
+      <i class="ti ti-chart-bar" aria-hidden="true"></i>02_recomendaciones-hd
+    </a>
+    <a class="sidebar-item active" href="./formacion-humanistica.html">
+      <i class="ti ti-file-text" aria-hidden="true"></i>03_formacion-humanistica
+    </a>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-network" aria-hidden="true"></i>04_proximos-modulos
+    </a>
+    <span class="sidebar-label">// recursos</span>
+    <a class="sidebar-item" href="./herramientas.html">
+      <i class="ti ti-tool" aria-hidden="true"></i>herramientas
+    </a>
+    <a class="sidebar-item" href="./lecturas.html">
+      <i class="ti ti-books" aria-hidden="true"></i>lecturas
+    </a>
+    <a class="sidebar-item" href="#">
+      <i class="ti ti-pencil" aria-hidden="true"></i>ejercicios
+    </a>
+  </nav>
+
+  <div class="main">
+    <div class="margin-line" aria-hidden="true"></div>
+
+    <div class="topbar">
+      <h1>// módulos/03_formacion-humanistica</h1>
+      <div class="tabs" role="tablist">
+        <div class="tab active" id="tab-btn-capacidades" role="tab"
+             onclick="setTab('capacidades', this)">capacidades.md</div>
+        <div class="tab" id="tab-btn-hd" role="tab"
+             onclick="setTab('hd', this)">hd-continuidad.md</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="content-inner">
+
+        <!-- CAPACIDADES -->
+        <div id="tab-capacidades" class="tab-panel active">
+          <p class="intro-text">
+            La formación humanística es el diferenciador transversal que tenemos. En términos más amplios,
+            las humanidades tradicionales aportan cinco capacidades fundamentales:
+          </p>
+
+          <p class="section-title">// cinco capacidades fundamentales</p>
+          <div class="cap-list">
+            <div class="cap-item">
+              <div class="cap-number">01</div>
+              <div class="cap-body">
+                <div class="cap-name">Interpretación</div>
+                <div class="cap-desc">Comprender significados, contextos, símbolos y discursos.</div>
+              </div>
+            </div>
+            <div class="cap-item">
+              <div class="cap-number">02</div>
+              <div class="cap-body">
+                <div class="cap-name">Crítica</div>
+                <div class="cap-desc">Cuestionar fuentes, categorías, supuestos, silencios y relaciones de poder.</div>
+              </div>
+            </div>
+            <div class="cap-item">
+              <div class="cap-number">03</div>
+              <div class="cap-body">
+                <div class="cap-name">Contextualización histórica y cultural</div>
+                <div class="cap-desc">Evitar que los datos se interpreten de forma aislada.</div>
+              </div>
+            </div>
+            <div class="cap-item">
+              <div class="cap-number">04</div>
+              <div class="cap-body">
+                <div class="cap-name">Argumentación</div>
+                <div class="cap-desc">Transformar información dispersa en explicaciones justificadas y coherentes.</div>
+              </div>
+            </div>
+            <div class="cap-item">
+              <div class="cap-number">05</div>
+              <div class="cap-body">
+                <div class="cap-name">Reflexión ética</div>
+                <div class="cap-desc">Evaluar las consecuencias sociales, políticas y culturales del uso de tecnologías y datos.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HD COMO CONTINUIDAD -->
+        <div id="tab-hd" class="tab-panel">
+          <p class="intro-text">
+            Las humanidades digitales añaden nuevas dimensiones a las capacidades humanísticas tradicionales.
+          </p>
+
+          <p class="section-title">// nuevas dimensiones HD</p>
+          <div class="dim-grid">
+            <div class="dim-item">
+              <i class="ti ti-database" aria-hidden="true"></i>
+              <div class="dim-text">Manejo de bases de datos</div>
+            </div>
+            <div class="dim-item">
+              <i class="ti ti-chart-dots" aria-hidden="true"></i>
+              <div class="dim-text">Visualización</div>
+            </div>
+            <div class="dim-item">
+              <i class="ti ti-cpu" aria-hidden="true"></i>
+              <div class="dim-text">Análisis computacional</div>
+            </div>
+            <div class="dim-item">
+              <i class="ti ti-world" aria-hidden="true"></i>
+              <div class="dim-text">Navegación hipermedia</div>
+            </div>
+            <div class="dim-item">
+              <i class="ti ti-photo-video" aria-hidden="true"></i>
+              <div class="dim-text">Producción multimodal</div>
+            </div>
+            <div class="dim-item">
+              <i class="ti ti-users-group" aria-hidden="true"></i>
+              <div class="dim-text">Trabajo colaborativo en plataformas</div>
+            </div>
+          </div>
+
+          <p class="section-title">// una continuidad crítica</p>
+          <div class="highlight-box">
+            Las humanidades digitales son una continuidad crítica de las humanidades tradicionales.
+            Conservan preguntas clásicas sobre el significado, la memoria, la cultura, el lenguaje,
+            el poder y la experiencia humana, pero las estudian mediante nuevos soportes, escalas y métodos.
+          </div>
+          <p>
+            La diferencia no reside únicamente en usar herramientas digitales, sino en comprender cómo
+            estas herramientas modifican la producción, organización, interpretación y circulación
+            del conocimiento.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const TAB_MAP = {
+    capacidades: 'tab-btn-capacidades',
+    hd:          'tab-btn-hd'
+  };
+  function setTab(id, el) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    if (el) { el.classList.add('active'); }
+    else {
+      const btn = document.getElementById(TAB_MAP[id] || 'tab-btn-capacidades');
+      if (btn) btn.classList.add('active');
+    }
+  }
+</script>
+
+</body>
+</html>

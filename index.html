@@ -206,7 +206,7 @@
   <!-- SIDEBAR -->
   <nav class="sidebar" aria-label="Navegación principal">
     <div class="sidebar-logo">
-      <span class="logo-name">EHE_DOCENTES/</span>
+      <span class="logo-name">HD_DOCENTES/</span>
       <small>Tec de Monterrey</small>
     </div>
 
@@ -214,7 +214,7 @@
     <a class="sidebar-item active" onclick="activeSide(this); setTab('descripcion', null)">
       <i class="ti ti-home" aria-hidden="true"></i>¿qué son las HD?
     </a>
-    <a class="sidebar-item" onclick="activeSide(this); setTab('formacion', null)">
+    <a class="sidebar-item" href="./formacion-humanistica.html">
       <i class="ti ti-users" aria-hidden="true"></i>formación humanística
     </a>
 
@@ -225,7 +225,7 @@
     <a class="sidebar-item" href="./recomendaciones-hd.html">
       <i class="ti ti-chart-bar" aria-hidden="true"></i>02_recomendaciones-hd
     </a>
-    <a class="sidebar-item" onclick="activeSide(this); setTab('mod', null)">
+    <a class="sidebar-item" href="./formacion-humanistica.html">
       <i class="ti ti-file-text" aria-hidden="true"></i>03_formacion-humanistica
     </a>
     <a class="sidebar-item" onclick="activeSide(this); setTab('mod', null)">
@@ -254,7 +254,7 @@
         <div class="tab active" id="tab-btn-descripcion" role="tab"
              onclick="setTab('descripcion', this)">descripcion.md</div>
         <div class="tab" id="tab-btn-formacion" role="tab"
-             onclick="setTab('formacion', this)">formacion_humanistica.md</div>
+             onclick="window.location.href='./formacion-humanistica.html'" >formacion_humanistica.md</div>
         <div class="tab" id="tab-btn-faq" role="tab"
              onclick="setTab('faq', this)">faq.md</div>
       </div>
@@ -292,7 +292,7 @@
               <div class="card-title">recomendaciones</div>
               <div class="card-desc">Sugerencias de cómo incorporar las HD en tu práctica docente.</div>
             </a>
-            <a class="card" onclick="activeSide(document.querySelector('.sidebar-item:nth-child(3)')); setTab('formacion', null)">
+            <a class="card" href="./formacion-humanistica.html">
               <div class="card-icon"><i class="ti ti-users" aria-hidden="true"></i></div>
               <div class="card-title">formación humanística</div>
               <div class="card-desc">Una noción básica sobre la formación humanística para incorporar en la práctica docente.</div>

@@ -62,3 +62,17 @@
 - fiero game engine [no-code game engine], https://fierogameengine.com/
 - Tabletop simulator [creación de juegos de mesa digitales]https://www.tabletopsimulator.com/about
   
+# Formación Humanística
+
+La formación humanística es el diferenciador transversal que tenemos. En términos más amplios, las humanidades tradicionales aportan cinco capacidades fundamentales:
+
+1. Interpretación: comprender significados, contextos, símbolos y discursos.
+2. Crítica: cuestionar fuentes, categorías, supuestos, silencios y relaciones de poder.
+3. Contextualización histórica y cultural: evitar que los datos se interpreten de forma aislada.
+4. Argumentación: transformar información dispersa en explicaciones justificadas y coherentes.
+5. Reflexión ética: evaluar las consecuencias sociales, políticas y culturales del uso de tecnologías y datos.
+   
+Las humanidades digitales añaden, a su vez, nuevas dimensiones: el manejo de bases de datos, la visualización, el análisis computacional, la navegación hipermedia, la producción multimodal y el trabajo colaborativo en plataformas.
+
+Por ello, puede afirmarse que las humanidades digitales son una continuidad crítica de las humanidades tradicionales. Conservan preguntas clásicas sobre el significado, la memoria, la cultura, el lenguaje, el poder y la experiencia humana, pero las estudian mediante nuevos soportes, escalas y métodos. La diferencia no reside únicamente en usar herramientas digitales, sino en comprender cómo estas herramientas modifican la producción, organización, interpretación y circulación del conocimiento.
+

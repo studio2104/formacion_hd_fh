@@ -10,198 +10,67 @@
   <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --purple:        #534AB7;
-      --purple-dark:   #3C3489;
-      --purple-mid:    #7F77DD;
-      --purple-light:  #AFA9EC;
-      --purple-pale:   #EEEDFE;
-      --purple-border: #CECBF6;
-      --bg:            #FAFAFE;
-      --sidebar-bg:    #F4F3FD;
-      --text-body:     #26215C;
-      --red-margin:    #ED93B1;
-      --mono:          'JetBrains Mono', 'Courier New', monospace;
-      --sidebar-w:     220px;
+      --purple:#534AB7;--purple-dark:#3C3489;--purple-mid:#7F77DD;--purple-light:#AFA9EC;
+      --purple-pale:#EEEDFE;--purple-border:#CECBF6;--bg:#FAFAFE;--sidebar-bg:#F4F3FD;
+      --text-body:#26215C;--red-margin:#ED93B1;--mono:'JetBrains Mono','Courier New',monospace;--sidebar-w:220px;
     }
-
-    html, body { height: 100%; }
-    body {
-      font-family: var(--mono);
-      background: var(--bg);
-      color: var(--text-body);
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    .layout { display: flex; flex: 1; overflow: hidden; position: relative; }
-
-    /* ── SIDEBAR ── */
-    .sidebar {
-      width: var(--sidebar-w);
-      flex-shrink: 0;
-      background: var(--sidebar-bg);
-      border-right: 1.5px solid var(--purple-border);
-      display: flex;
-      flex-direction: column;
-      overflow-y: auto;
-    }
-    .sidebar-logo {
-      padding: 1rem 1.25rem;
-      border-bottom: 1px solid var(--purple-border);
-      margin-bottom: 0.25rem;
-      flex-shrink: 0;
-    }
-    .sidebar-logo .logo-name {
-      font-size: 15px; font-weight: 700; color: var(--purple-dark);
-      line-height: 1.2; letter-spacing: -0.02em; display: block;
-    }
-    .sidebar-logo small {
-      font-size: 10px; color: var(--purple);
-      letter-spacing: 0.06em; text-transform: uppercase;
-    }
-    .sidebar-label {
-      font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--purple);
-      padding: 0.85rem 1.25rem 0.25rem; display: block;
-    }
-    .sidebar-item {
-      display: flex; align-items: center; gap: 8px;
-      padding: 0.3rem 1.25rem; font-size: 12px; color: var(--text-body);
-      cursor: pointer; border-left: 3px solid transparent;
-      transition: background 0.12s, color 0.12s;
-      text-decoration: none; font-family: var(--mono);
-    }
-    .sidebar-item i { font-size: 13px; color: var(--purple); flex-shrink: 0; }
-    .sidebar-item:hover { background: #E5E3FA; color: var(--purple-dark); }
-    .sidebar-item.active {
-      color: var(--purple-dark); font-weight: 700;
-      border-left-color: var(--purple-dark); background: var(--purple-pale);
-    }
-
-    /* ── MARGIN LINE ── */
-    .margin-line {
-      position: absolute; left: 18px; top: 0; bottom: 0;
-      width: 1px; background: var(--red-margin); opacity: 0.4; pointer-events: none;
-    }
-
-    /* ── MAIN ── */
-    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
-
-    /* ── TOPBAR ── */
-    .topbar {
-      padding: 1.25rem 1.75rem 0;
-      border-bottom: 2px solid var(--purple-border);
-      background: var(--bg); flex-shrink: 0;
-    }
-    .topbar h1 {
-      font-size: 17px; font-weight: 700; color: var(--purple);
-      letter-spacing: -0.02em; margin-bottom: 0.85rem;
-    }
-    .tabs { display: flex; }
-    .tab {
-      padding: 0.45rem 1.1rem; font-size: 12px; cursor: pointer;
-      border-bottom: 3px solid transparent; color: var(--purple);
-      font-family: var(--mono);
-      transition: color 0.12s, border-color 0.12s, background 0.12s;
-      white-space: nowrap;
-    }
-    .tab:hover:not(.active) { background: var(--purple-pale); }
-    .tab.active { color: var(--purple-dark); border-bottom-color: var(--purple-dark); font-weight: 700; }
-
-    /* ── CONTENT ── */
-    .content { flex: 1; overflow-y: auto; background: var(--bg); }
-    .content-inner { padding: 1.25rem 1.75rem 2rem; }
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-
-    /* ── SECTION TITLE ── */
-    .section-title {
-      font-size: 13px; font-weight: 700; color: var(--purple);
-      letter-spacing: 0.07em; text-transform: uppercase;
-      margin: 1.6rem 0 0.75rem;
-      border-bottom: 1px solid var(--purple-border); padding-bottom: 5px;
-    }
-    .section-title:first-child { margin-top: 0.25rem; }
-
-    /* ── RESOURCE ROW ── */
-    .resource-list { display: flex; flex-direction: column; gap: 2px; }
-
-    .resource-item {
-      display: flex; align-items: flex-start; gap: 12px;
-      padding: 0.75rem 0.75rem;
-      border-radius: 6px;
-      border: 1px solid transparent;
-      transition: background 0.12s, border-color 0.12s;
-      text-decoration: none; color: inherit;
-    }
-    .resource-item:hover {
-      background: var(--purple-pale);
-      border-color: var(--purple-border);
-    }
-
-    .resource-icon {
-      font-size: 20px; color: var(--purple);
-      flex-shrink: 0; margin-top: 2px;
-    }
-
-    .resource-body { flex: 1; min-width: 0; }
-
-    .resource-title {
-      font-size: 15px; font-weight: 700;
-      color: var(--purple-dark); margin-bottom: 3px;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .resource-item:hover .resource-title { color: var(--purple); }
-
-    .resource-meta {
-      font-size: 13px; color: var(--purple-mid); line-height: 1.55;
-    }
-
-    .resource-desc {
-      font-size: 14px; color: var(--text-body);
-      line-height: 1.75; margin-top: 5px;
-    }
-
-    /* type badge */
-    .type-badge {
-      flex-shrink: 0; align-self: flex-start; margin-top: 3px;
-      font-size: 12px; font-weight: 700;
-      border-radius: 100px; padding: 2px 10px;
-      letter-spacing: 0.04em;
-    }
-    .badge-article { background: var(--purple-pale); color: var(--purple-dark); border: 0.5px solid var(--purple-border); }
-    .badge-video   { background: #FAECE7; color: #993C1D; border: 0.5px solid #F0997B; }
-    .badge-podcast { background: #EAF3DE; color: #3B6D11; border: 0.5px solid #97C459; }
-
-    /* ── SCROLLBAR ── */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--purple-light); border-radius: 3px; }
+    html,body{height:100%;}
+    body{font-family:var(--mono);background:var(--bg);color:var(--text-body);display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+    .layout{display:flex;flex:1;overflow:hidden;position:relative;}
+    .sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sidebar-bg);border-right:1.5px solid var(--purple-border);display:flex;flex-direction:column;overflow-y:auto;}
+    .sidebar-logo{padding:1rem 1.25rem;border-bottom:1px solid var(--purple-border);margin-bottom:0.25rem;flex-shrink:0;}
+    .sidebar-logo .logo-name{font-size:15px;font-weight:700;color:var(--purple-dark);line-height:1.2;letter-spacing:-0.02em;display:block;}
+    .sidebar-logo small{font-size:10px;color:var(--purple);letter-spacing:0.06em;text-transform:uppercase;}
+    .sidebar-label{font-size:9.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);padding:0.85rem 1.25rem 0.25rem;display:block;}
+    .sidebar-item{display:flex;align-items:center;gap:8px;padding:0.3rem 1.25rem;font-size:12px;color:var(--text-body);cursor:pointer;border-left:3px solid transparent;transition:background 0.12s,color 0.12s;text-decoration:none;font-family:var(--mono);}
+    .sidebar-item i{font-size:13px;color:var(--purple);flex-shrink:0;}
+    .sidebar-item:hover{background:#E5E3FA;color:var(--purple-dark);}
+    .sidebar-item.active{color:var(--purple-dark);font-weight:700;border-left-color:var(--purple-dark);background:var(--purple-pale);}
+    .margin-line{position:absolute;left:18px;top:0;bottom:0;width:1px;background:var(--red-margin);opacity:0.4;pointer-events:none;}
+    .main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;}
+    .topbar{padding:1.25rem 1.75rem 0;border-bottom:2px solid var(--purple-border);background:var(--bg);flex-shrink:0;}
+    .topbar h1{font-size:17px;font-weight:700;color:var(--purple);letter-spacing:-0.02em;margin-bottom:0.85rem;}
+    .tabs{display:flex;}
+    .tab{padding:0.45rem 1.1rem;font-size:12px;cursor:pointer;border-bottom:3px solid transparent;color:var(--purple);font-family:var(--mono);transition:color 0.12s,border-color 0.12s,background 0.12s;white-space:nowrap;}
+    .tab:hover:not(.active){background:var(--purple-pale);}
+    .tab.active{color:var(--purple-dark);border-bottom-color:var(--purple-dark);font-weight:700;}
+    .content{flex:1;overflow-y:auto;background:var(--bg);}
+    .content-inner{padding:1.25rem 1.75rem 2rem;}
+    .tab-panel{display:none;}.tab-panel.active{display:block;}
+    .section-title{font-size:13px;font-weight:700;color:var(--purple);letter-spacing:0.07em;text-transform:uppercase;margin:1.6rem 0 0.75rem;border-bottom:1px solid var(--purple-border);padding-bottom:5px;}
+    .section-title:first-child{margin-top:0.25rem;}
+    .resource-list{display:flex;flex-direction:column;gap:2px;}
+    .resource-item{display:flex;align-items:flex-start;gap:12px;padding:0.75rem 0.75rem;border-radius:6px;border:1px solid transparent;transition:background 0.12s,border-color 0.12s;text-decoration:none;color:inherit;}
+    .resource-item:hover{background:var(--purple-pale);border-color:var(--purple-border);}
+    .resource-icon{font-size:20px;color:var(--purple);flex-shrink:0;margin-top:2px;}
+    .resource-body{flex:1;min-width:0;}
+    .resource-title{font-size:15px;font-weight:700;color:var(--purple-dark);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .resource-item:hover .resource-title{color:var(--purple);}
+    .resource-meta{font-size:13px;color:var(--purple-mid);line-height:1.55;}
+    .resource-desc{font-size:14px;color:var(--text-body);line-height:1.75;margin-top:5px;}
+    .type-badge{flex-shrink:0;align-self:flex-start;margin-top:3px;font-size:12px;font-weight:700;border-radius:100px;padding:2px 10px;letter-spacing:0.04em;}
+    .badge-article{background:var(--purple-pale);color:var(--purple-dark);border:0.5px solid var(--purple-border);}
+    .badge-video{background:#FAECE7;color:#993C1D;border:0.5px solid #F0997B;}
+    .badge-podcast{background:#EAF3DE;color:#3B6D11;border:0.5px solid #97C459;}
+    ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--purple-light);border-radius:3px;}
   </style>
 </head>
 <body>
-
 <div class="layout">
 
-  <!-- SIDEBAR -->
   <nav class="sidebar" aria-label="Navegación principal">
     <div class="sidebar-logo">
-      <span class="logo-name">EHE_DOCENTES/</span>
+      <span class="logo-name">HD_DOCENTES/</span>
       <small>Tec de Monterrey</small>
     </div>
-
     <span class="sidebar-label">// inicio</span>
     <a class="sidebar-item" href="./index.html">
       <i class="ti ti-home" aria-hidden="true"></i>¿qué son las HD?
     </a>
-    <a class="sidebar-item" href="./index.html#formacion">
+    <a class="sidebar-item" href="./formacion-humanistica.html">
       <i class="ti ti-users" aria-hidden="true"></i>formación humanística
     </a>
-
     <span class="sidebar-label">// módulos</span>
     <a class="sidebar-item" href="./ejemplos-proyectos-hd.html">
       <i class="ti ti-database" aria-hidden="true"></i>01_ejemplos-proyectos-hd
@@ -215,12 +84,11 @@
     <a class="sidebar-item" href="#">
       <i class="ti ti-network" aria-hidden="true"></i>04_proximos-modulos
     </a>
-
     <span class="sidebar-label">// recursos</span>
     <a class="sidebar-item" href="./herramientas.html">
       <i class="ti ti-tool" aria-hidden="true"></i>herramientas
     </a>
-    <a class="sidebar-item active" href="lecturas.html">
+    <a class="sidebar-item active" href="./lecturas.html">
       <i class="ti ti-books" aria-hidden="true"></i>lecturas
     </a>
     <a class="sidebar-item" href="#">
@@ -228,24 +96,17 @@
     </a>
   </nav>
 
-  <!-- MAIN -->
   <div class="main">
     <div class="margin-line" aria-hidden="true"></div>
-
-    <!-- TOPBAR -->
     <div class="topbar">
       <h1>// recursos/lecturas</h1>
       <div class="tabs" role="tablist">
-        <div class="tab active" id="tab-btn-articulos" role="tab"
-             onclick="setTab('articulos', this)">articulos.md</div>
-        <div class="tab" id="tab-btn-videos" role="tab"
-             onclick="setTab('videos', this)">videos.md</div>
-        <div class="tab" id="tab-btn-podcasts" role="tab"
-             onclick="setTab('podcasts', this)">podcasts.md</div>
+        <div class="tab active" id="tab-btn-articulos" role="tab" onclick="setTab('articulos',this)">articulos.md</div>
+        <div class="tab" id="tab-btn-videos" role="tab" onclick="setTab('videos',this)">videos.md</div>
+        <div class="tab" id="tab-btn-podcasts" role="tab" onclick="setTab('podcasts',this)">podcasts.md</div>
       </div>
     </div>
 
-    <!-- CONTENT -->
     <div class="content">
       <div class="content-inner">
 
@@ -266,7 +127,7 @@
             <a class="resource-item" href="https://books.google.com.mx/books?id=WtWOEQAAQBAJ&lpg=PA1&pg=PT17#v=onepage&q&f=false" target="_blank" rel="noopener">
               <i class="ti ti-article resource-icon" aria-hidden="true"></i>
               <div class="resource-body">
-                <div class="resource-title">Digital Humanities Overview. <em>The Digital Humanities Coursebook: Applied Concepts and Critical Approaches </em></div>
+                <div class="resource-title">Digital Humanities Overview. <em>The Digital Humanities Coursebook: Applied Concepts and Critical Approaches</em></div>
                 <div class="resource-meta">Johanna Drucker y Francesca Albrezzi · Capítulo de libro · 2026</div>
                 <div class="resource-desc"><strong>Descripción:</strong> Este texto actualizado proporciona demostraciones paso a paso de las técnicas principales. Abarca temas críticos que van desde la visualización de datos hasta las aplicaciones modernas de inteligencia artificial.</div>
               </div>
@@ -277,7 +138,7 @@
               <div class="resource-body">
                 <div class="resource-title"><em>Humanidades Digitales: Recepción, Institucionalización y Crítica</em></div>
                 <div class="resource-meta">Isabel Galina Russell, Miriam Peña Pimentel, Ernesto Priani Saisó, José Francisco Barrón Tovar, David Domínguez Herbón y Adriana Álvarez Sánchez [editores] · Libro · 2018</div>
-                <div class="resource-desc"><strong>Prólogo de la editorial:</strong> El crecimiento de las humanidades digitales en los últimos 10 años es incuestionable, como se puede ver en el incremento de miembros de la Red de Humanidades Digitales, así como en la cantidad de actividades académicas que se organizan todos los años al respecto. Sin embargo, entre los problemas identificados desde el inicio de la RedHD se encuentran la falta de literatura en español, la invisibilidad del trabajo que se realiza en latitudes en donde el idioma no es el inglés y la necesidad urgente de publicaciones formales que aborden las Humanidades Digitales desde otras perspectivas. Con este libro -Humanidades Digitales: Recepción, institucionalización y crítica- abrimos un proyecto de publicación que tiene como objetivo sumar voces y experiencias a la discusión global sobre éstas; enriqueciendo y añadiendo el entretejido de este campo en pleno crecimiento. Presentamos seis capítulos de distintos autores quienes abordan temas relacionados con el papel de las Humanidades Digitales en diversos contextos institucionales y culturales. Con este primer volumen hacemos una modesta contribución hacia el ideal de presentar y representar un universo más amplio del trabajo y las ideas de Humanidades Digitales. Esperamos que este libro interese tanto a los expertos como a los que apenas se inician en este campo y que sirva como testimonio del trabajo realizado en otras regiones.</div>
+                <div class="resource-desc"><strong>Prólogo de la editorial:</strong> El crecimiento de las humanidades digitales en los últimos 10 años es incuestionable, como se puede ver en el incremento de miembros de la Red de Humanidades Digitales, así como en la cantidad de actividades académicas que se organizan todos los años al respecto. Sin embargo, entre los problemas identificados desde el inicio de la RedHD se encuentran la falta de literatura en español, la invisibilidad del trabajo que se realiza en latitudes en donde el idioma no es el inglés y la necesidad urgente de publicaciones formales que aborden las Humanidades Digitales desde otras perspectivas.</div>
               </div>
               <span class="type-badge badge-article">Libro</span>
             </a>
@@ -290,7 +151,7 @@
               <div class="resource-body">
                 <div class="resource-title"><em>Methods in the Humanities: Challenges, Ideas, Perspectives</em></div>
                 <div class="resource-meta">Silke Schwandt [editor] · Libro · 2020</div>
-                <div class="resource-desc"><strong>Prólogo de la editorial:</strong> Las humanidades digitales son un esfuerzo transformador que no solo cambia la percepción, el almacenamiento y la interpretación de la información, sino también los procesos y las preguntas de investigación. Asimismo, impulsan nuevas formas de comunicación interdisciplinaria entre los académicos de las humanidades y los científicos de la computación. Este volumen ofrece una perspectiva única sobre los métodos digitales para y en las humanidades. Comprende estudios de caso de diversos campos para ilustrar el desafío de hacer coincidir las prácticas actuales de investigación textual con las herramientas digitales. Se presentan y discuten, con un enfoque interdisciplinario, tanto los problemas y las soluciones relativos a las herramientas de formación como el ajuste de las prácticas de investigación.</div>
+                <div class="resource-desc"><strong>Prólogo de la editorial:</strong> Las humanidades digitales son un esfuerzo transformador que no solo cambia la percepción, el almacenamiento y la interpretación de la información, sino también los procesos y las preguntas de investigación.</div>
               </div>
               <span class="type-badge badge-article">Libro</span>
             </a>
@@ -299,7 +160,7 @@
               <div class="resource-body">
                 <div class="resource-title"><em>Mixing Methods: Practical Insights from the Humanities in the Digital Age</em></div>
                 <div class="resource-meta">Birgit Schneider, Beate Löffler, Tino Mager y Carola Hein [editores] · Libro · 2024</div>
-                <div class="resource-desc"><strong>Prólogo de la editorial:</strong> La transformación digital viene acompañada de dos procesos simultáneos: las humanidades digitales desafiando a las humanidades, sus teorías, metodologías e identidades disciplinarias, y empujando a las ciencias de la computación a involucrarse en nuevos campos. Pero, ¿cómo pueden combinarse de manera útil los métodos cualitativos y cuantitativos en un solo proyecto de investigación? ¿Cuáles son los principios teóricos y metodológicos en todos los enfoques digitales de las distintas disciplinas? Este volumen se centra en impulsar la innovación y conceptualizar las humanidades en el siglo XXI. Basándose en los resultados de 10 proyectos de investigación, sirve como una herramienta útil para diseñar investigaciones de vanguardia que van más allá de las estrategias convencionales.</div>
+                <div class="resource-desc"><strong>Prólogo de la editorial:</strong> La transformación digital viene acompañada de dos procesos simultáneos: las humanidades digitales desafiando a las humanidades, sus teorías, metodologías e identidades disciplinarias, y empujando a las ciencias de la computación a involucrarse en nuevos campos.</div>
               </div>
               <span class="type-badge badge-article">Libro</span>
             </a>
@@ -312,12 +173,11 @@
               <div class="resource-body">
                 <div class="resource-title">Introduction. <em>Debates in The Digital Humanities</em></div>
                 <div class="resource-meta">Domenico Fiormonte, Sunta Chaudhuri y Paola Ricaurte [editores] · Capítulo de libro · 2022</div>
-                <div class="resource-desc"><strong>Prólogo de la editorial:</strong> Un volumen necesario de ensayos que trabaja para descolonizar las humanidades digitales. Concebidas a menudo como una 'gran carpa' que todo lo incluye, las humanidades digitales se han visto, de hecho, afectadas por una falta de perspectivas más allá de los contextos y supuestos occidentales y anglófonos. Esta última colección de la serie Debates in the Digital Humanities busca abordar este déficit en el campo.</div>
+                <div class="resource-desc"><strong>Prólogo de la editorial:</strong> Un volumen necesario de ensayos que trabaja para descolonizar las humanidades digitales. Concebidas a menudo como una 'gran carpa' que todo lo incluye, las humanidades digitales se han visto afectadas por una falta de perspectivas más allá de los contextos y supuestos occidentales y anglófonos.</div>
               </div>
               <span class="type-badge badge-article">Capítulo</span>
             </a>
           </div>
-
         </div>
 
         <!-- VIDEOS -->
@@ -329,7 +189,7 @@
               <i class="ti ti-player-play resource-icon" aria-hidden="true"></i>
               <div class="resource-body">
                 <div class="resource-title">Digital Humanities: How to Use Data in the Humanities</div>
-                <div class="resource-meta"> UMD Libraries · 1 h 32 min</div>
+                <div class="resource-meta">UMD Libraries · 1 h 32 min</div>
                 <div class="resource-desc">Breve visión general de las Humanidades Digitales desde una perspectiva práctica y teórica, con un resumen de la literatura reciente, una demostración de proyectos interesantes y algo de experimentación práctica.</div>
               </div>
               <span class="type-badge badge-video">video</span>
@@ -338,7 +198,7 @@
               <i class="ti ti-player-play resource-icon" aria-hidden="true"></i>
               <div class="resource-body">
                 <div class="resource-title">What are the digital humanities?</div>
-                <div class="resource-meta"> The Research Vault · 6 min 39 sec</div>
+                <div class="resource-meta">The Research Vault · 6 min 39 sec</div>
                 <div class="resource-desc">Descubre cómo la tecnología transforma el estudio de la historia, la literatura, el arte y la cultura.</div>
               </div>
               <span class="type-badge badge-video">video</span>
@@ -347,8 +207,8 @@
               <i class="ti ti-player-play resource-icon" aria-hidden="true"></i>
               <div class="resource-body">
                 <div class="resource-title">Intro to Digital Humanities and Humanities Data</div>
-                <div class="resource-meta"> ucrlibrary · 56 min 17 sec</div>
-                <div class="resource-desc">Conoce los métodos de las Humanidades Digitales y dónde buscar conjuntos de datos históricos, culturales o de otras áreas de las humanidades..</div>
+                <div class="resource-meta">ucrlibrary · 56 min 17 sec</div>
+                <div class="resource-desc">Conoce los métodos de las Humanidades Digitales y dónde buscar conjuntos de datos históricos, culturales o de otras áreas de las humanidades.</div>
               </div>
               <span class="type-badge badge-video">video</span>
             </a>
@@ -365,16 +225,16 @@
               </div>
               <span class="type-badge badge-video">video</span>
             </a>
-             <a class="resource-item" href="https://youtu.be/zWN5eV4nApM?si=1cEWMIG_3xzG07NS" target="_blank" rel="noopener">
+            <a class="resource-item" href="https://youtu.be/zWN5eV4nApM?si=1cEWMIG_3xzG07NS" target="_blank" rel="noopener">
               <i class="ti ti-player-play resource-icon" aria-hidden="true"></i>
               <div class="resource-body">
                 <div class="resource-title">Curso Python desde cero 2026 Parte 1 - Variables</div>
                 <div class="resource-meta">EvoAcademy · 43 min 49 sec</div>
-                <div class="resource-desc">Domina las variables en Python desde el primer día y construye la base que necesitas para aprender a programar de verdad. En este video aprenderás qué son las variables, cómo se declaran, y cuáles son los cinco tipos esenciales: int, float, string, bool y None, todo usando Google Colab sin instalar nada.</div>
+                <div class="resource-desc">Domina las variables en Python desde el primer día. Aprenderás qué son las variables, cómo se declaran, y cuáles son los cinco tipos esenciales: int, float, string, bool y None, todo usando Google Colab sin instalar nada.</div>
               </div>
               <span class="type-badge badge-video">video</span>
             </a>
-             <a class="resource-item" href="https://youtu.be/MXhBxQXhq_0?si=s-0nYYt7bW3vku_S" target="_blank" rel="noopener">
+            <a class="resource-item" href="https://youtu.be/MXhBxQXhq_0?si=s-0nYYt7bW3vku_S" target="_blank" rel="noopener">
               <i class="ti ti-player-play resource-icon" aria-hidden="true"></i>
               <div class="resource-body">
                 <div class="resource-title">Voyant Tools. Una herramienta para el análisis cuantitativo de texto</div>
@@ -384,12 +244,10 @@
               <span class="type-badge badge-video">video</span>
             </a>
           </div>
-
         </div>
 
         <!-- PODCASTS -->
         <div id="tab-podcasts" class="tab-panel">
-
           <p class="section-title">// episodios recomendados</p>
           <div class="resource-list">
             <a class="resource-item" href="#" target="_blank" rel="noopener">
@@ -411,7 +269,6 @@
               <span class="type-badge badge-podcast">podcast</span>
             </a>
           </div>
-
           <p class="section-title">// series completas</p>
           <div class="resource-list">
             <a class="resource-item" href="#" target="_blank" rel="noopener">
@@ -424,7 +281,6 @@
               <span class="type-badge badge-podcast">podcast</span>
             </a>
           </div>
-
         </div>
 
       </div>
@@ -433,22 +289,14 @@
 </div>
 
 <script>
-  const TAB_MAP = {
-    articulos: 'tab-btn-articulos',
-    videos:    'tab-btn-videos',
-    podcasts:  'tab-btn-podcasts'
-  };
-  function setTab(id, el) {
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('tab-' + id).classList.add('active');
-    if (el) { el.classList.add('active'); }
-    else {
-      const btn = document.getElementById(TAB_MAP[id] || 'tab-btn-articulos');
-      if (btn) btn.classList.add('active');
-    }
+  const TAB_MAP = { articulos:'tab-btn-articulos', videos:'tab-btn-videos', podcasts:'tab-btn-podcasts' };
+  function setTab(id,el){
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    if(el){el.classList.add('active');}
+    else{const btn=document.getElementById(TAB_MAP[id]||'tab-btn-articulos');if(btn)btn.classList.add('active');}
   }
 </script>
-
 </body>
 </html>
