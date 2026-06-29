@@ -18,35 +18,75 @@
     html,body{height:100%;}
     body{font-family:var(--mono);background:var(--bg);color:var(--text-body);display:flex;flex-direction:column;height:100vh;overflow:hidden;}
     .layout{display:flex;flex:1;overflow:hidden;position:relative;}
+
+    /* ── SIDEBAR ── */
     .sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sidebar-bg);border-right:1.5px solid var(--purple-border);display:flex;flex-direction:column;overflow-y:auto;}
     .sidebar-logo{padding:1rem 1.25rem;border-bottom:1px solid var(--purple-border);margin-bottom:0.25rem;flex-shrink:0;}
     .sidebar-logo .logo-name{font-size:15px;font-weight:700;color:var(--purple-dark);line-height:1.2;letter-spacing:-0.02em;display:block;}
     .sidebar-logo small{font-size:10px;color:var(--purple);letter-spacing:0.06em;text-transform:uppercase;}
-    .sidebar-label{font-size:9.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);padding:0.85rem 1.25rem 0.25rem;display:block;}
+    .sidebar-label{font-size:9.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);padding:0.85rem 1.25rem 0.25rem;cursor:pointer;user-select:none;display:flex;align-items:center;justify-content:space-between;}
+    .sidebar-label .toggle-icon{font-size:11px;transition:transform 0.2s;}
+    .sidebar-label.collapsed .toggle-icon{transform:rotate(-90deg);}
+    .sidebar-group{overflow:hidden;transition:max-height 0.25s ease;}
+    .sidebar-group.collapsed{max-height:0;}
     .sidebar-item{display:flex;align-items:center;gap:8px;padding:0.3rem 1.25rem;font-size:12px;color:var(--text-body);cursor:pointer;border-left:3px solid transparent;transition:background 0.12s,color 0.12s;text-decoration:none;font-family:var(--mono);}
     .sidebar-item i{font-size:13px;color:var(--purple);flex-shrink:0;}
     .sidebar-item:hover{background:#E5E3FA;color:var(--purple-dark);}
     .sidebar-item.active{color:var(--purple-dark);font-weight:700;border-left-color:var(--purple-dark);background:var(--purple-pale);}
+
+    /* ── MARGIN LINE ── */
     .margin-line{position:absolute;left:18px;top:0;bottom:0;width:1px;background:var(--red-margin);opacity:0.4;pointer-events:none;}
+
+    /* ── MAIN ── */
     .main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;}
+
+    /* ── PROGRESS BAR ── */
+    .progress-bar{height:2px;background:var(--purple-border);flex-shrink:0;}
+    .progress-fill{height:100%;background:var(--purple);width:0%;transition:width 0.1s;}
+
+    /* ── TOPBAR ── */
     .topbar{padding:1.25rem 1.75rem 0;border-bottom:2px solid var(--purple-border);background:var(--bg);flex-shrink:0;}
+    .breadcrumb{font-size:11px;color:var(--purple-light);margin-bottom:0.5rem;display:flex;align-items:center;gap:5px;}
+    .breadcrumb a{color:var(--purple-light);text-decoration:none;}
+    .breadcrumb a:hover{color:var(--purple);}
+    .breadcrumb span{color:var(--purple);}
     .topbar h1{font-size:17px;font-weight:700;color:var(--purple);letter-spacing:-0.02em;margin-bottom:0.85rem;}
     .tabs{display:flex;overflow-x:auto;}.tabs::-webkit-scrollbar{height:0;}
     .tab{padding:0.45rem 1rem;font-size:11px;cursor:pointer;border-bottom:3px solid transparent;color:var(--purple);font-family:var(--mono);transition:color 0.12s,border-color 0.12s,background 0.12s;white-space:nowrap;flex-shrink:0;}
     .tab:hover:not(.active){background:var(--purple-pale);}
     .tab.active{color:var(--purple-dark);border-bottom-color:var(--purple-dark);font-weight:700;}
+
+    /* ── CONTENT ── */
     .content{flex:1;overflow-y:auto;background:var(--bg);}
-    .content-inner{padding:1.25rem 1.75rem 2rem;max-width:760px;}
+    .content-inner{padding:1.25rem 1.75rem 4rem;max-width:760px;}
     .tab-panel{display:none;}.tab-panel.active{display:block;}
+
+    /* ── BACK TO TOP ── */
+    .back-to-top{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--purple);color:#fff;border:none;border-radius:50%;width:36px;height:36px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;z-index:100;box-shadow:0 2px 8px rgba(83,74,183,0.3);}
+    .back-to-top.visible{opacity:1;pointer-events:all;}
+    .back-to-top:hover{background:var(--purple-dark);}
+
+    /* ── TOAST ── */
+    .toast{position:fixed;bottom:4rem;right:1.5rem;background:var(--purple-dark);color:#fff;font-size:11px;padding:6px 12px;border-radius:100px;opacity:0;pointer-events:none;transition:opacity 0.2s;z-index:200;}
+    .toast.show{opacity:1;}
+
+    /* ── TYPOGRAPHY ── */
     .intro-text{font-size:14px;line-height:1.9;color:var(--text-body);margin-bottom:1.25rem;}
-    .section-title{font-size:13px;font-weight:700;color:var(--purple);letter-spacing:0.07em;text-transform:uppercase;margin:1.6rem 0 0.75rem;border-bottom:1px solid var(--purple-border);padding-bottom:5px;}
+    .section-title{font-size:13px;font-weight:700;color:var(--purple);letter-spacing:0.07em;text-transform:uppercase;margin:1.6rem 0 0.75rem;border-bottom:1px solid var(--purple-border);padding-bottom:5px;scroll-margin-top:1rem;display:flex;align-items:center;justify-content:space-between;}
     .section-title:first-child{margin-top:0;}
+    .anchor-btn{font-size:12px;color:var(--purple-light);cursor:pointer;background:none;border:none;padding:0;opacity:0;transition:opacity 0.15s;}
+    .section-title:hover .anchor-btn{opacity:1;}
+    .anchor-btn:hover{color:var(--purple);}
+
+    /* ── BADGES ── */
     .mat-badge{display:inline-block;font-size:10px;font-weight:700;border-radius:100px;padding:2px 10px;margin-bottom:0.75rem;letter-spacing:0.05em;}
     .badge-prog{background:#EAF3DE;color:#3B6D11;border:0.5px solid #97C459;}
     .badge-homo{background:#FAECE7;color:#993C1D;border:0.5px solid #F0997B;}
     .badge-ia{background:var(--purple-pale);color:var(--purple-dark);border:0.5px solid var(--purple-border);}
     .badge-expl{background:#FDF3E3;color:#7A4F10;border:0.5px solid #E9B96E;}
     .badge-prod{background:#E8F4F8;color:#1A5C7A;border:0.5px solid #7BC4DC;}
+
+    /* ── REC CARD ── */
     .rec-list{display:flex;flex-direction:column;gap:10px;}
     .rec-card{background:#fff;border:1px solid var(--purple-border);border-left:3px solid var(--purple);border-radius:0 6px 6px 0;padding:0.9rem 1rem;}
     .rec-header{display:flex;align-items:center;gap:8px;margin-bottom:0.4rem;}
@@ -56,8 +96,7 @@
     .rec-body a{color:var(--purple);text-decoration:underline;}
     .rec-body a:hover{color:var(--purple-dark);}
     .rec-tool{display:inline-block;margin-top:6px;font-size:11px;font-weight:700;background:var(--purple-pale);color:var(--purple-dark);border:0.5px solid var(--purple-border);border-radius:100px;padding:2px 9px;margin-right:4px;}
-    .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 1rem;gap:0.6rem;color:var(--purple-light);text-align:center;}
-    .empty-state i{font-size:36px;}.empty-state span{font-size:13px;}
+
     ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--purple-light);border-radius:3px;}
   </style>
 </head>
@@ -69,41 +108,59 @@
       <span class="logo-name">HD_DOCENTES/</span>
       <small>Tec de Monterrey</small>
     </div>
-    <span class="sidebar-label">// inicio</span>
-    <a class="sidebar-item" href="./index.html">
-      <i class="ti ti-home" aria-hidden="true"></i>¿qué son las HD?
-    </a>
-    <a class="sidebar-item" href="./formacion-humanistica.html">
-      <i class="ti ti-users" aria-hidden="true"></i>formación humanística
-    </a>
-    <span class="sidebar-label">// módulos</span>
-    <a class="sidebar-item" href="./ejemplos-proyectos-hd.html">
-      <i class="ti ti-database" aria-hidden="true"></i>01_ejemplos-proyectos-hd
-    </a>
-    <a class="sidebar-item active" href="./recomendaciones-hd.html">
-      <i class="ti ti-chart-bar" aria-hidden="true"></i>02_recomendaciones-hd
-    </a>
-    <a class="sidebar-item" href="./formacion-humanistica.html">
-      <i class="ti ti-file-text" aria-hidden="true"></i>03_formacion-humanistica
-    </a>
-    <a class="sidebar-item" href="#">
-      <i class="ti ti-network" aria-hidden="true"></i>04_proximos-modulos
-    </a>
-    <span class="sidebar-label">// recursos</span>
-    <a class="sidebar-item" href="./herramientas.html">
-      <i class="ti ti-tool" aria-hidden="true"></i>herramientas
-    </a>
-    <a class="sidebar-item" href="./lecturas.html">
-      <i class="ti ti-books" aria-hidden="true"></i>lecturas
-    </a>
-    <a class="sidebar-item" href="#">
-      <i class="ti ti-pencil" aria-hidden="true"></i>ejercicios
-    </a>
+    <span class="sidebar-label" onclick="toggleGroup('grupo-inicio',this)">
+      // inicio <i class="ti ti-chevron-down toggle-icon"></i>
+    </span>
+    <div class="sidebar-group" id="grupo-inicio">
+      <a class="sidebar-item" href="./index.html">
+        <i class="ti ti-home" aria-hidden="true"></i>¿qué son las HD?
+      </a>
+      <a class="sidebar-item" href="./formacion-humanistica.html">
+        <i class="ti ti-users" aria-hidden="true"></i>formación humanística
+      </a>
+    </div>
+    <span class="sidebar-label" onclick="toggleGroup('grupo-modulos',this)">
+      // módulos <i class="ti ti-chevron-down toggle-icon"></i>
+    </span>
+    <div class="sidebar-group" id="grupo-modulos">
+      <a class="sidebar-item" href="./ejemplos-proyectos-hd.html">
+        <i class="ti ti-database" aria-hidden="true"></i>01_ejemplos-proyectos-hd
+      </a>
+      <a class="sidebar-item active" href="./recomendaciones-hd.html">
+        <i class="ti ti-chart-bar" aria-hidden="true"></i>02_recomendaciones-hd
+      </a>
+      <a class="sidebar-item" href="./formacion-humanistica.html">
+        <i class="ti ti-file-text" aria-hidden="true"></i>03_formacion-humanistica
+      </a>
+      <a class="sidebar-item" href="#">
+        <i class="ti ti-network" aria-hidden="true"></i>04_proximos-modulos
+      </a>
+    </div>
+    <span class="sidebar-label" onclick="toggleGroup('grupo-recursos',this)">
+      // recursos <i class="ti ti-chevron-down toggle-icon"></i>
+    </span>
+    <div class="sidebar-group" id="grupo-recursos">
+      <a class="sidebar-item" href="./herramientas.html">
+        <i class="ti ti-tool" aria-hidden="true"></i>herramientas
+      </a>
+      <a class="sidebar-item" href="./lecturas.html">
+        <i class="ti ti-books" aria-hidden="true"></i>lecturas
+      </a>
+    </div>
   </nav>
 
   <div class="main">
     <div class="margin-line" aria-hidden="true"></div>
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
     <div class="topbar">
+      <div class="breadcrumb">
+        <a href="./index.html">HD_DOCENTES</a>
+        <i class="ti ti-chevron-right" style="font-size:9px;"></i>
+        <a href="./index.html">módulos</a>
+        <i class="ti ti-chevron-right" style="font-size:9px;"></i>
+        <span id="breadcrumb-current">02_recomendaciones-hd → programacion.md</span>
+      </div>
       <h1>// módulos/02_recomendaciones-hd</h1>
       <div class="tabs" role="tablist">
         <div class="tab active" id="tab-btn-prog" role="tab" onclick="setTab('prog',this)">programacion.md</div>
@@ -114,31 +171,19 @@
       </div>
     </div>
 
-    <div class="content">
+    <div class="content" id="main-content">
       <div class="content-inner">
 
         <!-- PROGRAMACIÓN PARA HD -->
         <div id="tab-prog" class="tab-panel active">
           <p class="intro-text">Recomendaciones para incorporar proyectos de HD en la materia de Programación para Humanidades Digitales.</p>
           <span class="mat-badge badge-prog">Programación para humanidades digitales</span>
-          <p class="section-title">// herramientas recomendadas</p>
+          <p class="section-title" id="sec-prog">// herramientas recomendadas <button class="anchor-btn" onclick="copyAnchor('sec-prog')" title="Copiar enlace"><i class="ti ti-link"></i></button></p>
           <div class="rec-list">
-            <div class="rec-card">
-              <div class="rec-header"><i class="ti ti-brand-github" aria-hidden="true"></i><div class="rec-title">GitHub Copilot — asistencia contextual en editor y terminal</div></div>
-              <div class="rec-body">Asistencia contextual en editor, terminal y GitHub. Sugiere código línea a línea mientras se escribe, reduciendo la fricción entre una pregunta cultural y un prototipo funcional.<br><span class="rec-tool">GitHub Copilot (GitHub)</span></div>
-            </div>
-            <div class="rec-card">
-              <div class="rec-header"><i class="ti ti-code" aria-hidden="true"></i><div class="rec-title">Cursor — agente que entiende toda la base de código</div></div>
-              <div class="rec-body">Entiende toda la base de código y puede planificar, escribir y revisar archivos completos. Ideal para proyectos como visores de corpus, scrapers o herramientas de archivo donde la lógica abarca varios ficheros.<br><span class="rec-tool">Cursor (Anysphere)</span></div>
-            </div>
-            <div class="rec-card">
-              <div class="rec-header"><i class="ti ti-rocket" aria-hidden="true"></i><div class="rec-title">Replit Agent — de instrucciones a app funcional</div></div>
-              <div class="rec-body">Convierte instrucciones en apps o sitios que luego se refinan con pruebas y optimización. Permite pasar rápidamente de una idea humanística a un prototipo desplegado, sin configurar entorno local.<br><span class="rec-tool">Replit Agent (Replit)</span></div>
-            </div>
-            <div class="rec-card">
-              <div class="rec-header"><i class="ti ti-brand-google" aria-hidden="true"></i><div class="rec-title">Google Colab — entorno Python en la nube sin instalación</div></div>
-              <div class="rec-body">Entorno de notebooks Python que corre directamente en el navegador, sin necesidad de instalar nada. Permite trabajar con datos, visualizaciones y APIs desde cualquier computadora, ideal para un aula con equipos heterogéneos.<br><span class="rec-tool">Google Colab (Google)</span></div>
-            </div>
+            <div class="rec-card"><div class="rec-header"><i class="ti ti-brand-github"></i><div class="rec-title">GitHub Copilot — asistencia contextual en editor y terminal</div></div><div class="rec-body">Asistencia contextual en editor, terminal y GitHub. Sugiere código línea a línea mientras se escribe, reduciendo la fricción entre una pregunta cultural y un prototipo funcional.<br><span class="rec-tool">GitHub Copilot (GitHub)</span></div></div>
+            <div class="rec-card"><div class="rec-header"><i class="ti ti-code"></i><div class="rec-title">Cursor — agente que entiende toda la base de código</div></div><div class="rec-body">Entiende toda la base de código y puede planificar, escribir y revisar archivos completos. Ideal para proyectos como visores de corpus, scrapers o herramientas de archivo donde la lógica abarca varios ficheros.<br><span class="rec-tool">Cursor (Anysphere)</span></div></div>
+            <div class="rec-card"><div class="rec-header"><i class="ti ti-rocket"></i><div class="rec-title">Replit Agent — de instrucciones a app funcional</div></div><div class="rec-body">Convierte instrucciones en apps o sitios que luego se refinan con pruebas y optimización. Permite pasar rápidamente de una idea humanística a un prototipo desplegado, sin configurar entorno local.<br><span class="rec-tool">Replit Agent (Replit)</span></div></div>
+            <div class="rec-card"><div class="rec-header"><i class="ti ti-brand-google"></i><div class="rec-title">Google Colab — entorno Python en la nube sin instalación</div></div><div class="rec-body">Entorno de notebooks Python que corre directamente en el navegador, sin necesidad de instalar nada. Permite trabajar con datos, visualizaciones y APIs desde cualquier computadora, ideal para un aula con equipos heterogéneos.<br><span class="rec-tool">Google Colab (Google)</span></div></div>
           </div>
         </div>
 
@@ -146,20 +191,11 @@
         <div id="tab-homo" class="tab-panel">
           <p class="intro-text">Recomendaciones para incorporar proyectos de HD en la materia Del homo sapiens al humano postdigital.</p>
           <span class="mat-badge badge-homo">Del homo sapiens al humano postdigital</span>
-          <p class="section-title">// herramientas recomendadas</p>
+          <p class="section-title" id="sec-homo">// herramientas recomendadas <button class="anchor-btn" onclick="copyAnchor('sec-homo')" title="Copiar enlace"><i class="ti ti-link"></i></button></p>
           <div class="rec-list">
-            <div class="rec-card">
-              <div class="rec-header"><i class="ti ti-notebook" aria-hidden="true"></i><div class="rec-title">NotebookLM — análisis de fuentes y resúmenes de audio</div></div>
-              <div class="rec-body">Analiza las fuentes que se le suben y puede convertirlas en resúmenes de audio y fichas. Útil para cartografiar marcos teóricos sobre posthumanismo, tecnopolítica o subjetividad digital.<br><span class="rec-tool">NotebookLM (Google)</span></div>
-            </div>
-            <div class="rec-card">
-              <div class="rec-header"><i class="ti ti-brain" aria-hidden="true"></i><div class="rec-title">Claude — razonamiento y descomposición de problemas complejos</div></div>
-              <div class="rec-body">Orientado al razonamiento, análisis y descomposición de problemas complejos. Especialmente útil para trabajar con textos densos y argumentaciones filosóficas o teóricas.<br><span class="rec-tool">Claude (Anthropic)</span></div>
-            </div>
-            <div class="rec-card">
-              <div class="rec-header"><i class="ti ti-search" aria-hidden="true"></i><div class="rec-title">ChatGPT Deep Research — investigación documentada</div></div>
-              <div class="rec-body">Puede investigar la web, trabajar con archivos cargados y devolver un informe documentado. Para una materia sobre posthumanismo, tecnopolítica o subjetividad digital, sirve para cartografiar marcos teóricos más que para "resolver" la discusión.<br><span class="rec-tool">ChatGPT Deep Research (OpenAI)</span></div>
-            </div>
+            <div class="rec-card"><div class="rec-header"><i class="ti ti-notebook"></i><div class="rec-title">NotebookLM — análisis de fuentes y resúmenes de audio</div></div><div class="rec-body">Analiza las fuentes que se le suben y puede convertirlas en resúmenes de audio y fichas. Útil para cartografiar marcos teóricos sobre posthumanismo, tecnopolítica o subjetividad digital.<br><span class="rec-tool">NotebookLM (Google)</span></div></div>
+            <div class="rec-card"><div class="rec-header"><i class="ti ti-brain"></i><div class="rec-title">Claude — razonamiento y descomposición de problemas complejos</div></div><div class="rec-body">Orientado al razonamiento, análisis y descomposición de problemas complejos. Especialmente útil para trabajar con textos densos y argumentaciones filosóficas o teóricas.<br><span class="rec-tool">Claude (Anthropic)</span></div></div>
+            <div class="rec-card"><div class="rec-header"><i class="ti ti-search"></i><div class="rec-title">ChatGPT Deep Research — investigación documentada</div></div><div class="rec-body">Puede investigar la web, trabajar con archivos cargados y devolver un informe documentado. Para una materia sobre posthumanismo, tecnopolítica o subjetividad digital, sirve para cartografiar marcos teóricos más que para "resolver" la discusión.<br><span class="rec-tool">ChatGPT Deep Research (OpenAI)</span></div></div>
           </div>
         </div>
 
@@ -167,20 +203,11 @@
         <div id="tab-ia" class="tab-panel">
           <p class="intro-text">Recomendaciones para incorporar proyectos de HD en la materia Cultura digital e inteligencia artificial.</p>
           <span class="mat-badge badge-ia">Cultura digital e inteligencia artificial</span>
-          <p class="section-title">// ejemplos</p>
+          <p class="section-title" id="sec-ia">// ejemplos <button class="anchor-btn" onclick="copyAnchor('sec-ia')" title="Copiar enlace"><i class="ti ti-link"></i></button></p>
           <div class="rec-list">
-            <div class="rec-card">
-              <div class="rec-header"><i class="ti ti-brain" aria-hidden="true"></i><div class="rec-title">Clasificador de imágenes con machine learning</div></div>
-              <div class="rec-body">El estudiantado aprende a entrenar y usar un clasificador de imágenes sin necesidad de programar, explorando de forma práctica cómo funcionan los modelos de aprendizaje automático.<br><span class="rec-tool"><a href="https://teachablemachine.withgoogle.com/" target="_blank" rel="noopener">Teachable Machine</a></span></div>
-            </div>
-            <div class="rec-card">
-              <div class="rec-header"><i class="ti ti-robot" aria-hidden="true"></i><div class="rec-title">Creación de un GPT como herramienta de repaso</div></div>
-              <div class="rec-body">El estudiantado diseña y configura un GPT personalizado como herramienta de repaso de la materia. El proceso permite comprender el funcionamiento de los modelos de lenguaje de gran escala (LLMs) desde adentro.<br><span class="rec-tool">ChatGPT (GPTs)</span></div>
-            </div>
-            <div class="rec-card">
-              <div class="rec-header"><i class="ti ti-layout" aria-hidden="true"></i><div class="rec-title">Interfaz digital para transmitir conocimientos</div></div>
-              <div class="rec-body">A partir de un proceso de bocetado, prototipado y sistema de diseño, el estudiantado genera una interfaz digital orientada a transmitir ciertos conocimientos a sus usuarios.<br><span class="rec-tool">Figma</span></div>
-            </div>
+            <div class="rec-card"><div class="rec-header"><i class="ti ti-brain"></i><div class="rec-title">Clasificador de imágenes con machine learning</div></div><div class="rec-body">El estudiantado aprende a entrenar y usar un clasificador de imágenes sin necesidad de programar, explorando de forma práctica cómo funcionan los modelos de aprendizaje automático.<br><span class="rec-tool"><a href="https://teachablemachine.withgoogle.com/" target="_blank" rel="noopener">Teachable Machine</a></span></div></div>
+            <div class="rec-card"><div class="rec-header"><i class="ti ti-robot"></i><div class="rec-title">Creación de un GPT como herramienta de repaso</div></div><div class="rec-body">El estudiantado diseña y configura un GPT personalizado como herramienta de repaso de la materia. El proceso permite comprender el funcionamiento de los modelos de lenguaje de gran escala (LLMs) desde adentro.<br><span class="rec-tool">ChatGPT (GPTs)</span></div></div>
+            <div class="rec-card"><div class="rec-header"><i class="ti ti-layout"></i><div class="rec-title">Interfaz digital para transmitir conocimientos</div></div><div class="rec-body">A partir de un proceso de bocetado, prototipado y sistema de diseño, el estudiantado genera una interfaz digital orientada a transmitir ciertos conocimientos a sus usuarios.<br><span class="rec-tool">Figma</span></div></div>
           </div>
         </div>
 
@@ -188,20 +215,11 @@
         <div id="tab-expl" class="tab-panel">
           <p class="intro-text">Recomendaciones para incorporar proyectos de HD en la materia Exploración de prácticas, tendencias y audiencias.</p>
           <span class="mat-badge badge-expl">Exploración de prácticas, tendencias y audiencias</span>
-          <p class="section-title">// ejemplos</p>
+          <p class="section-title" id="sec-expl">// ejemplos <button class="anchor-btn" onclick="copyAnchor('sec-expl')" title="Copiar enlace"><i class="ti ti-link"></i></button></p>
           <div class="rec-list">
-            <div class="rec-card">
-              <div class="rec-header"><i class="ti ti-trending-up" aria-hidden="true"></i><div class="rec-title">Análisis de tendencias en un corpus de comentarios</div></div>
-              <div class="rec-body">El estudiantado utiliza Voyant Trends para identificar y visualizar cómo evolucionan ciertos términos o temas a lo largo de un corpus de comentarios.<br><span class="rec-tool"><a href="https://voyant-tools.org/" target="_blank" rel="noopener">Voyant Trends</a></span></div>
-            </div>
-            <div class="rec-card">
-              <div class="rec-header"><i class="ti ti-cloud" aria-hidden="true"></i><div class="rec-title">Nube de palabras con textos de audiencias</div></div>
-              <div class="rec-body">El estudiantado utiliza Voyant Cirrus para analizar las palabras más frecuentes en un corpus de textos y visualizarlas en una nube de palabras, identificando patrones de lenguaje en sus audiencias.<br><span class="rec-tool"><a href="https://voyant-tools.org/" target="_blank" rel="noopener">Voyant Cirrus</a></span></div>
-            </div>
-            <div class="rec-card">
-              <div class="rec-header"><i class="ti ti-network" aria-hidden="true"></i><div class="rec-title">Mapeo de redes de audiencias y preferencias</div></div>
-              <div class="rec-body">El estudiantado mapea y analiza redes de información — audiencias, preferencias, conexiones — visualizando relaciones que de otro modo serían difíciles de percibir.<br><span class="rec-tool"><a href="https://graphcommons.com/" target="_blank" rel="noopener">Graph Commons</a></span></div>
-            </div>
+            <div class="rec-card"><div class="rec-header"><i class="ti ti-trending-up"></i><div class="rec-title">Análisis de tendencias en un corpus de comentarios</div></div><div class="rec-body">El estudiantado utiliza Voyant Trends para identificar y visualizar cómo evolucionan ciertos términos o temas a lo largo de un corpus de comentarios.<br><span class="rec-tool"><a href="https://voyant-tools.org/" target="_blank" rel="noopener">Voyant Trends</a></span></div></div>
+            <div class="rec-card"><div class="rec-header"><i class="ti ti-cloud"></i><div class="rec-title">Nube de palabras con textos de audiencias</div></div><div class="rec-body">El estudiantado utiliza Voyant Cirrus para analizar las palabras más frecuentes en un corpus de textos y visualizarlas en una nube de palabras, identificando patrones de lenguaje en sus audiencias.<br><span class="rec-tool"><a href="https://voyant-tools.org/" target="_blank" rel="noopener">Voyant Cirrus</a></span></div></div>
+            <div class="rec-card"><div class="rec-header"><i class="ti ti-network"></i><div class="rec-title">Mapeo de redes de audiencias y preferencias</div></div><div class="rec-body">El estudiantado mapea y analiza redes de información — audiencias, preferencias, conexiones — visualizando relaciones que de otro modo serían difíciles de percibir.<br><span class="rec-tool"><a href="https://graphcommons.com/" target="_blank" rel="noopener">Graph Commons</a></span></div></div>
           </div>
         </div>
 
@@ -209,24 +227,12 @@
         <div id="tab-prod" class="tab-panel">
           <p class="intro-text">Recomendaciones para incorporar proyectos de HD en la materia Producción de contenidos I: texto-imagen-sonido.</p>
           <span class="mat-badge badge-prod">Producción de contenidos I: texto-imagen-sonido</span>
-          <p class="section-title">// ejemplos</p>
+          <p class="section-title" id="sec-prod">// ejemplos <button class="anchor-btn" onclick="copyAnchor('sec-prod')" title="Copiar enlace"><i class="ti ti-link"></i></button></p>
           <div class="rec-list">
-            <div class="rec-card">
-              <div class="rec-header"><i class="ti ti-git-branch" aria-hidden="true"></i><div class="rec-title">Historia interactiva con múltiples opciones</div></div>
-              <div class="rec-body">Después de un proceso de bocetado y prototipado, el estudiantado crea una historia interactiva con herramientas que permiten al lector seleccionar diferentes opciones y caminos narrativos.</div>
-            </div>
-            <div class="rec-card">
-              <div class="rec-header"><i class="ti ti-video" aria-hidden="true"></i><div class="rec-title">Video-pitch con IA y generador de voz</div></div>
-              <div class="rec-body">Después de un proceso de bocetado y prototipado, el estudiantado crea un video-pitch utilizando inteligencia artificial para el video y un generador de voz para la narración.<br><span class="rec-tool"><a href="https://elevenlabs.io/" target="_blank" rel="noopener">ElevenLabs</a></span></div>
-            </div>
-            <div class="rec-card">
-              <div class="rec-header"><i class="ti ti-photo-album" aria-hidden="true"></i><div class="rec-title">Repositorio digital de imágenes</div></div>
-              <div class="rec-body">El estudiantado crea y organiza un repositorio digital de imágenes, aplicando criterios de catalogación, metadatos y accesibilidad propios de las humanidades digitales.</div>
-            </div>
-            <div class="rec-card">
-              <div class="rec-header"><i class="ti ti-brain" aria-hidden="true"></i><div class="rec-title">Clasificador de imágenes, poses o sonidos</div></div>
-              <div class="rec-body">El estudiantado aprende a entrenar un clasificador de imágenes, poses o sonidos, explorando aplicaciones creativas del machine learning en producción de contenidos.<br><span class="rec-tool"><a href="https://teachablemachine.withgoogle.com/" target="_blank" rel="noopener">Teachable Machine</a></span></div>
-            </div>
+            <div class="rec-card"><div class="rec-header"><i class="ti ti-git-branch"></i><div class="rec-title">Historia interactiva con múltiples opciones</div></div><div class="rec-body">Después de un proceso de bocetado y prototipado, el estudiantado crea una historia interactiva con herramientas que permiten al lector seleccionar diferentes opciones y caminos narrativos.</div></div>
+            <div class="rec-card"><div class="rec-header"><i class="ti ti-video"></i><div class="rec-title">Video-pitch con IA y generador de voz</div></div><div class="rec-body">Después de un proceso de bocetado y prototipado, el estudiantado crea un video-pitch utilizando inteligencia artificial para el video y un generador de voz para la narración.<br><span class="rec-tool"><a href="https://elevenlabs.io/" target="_blank" rel="noopener">ElevenLabs</a></span></div></div>
+            <div class="rec-card"><div class="rec-header"><i class="ti ti-photo-album"></i><div class="rec-title">Repositorio digital de imágenes</div></div><div class="rec-body">El estudiantado crea y organiza un repositorio digital de imágenes, aplicando criterios de catalogación, metadatos y accesibilidad propios de las humanidades digitales.</div></div>
+            <div class="rec-card"><div class="rec-header"><i class="ti ti-brain"></i><div class="rec-title">Clasificador de imágenes, poses o sonidos</div></div><div class="rec-body">El estudiantado aprende a entrenar un clasificador de imágenes, poses o sonidos, explorando aplicaciones creativas del machine learning en producción de contenidos.<br><span class="rec-tool"><a href="https://teachablemachine.withgoogle.com/" target="_blank" rel="noopener">Teachable Machine</a></span></div></div>
           </div>
         </div>
 
@@ -235,14 +241,54 @@
   </div>
 </div>
 
+<button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="Volver arriba">
+  <i class="ti ti-arrow-up"></i>
+</button>
+<div class="toast" id="toast">// enlace copiado</div>
+
 <script>
   const TAB_MAP = { prog:'tab-btn-prog', homo:'tab-btn-homo', ia:'tab-btn-ia', expl:'tab-btn-expl', prod:'tab-btn-prod' };
+  const BREADCRUMB = { prog:'02_recomendaciones-hd → programacion.md', homo:'02_recomendaciones-hd → homo-sapiens.md', ia:'02_recomendaciones-hd → cultura-digital-ia.md', expl:'02_recomendaciones-hd → exploracion.md', prod:'02_recomendaciones-hd → produccion-contenidos.md' };
+
   function setTab(id,el){
     document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
     document.getElementById('tab-'+id).classList.add('active');
-    if(el){el.classList.add('active');}else{const btn=document.getElementById(TAB_MAP[id]||'tab-btn-prog');if(btn)btn.classList.add('active');}
+    if(el){el.classList.add('active');}else{const b=document.getElementById(TAB_MAP[id]);if(b)b.classList.add('active');}
+    document.getElementById('breadcrumb-current').textContent=BREADCRUMB[id]||id;
+    document.getElementById('main-content').scrollTop=0;
   }
+
+  function toggleGroup(id,labelEl){
+    const g=document.getElementById(id);
+    const c=g.classList.toggle('collapsed');
+    labelEl.classList.toggle('collapsed',c);
+  }
+
+  const content=document.getElementById('main-content');
+  const progress=document.getElementById('progress');
+  content.addEventListener('scroll',()=>{
+    const{scrollTop,scrollHeight,clientHeight}=content;
+    const pct=scrollHeight<=clientHeight?0:(scrollTop/(scrollHeight-clientHeight))*100;
+    progress.style.width=pct+'%';
+    document.getElementById('backToTop').classList.toggle('visible',scrollTop>200);
+  });
+
+  function scrollToTop(){content.scrollTo({top:0,behavior:'smooth'});}
+
+  function copyAnchor(id){
+    const url=window.location.href.split('#')[0]+'#'+id;
+    navigator.clipboard.writeText(url).then(()=>{
+      const t=document.getElementById('toast');
+      t.classList.add('show');
+      setTimeout(()=>t.classList.remove('show'),2000);
+    });
+  }
+
+  window.addEventListener('load',()=>{
+    const hash=window.location.hash.slice(1);
+    if(hash){setTimeout(()=>{const el=document.getElementById(hash);if(el)el.scrollIntoView({behavior:'smooth'});},100);}
+  });
 </script>
 </body>
 </html>

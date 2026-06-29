@@ -18,28 +18,66 @@
     html,body{height:100%;}
     body{font-family:var(--mono);background:var(--bg);color:var(--text-body);display:flex;flex-direction:column;height:100vh;overflow:hidden;}
     .layout{display:flex;flex:1;overflow:hidden;position:relative;}
+
+    /* ── SIDEBAR ── */
     .sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sidebar-bg);border-right:1.5px solid var(--purple-border);display:flex;flex-direction:column;overflow-y:auto;}
     .sidebar-logo{padding:1rem 1.25rem;border-bottom:1px solid var(--purple-border);margin-bottom:0.25rem;flex-shrink:0;}
     .sidebar-logo .logo-name{font-size:15px;font-weight:700;color:var(--purple-dark);line-height:1.2;letter-spacing:-0.02em;display:block;}
     .sidebar-logo small{font-size:10px;color:var(--purple);letter-spacing:0.06em;text-transform:uppercase;}
-    .sidebar-label{font-size:9.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);padding:0.85rem 1.25rem 0.25rem;display:block;}
+    .sidebar-label{font-size:9.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);padding:0.85rem 1.25rem 0.25rem;cursor:pointer;user-select:none;display:flex;align-items:center;justify-content:space-between;}
+    .sidebar-label .toggle-icon{font-size:11px;transition:transform 0.2s;}
+    .sidebar-label.collapsed .toggle-icon{transform:rotate(-90deg);}
+    .sidebar-group{overflow:hidden;transition:max-height 0.25s ease;}
+    .sidebar-group.collapsed{max-height:0;}
     .sidebar-item{display:flex;align-items:center;gap:8px;padding:0.3rem 1.25rem;font-size:12px;color:var(--text-body);cursor:pointer;border-left:3px solid transparent;transition:background 0.12s,color 0.12s;text-decoration:none;font-family:var(--mono);}
     .sidebar-item i{font-size:13px;color:var(--purple);flex-shrink:0;}
     .sidebar-item:hover{background:#E5E3FA;color:var(--purple-dark);}
     .sidebar-item.active{color:var(--purple-dark);font-weight:700;border-left-color:var(--purple-dark);background:var(--purple-pale);}
+
+    /* ── MARGIN LINE ── */
     .margin-line{position:absolute;left:18px;top:0;bottom:0;width:1px;background:var(--red-margin);opacity:0.4;pointer-events:none;}
+
+    /* ── MAIN ── */
     .main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;}
+
+    /* ── PROGRESS BAR ── */
+    .progress-bar{height:2px;background:var(--purple-border);flex-shrink:0;}
+    .progress-fill{height:100%;background:var(--purple);width:0%;transition:width 0.1s;}
+
+    /* ── TOPBAR ── */
     .topbar{padding:1.25rem 1.75rem 0;border-bottom:2px solid var(--purple-border);background:var(--bg);flex-shrink:0;}
+    .breadcrumb{font-size:11px;color:var(--purple-light);margin-bottom:0.5rem;display:flex;align-items:center;gap:5px;}
+    .breadcrumb a{color:var(--purple-light);text-decoration:none;}
+    .breadcrumb a:hover{color:var(--purple);}
+    .breadcrumb span{color:var(--purple);}
     .topbar h1{font-size:17px;font-weight:700;color:var(--purple);letter-spacing:-0.02em;margin-bottom:0.85rem;}
     .tabs{display:flex;}
     .tab{padding:0.45rem 1.1rem;font-size:12px;cursor:pointer;border-bottom:3px solid transparent;color:var(--purple);font-family:var(--mono);transition:color 0.12s,border-color 0.12s,background 0.12s;white-space:nowrap;}
     .tab:hover:not(.active){background:var(--purple-pale);}
     .tab.active{color:var(--purple-dark);border-bottom-color:var(--purple-dark);font-weight:700;}
+
+    /* ── CONTENT ── */
     .content{flex:1;overflow-y:auto;background:var(--bg);}
-    .content-inner{padding:1.25rem 1.75rem 2rem;}
+    .content-inner{padding:1.25rem 1.75rem 4rem;}
     .tab-panel{display:none;}.tab-panel.active{display:block;}
-    .section-title{font-size:13px;font-weight:700;color:var(--purple);letter-spacing:0.07em;text-transform:uppercase;margin:1.6rem 0 0.75rem;border-bottom:1px solid var(--purple-border);padding-bottom:5px;}
+
+    /* ── BACK TO TOP ── */
+    .back-to-top{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--purple);color:#fff;border:none;border-radius:50%;width:36px;height:36px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;z-index:100;box-shadow:0 2px 8px rgba(83,74,183,0.3);}
+    .back-to-top.visible{opacity:1;pointer-events:all;}
+    .back-to-top:hover{background:var(--purple-dark);}
+
+    /* ── TOAST ── */
+    .toast{position:fixed;bottom:4rem;right:1.5rem;background:var(--purple-dark);color:#fff;font-size:11px;padding:6px 12px;border-radius:100px;opacity:0;pointer-events:none;transition:opacity 0.2s;z-index:200;}
+    .toast.show{opacity:1;}
+
+    /* ── TYPOGRAPHY ── */
+    .section-title{font-size:13px;font-weight:700;color:var(--purple);letter-spacing:0.07em;text-transform:uppercase;margin:1.6rem 0 0.75rem;border-bottom:1px solid var(--purple-border);padding-bottom:5px;scroll-margin-top:1rem;display:flex;align-items:center;justify-content:space-between;}
     .section-title:first-child{margin-top:0.25rem;}
+    .anchor-btn{font-size:12px;color:var(--purple-light);cursor:pointer;background:none;border:none;padding:0;opacity:0;transition:opacity 0.15s;}
+    .section-title:hover .anchor-btn{opacity:1;}
+    .anchor-btn:hover{color:var(--purple);}
+
+    /* ── RESOURCE ── */
     .resource-list{display:flex;flex-direction:column;gap:2px;}
     .resource-item{display:flex;align-items:flex-start;gap:12px;padding:0.75rem 0.75rem;border-radius:6px;border:1px solid transparent;transition:background 0.12s,border-color 0.12s;text-decoration:none;color:inherit;}
     .resource-item:hover{background:var(--purple-pale);border-color:var(--purple-border);}
@@ -53,6 +91,7 @@
     .badge-article{background:var(--purple-pale);color:var(--purple-dark);border:0.5px solid var(--purple-border);}
     .badge-video{background:#FAECE7;color:#993C1D;border:0.5px solid #F0997B;}
     .badge-podcast{background:#EAF3DE;color:#3B6D11;border:0.5px solid #97C459;}
+
     ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--purple-light);border-radius:3px;}
   </style>
 </head>
@@ -64,41 +103,59 @@
       <span class="logo-name">HD_DOCENTES/</span>
       <small>Tec de Monterrey</small>
     </div>
-    <span class="sidebar-label">// inicio</span>
-    <a class="sidebar-item" href="./index.html">
-      <i class="ti ti-home" aria-hidden="true"></i>¿qué son las HD?
-    </a>
-    <a class="sidebar-item" href="./formacion-humanistica.html">
-      <i class="ti ti-users" aria-hidden="true"></i>formación humanística
-    </a>
-    <span class="sidebar-label">// módulos</span>
-    <a class="sidebar-item" href="./ejemplos-proyectos-hd.html">
-      <i class="ti ti-database" aria-hidden="true"></i>01_ejemplos-proyectos-hd
-    </a>
-    <a class="sidebar-item" href="./recomendaciones-hd.html">
-      <i class="ti ti-chart-bar" aria-hidden="true"></i>02_recomendaciones-hd
-    </a>
-    <a class="sidebar-item" href="./formacion-humanistica.html">
-      <i class="ti ti-file-text" aria-hidden="true"></i>03_formacion-humanistica
-    </a>
-    <a class="sidebar-item" href="#">
-      <i class="ti ti-network" aria-hidden="true"></i>04_proximos-modulos
-    </a>
-    <span class="sidebar-label">// recursos</span>
-    <a class="sidebar-item" href="./herramientas.html">
-      <i class="ti ti-tool" aria-hidden="true"></i>herramientas
-    </a>
-    <a class="sidebar-item active" href="./lecturas.html">
-      <i class="ti ti-books" aria-hidden="true"></i>lecturas
-    </a>
-    <a class="sidebar-item" href="#">
-      <i class="ti ti-pencil" aria-hidden="true"></i>ejercicios
-    </a>
+    <span class="sidebar-label" onclick="toggleGroup('grupo-inicio',this)">
+      // inicio <i class="ti ti-chevron-down toggle-icon"></i>
+    </span>
+    <div class="sidebar-group" id="grupo-inicio">
+      <a class="sidebar-item" href="./index.html">
+        <i class="ti ti-home" aria-hidden="true"></i>¿qué son las HD?
+      </a>
+      <a class="sidebar-item" href="./formacion-humanistica.html">
+        <i class="ti ti-users" aria-hidden="true"></i>formación humanística
+      </a>
+    </div>
+    <span class="sidebar-label" onclick="toggleGroup('grupo-modulos',this)">
+      // módulos <i class="ti ti-chevron-down toggle-icon"></i>
+    </span>
+    <div class="sidebar-group" id="grupo-modulos">
+      <a class="sidebar-item" href="./ejemplos-proyectos-hd.html">
+        <i class="ti ti-database" aria-hidden="true"></i>01_ejemplos-proyectos-hd
+      </a>
+      <a class="sidebar-item" href="./recomendaciones-hd.html">
+        <i class="ti ti-chart-bar" aria-hidden="true"></i>02_recomendaciones-hd
+      </a>
+      <a class="sidebar-item" href="./formacion-humanistica.html">
+        <i class="ti ti-file-text" aria-hidden="true"></i>03_formacion-humanistica
+      </a>
+      <a class="sidebar-item" href="#">
+        <i class="ti ti-network" aria-hidden="true"></i>04_proximos-modulos
+      </a>
+    </div>
+    <span class="sidebar-label" onclick="toggleGroup('grupo-recursos',this)">
+      // recursos <i class="ti ti-chevron-down toggle-icon"></i>
+    </span>
+    <div class="sidebar-group" id="grupo-recursos">
+      <a class="sidebar-item" href="./herramientas.html">
+        <i class="ti ti-tool" aria-hidden="true"></i>herramientas
+      </a>
+      <a class="sidebar-item active" href="./lecturas.html">
+        <i class="ti ti-books" aria-hidden="true"></i>lecturas
+      </a>
+    </div>
   </nav>
 
   <div class="main">
     <div class="margin-line" aria-hidden="true"></div>
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
     <div class="topbar">
+      <div class="breadcrumb">
+        <a href="./index.html">HD_DOCENTES</a>
+        <i class="ti ti-chevron-right" style="font-size:9px;"></i>
+        <a href="./index.html">recursos</a>
+        <i class="ti ti-chevron-right" style="font-size:9px;"></i>
+        <span id="breadcrumb-current">lecturas → articulos.md</span>
+      </div>
       <h1>// recursos/lecturas</h1>
       <div class="tabs" role="tablist">
         <div class="tab active" id="tab-btn-articulos" role="tab" onclick="setTab('articulos',this)">articulos.md</div>
@@ -107,16 +164,15 @@
       </div>
     </div>
 
-    <div class="content">
+    <div class="content" id="main-content">
       <div class="content-inner">
 
         <!-- ARTÍCULOS -->
         <div id="tab-articulos" class="tab-panel active">
-
-          <p class="section-title">// introducción a las HD</p>
+          <p class="section-title" id="sec-intro">// introducción a las HD <button class="anchor-btn" onclick="copyAnchor('sec-intro')" title="Copiar enlace"><i class="ti ti-link"></i></button></p>
           <div class="resource-list">
             <a class="resource-item" href="https://doi.org/10.7551/mitpress/9248.003.0003" target="_blank" rel="noopener">
-              <i class="ti ti-article resource-icon" aria-hidden="true"></i>
+              <i class="ti ti-article resource-icon"></i>
               <div class="resource-body">
                 <div class="resource-title">Humanities to Digital Humanities. <em>Digital_Humanities</em></div>
                 <div class="resource-meta">Anne Burdick, Johanna Drucker, Peter Lunenfeld, Todd Presner y Jeffrey Schnapp · Capítulo de libro · 2012</div>
@@ -125,7 +181,7 @@
               <span class="type-badge badge-article">Capítulo</span>
             </a>
             <a class="resource-item" href="https://books.google.com.mx/books?id=WtWOEQAAQBAJ&lpg=PA1&pg=PT17#v=onepage&q&f=false" target="_blank" rel="noopener">
-              <i class="ti ti-article resource-icon" aria-hidden="true"></i>
+              <i class="ti ti-article resource-icon"></i>
               <div class="resource-body">
                 <div class="resource-title">Digital Humanities Overview. <em>The Digital Humanities Coursebook: Applied Concepts and Critical Approaches</em></div>
                 <div class="resource-meta">Johanna Drucker y Francesca Albrezzi · Capítulo de libro · 2026</div>
@@ -134,7 +190,7 @@
               <span class="type-badge badge-article">Capítulo</span>
             </a>
             <a class="resource-item" href="https://ebookcentral.proquest.com/lib/biblitesm/detail.action?docID=6433781" target="_blank" rel="noopener">
-              <i class="ti ti-article resource-icon" aria-hidden="true"></i>
+              <i class="ti ti-article resource-icon"></i>
               <div class="resource-body">
                 <div class="resource-title"><em>Humanidades Digitales: Recepción, Institucionalización y Crítica</em></div>
                 <div class="resource-meta">Isabel Galina Russell, Miriam Peña Pimentel, Ernesto Priani Saisó, José Francisco Barrón Tovar, David Domínguez Herbón y Adriana Álvarez Sánchez [editores] · Libro · 2018</div>
@@ -144,10 +200,10 @@
             </a>
           </div>
 
-          <p class="section-title">// métodos y herramientas</p>
+          <p class="section-title" id="sec-metodos">// métodos y herramientas <button class="anchor-btn" onclick="copyAnchor('sec-metodos')" title="Copiar enlace"><i class="ti ti-link"></i></button></p>
           <div class="resource-list">
             <a class="resource-item" href="#" target="_blank" rel="noopener">
-              <i class="ti ti-article resource-icon" aria-hidden="true"></i>
+              <i class="ti ti-article resource-icon"></i>
               <div class="resource-body">
                 <div class="resource-title"><em>Methods in the Humanities: Challenges, Ideas, Perspectives</em></div>
                 <div class="resource-meta">Silke Schwandt [editor] · Libro · 2020</div>
@@ -156,7 +212,7 @@
               <span class="type-badge badge-article">Libro</span>
             </a>
             <a class="resource-item" href="#" target="_blank" rel="noopener">
-              <i class="ti ti-article resource-icon" aria-hidden="true"></i>
+              <i class="ti ti-article resource-icon"></i>
               <div class="resource-body">
                 <div class="resource-title"><em>Mixing Methods: Practical Insights from the Humanities in the Digital Age</em></div>
                 <div class="resource-meta">Birgit Schneider, Beate Löffler, Tino Mager y Carola Hein [editores] · Libro · 2024</div>
@@ -166,10 +222,10 @@
             </a>
           </div>
 
-          <p class="section-title">// contexto latinoamericano y del sur global</p>
+          <p class="section-title" id="sec-latam">// contexto latinoamericano y del sur global <button class="anchor-btn" onclick="copyAnchor('sec-latam')" title="Copiar enlace"><i class="ti ti-link"></i></button></p>
           <div class="resource-list">
             <a class="resource-item" href="https://ebookcentral.proquest.com/lib/biblitesm/reader.action?docID=6921430&ppg=10&c=UERG" target="_blank" rel="noopener">
-              <i class="ti ti-article resource-icon" aria-hidden="true"></i>
+              <i class="ti ti-article resource-icon"></i>
               <div class="resource-body">
                 <div class="resource-title">Introduction. <em>Debates in The Digital Humanities</em></div>
                 <div class="resource-meta">Domenico Fiormonte, Sunta Chaudhuri y Paola Ricaurte [editores] · Capítulo de libro · 2022</div>
@@ -182,20 +238,19 @@
 
         <!-- VIDEOS -->
         <div id="tab-videos" class="tab-panel">
-
-          <p class="section-title">// conferencias y charlas</p>
+          <p class="section-title" id="sec-charlas">// conferencias y charlas <button class="anchor-btn" onclick="copyAnchor('sec-charlas')" title="Copiar enlace"><i class="ti ti-link"></i></button></p>
           <div class="resource-list">
             <a class="resource-item" href="https://youtu.be/_8AD7GbkiYA?si=cAjWE3i1VtjlYWxo" target="_blank" rel="noopener">
-              <i class="ti ti-player-play resource-icon" aria-hidden="true"></i>
+              <i class="ti ti-player-play resource-icon"></i>
               <div class="resource-body">
                 <div class="resource-title">Digital Humanities: How to Use Data in the Humanities</div>
                 <div class="resource-meta">UMD Libraries · 1 h 32 min</div>
-                <div class="resource-desc">Breve visión general de las Humanidades Digitales desde una perspectiva práctica y teórica, con un resumen de la literatura reciente, una demostración de proyectos interesantes y algo de experimentación práctica.</div>
+                <div class="resource-desc">Visión general de las Humanidades Digitales desde una perspectiva práctica y teórica, con un resumen de la literatura reciente, una demostración de proyectos interesantes y algo de experimentación práctica.</div>
               </div>
               <span class="type-badge badge-video">video</span>
             </a>
             <a class="resource-item" href="https://youtu.be/IHB80f4TnfY?si=uMfvGs4iB9Ux2kK6" target="_blank" rel="noopener">
-              <i class="ti ti-player-play resource-icon" aria-hidden="true"></i>
+              <i class="ti ti-player-play resource-icon"></i>
               <div class="resource-body">
                 <div class="resource-title">What are the digital humanities?</div>
                 <div class="resource-meta">The Research Vault · 6 min 39 sec</div>
@@ -204,7 +259,7 @@
               <span class="type-badge badge-video">video</span>
             </a>
             <a class="resource-item" href="https://youtu.be/RdrnmUImSow?si=gZiJnIyOL-dM4ey2" target="_blank" rel="noopener">
-              <i class="ti ti-player-play resource-icon" aria-hidden="true"></i>
+              <i class="ti ti-player-play resource-icon"></i>
               <div class="resource-body">
                 <div class="resource-title">Intro to Digital Humanities and Humanities Data</div>
                 <div class="resource-meta">ucrlibrary · 56 min 17 sec</div>
@@ -214,10 +269,10 @@
             </a>
           </div>
 
-          <p class="section-title">// tutoriales y demos</p>
+          <p class="section-title" id="sec-tutoriales">// tutoriales y demos <button class="anchor-btn" onclick="copyAnchor('sec-tutoriales')" title="Copiar enlace"><i class="ti ti-link"></i></button></p>
           <div class="resource-list">
             <a class="resource-item" href="https://youtu.be/OtWpvohdxLY?si=Ngd6ONL_SetsdxFN" target="_blank" rel="noopener">
-              <i class="ti ti-player-play resource-icon" aria-hidden="true"></i>
+              <i class="ti ti-player-play resource-icon"></i>
               <div class="resource-body">
                 <div class="resource-title">Introducción a Google Colab para principiantes | Mini curso</div>
                 <div class="resource-meta">EvoAcademy · 40 min 31 sec</div>
@@ -226,7 +281,7 @@
               <span class="type-badge badge-video">video</span>
             </a>
             <a class="resource-item" href="https://youtu.be/zWN5eV4nApM?si=1cEWMIG_3xzG07NS" target="_blank" rel="noopener">
-              <i class="ti ti-player-play resource-icon" aria-hidden="true"></i>
+              <i class="ti ti-player-play resource-icon"></i>
               <div class="resource-body">
                 <div class="resource-title">Curso Python desde cero 2026 Parte 1 - Variables</div>
                 <div class="resource-meta">EvoAcademy · 43 min 49 sec</div>
@@ -235,7 +290,7 @@
               <span class="type-badge badge-video">video</span>
             </a>
             <a class="resource-item" href="https://youtu.be/MXhBxQXhq_0?si=s-0nYYt7bW3vku_S" target="_blank" rel="noopener">
-              <i class="ti ti-player-play resource-icon" aria-hidden="true"></i>
+              <i class="ti ti-player-play resource-icon"></i>
               <div class="resource-body">
                 <div class="resource-title">Voyant Tools. Una herramienta para el análisis cuantitativo de texto</div>
                 <div class="resource-meta">Canal Educativo de la Facultad de Filología UCM · 11 min 00 sec</div>
@@ -248,10 +303,10 @@
 
         <!-- PODCASTS -->
         <div id="tab-podcasts" class="tab-panel">
-          <p class="section-title">// episodios recomendados</p>
+          <p class="section-title" id="sec-episodios">// episodios recomendados <button class="anchor-btn" onclick="copyAnchor('sec-episodios')" title="Copiar enlace"><i class="ti ti-link"></i></button></p>
           <div class="resource-list">
             <a class="resource-item" href="#" target="_blank" rel="noopener">
-              <i class="ti ti-microphone resource-icon" aria-hidden="true"></i>
+              <i class="ti ti-microphone resource-icon"></i>
               <div class="resource-body">
                 <div class="resource-title">Título del episodio</div>
                 <div class="resource-meta">Podcast · Temporada / Ep. · Duración</div>
@@ -260,7 +315,7 @@
               <span class="type-badge badge-podcast">podcast</span>
             </a>
             <a class="resource-item" href="#" target="_blank" rel="noopener">
-              <i class="ti ti-microphone resource-icon" aria-hidden="true"></i>
+              <i class="ti ti-microphone resource-icon"></i>
               <div class="resource-body">
                 <div class="resource-title">Título del episodio</div>
                 <div class="resource-meta">Podcast · Temporada / Ep. · Duración</div>
@@ -269,10 +324,10 @@
               <span class="type-badge badge-podcast">podcast</span>
             </a>
           </div>
-          <p class="section-title">// series completas</p>
+          <p class="section-title" id="sec-series">// series completas <button class="anchor-btn" onclick="copyAnchor('sec-series')" title="Copiar enlace"><i class="ti ti-link"></i></button></p>
           <div class="resource-list">
             <a class="resource-item" href="#" target="_blank" rel="noopener">
-              <i class="ti ti-microphone resource-icon" aria-hidden="true"></i>
+              <i class="ti ti-microphone resource-icon"></i>
               <div class="resource-body">
                 <div class="resource-title">Nombre del podcast</div>
                 <div class="resource-meta">Productor(a) · Plataforma</div>
@@ -288,15 +343,54 @@
   </div>
 </div>
 
+<button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="Volver arriba">
+  <i class="ti ti-arrow-up"></i>
+</button>
+<div class="toast" id="toast">// enlace copiado</div>
+
 <script>
   const TAB_MAP = { articulos:'tab-btn-articulos', videos:'tab-btn-videos', podcasts:'tab-btn-podcasts' };
+  const BREADCRUMB = { articulos:'lecturas → articulos.md', videos:'lecturas → videos.md', podcasts:'lecturas → podcasts.md' };
+
   function setTab(id,el){
     document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
     document.getElementById('tab-'+id).classList.add('active');
-    if(el){el.classList.add('active');}
-    else{const btn=document.getElementById(TAB_MAP[id]||'tab-btn-articulos');if(btn)btn.classList.add('active');}
+    if(el){el.classList.add('active');}else{const b=document.getElementById(TAB_MAP[id]);if(b)b.classList.add('active');}
+    document.getElementById('breadcrumb-current').textContent=BREADCRUMB[id]||id;
+    document.getElementById('main-content').scrollTop=0;
   }
+
+  function toggleGroup(id,labelEl){
+    const g=document.getElementById(id);
+    const c=g.classList.toggle('collapsed');
+    labelEl.classList.toggle('collapsed',c);
+  }
+
+  const content=document.getElementById('main-content');
+  const progress=document.getElementById('progress');
+  content.addEventListener('scroll',()=>{
+    const{scrollTop,scrollHeight,clientHeight}=content;
+    const pct=scrollHeight<=clientHeight?0:(scrollTop/(scrollHeight-clientHeight))*100;
+    progress.style.width=pct+'%';
+    document.getElementById('backToTop').classList.toggle('visible',scrollTop>200);
+  });
+
+  function scrollToTop(){content.scrollTo({top:0,behavior:'smooth'});}
+
+  function copyAnchor(id){
+    const url=window.location.href.split('#')[0]+'#'+id;
+    navigator.clipboard.writeText(url).then(()=>{
+      const t=document.getElementById('toast');
+      t.classList.add('show');
+      setTimeout(()=>t.classList.remove('show'),2000);
+    });
+  }
+
+  window.addEventListener('load',()=>{
+    const hash=window.location.hash.slice(1);
+    if(hash){setTimeout(()=>{const el=document.getElementById(hash);if(el)el.scrollIntoView({behavior:'smooth'});},100);}
+  });
 </script>
 </body>
 </html>

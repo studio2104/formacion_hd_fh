@@ -61,7 +61,16 @@
       font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em;
       text-transform: uppercase; color: var(--purple);
       padding: 0.85rem 1.25rem 0.25rem; display: block;
+      cursor: pointer; user-select: none;
+      display: flex; align-items: center; justify-content: space-between;
     }
+    .sidebar-label .toggle-icon {
+      font-size: 11px; transition: transform 0.2s;
+    }
+    .sidebar-label.collapsed .toggle-icon { transform: rotate(-90deg); }
+    .sidebar-group { overflow: hidden; transition: max-height 0.25s ease; }
+    .sidebar-group.collapsed { max-height: 0; }
+
     .sidebar-item {
       display: flex; align-items: center; gap: 8px;
       padding: 0.3rem 1.25rem; font-size: 12px; color: var(--text-body);
@@ -85,12 +94,32 @@
     /* ── MAIN ── */
     .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
 
+    /* ── PROGRESS BAR ── */
+    .progress-bar {
+      height: 2px; background: var(--purple-border);
+      position: relative; flex-shrink: 0;
+    }
+    .progress-fill {
+      height: 100%; background: var(--purple);
+      width: 0%; transition: width 0.1s;
+    }
+
     /* ── TOPBAR ── */
     .topbar {
       padding: 1.25rem 1.75rem 0;
       border-bottom: 2px solid var(--purple-border);
       background: var(--bg); flex-shrink: 0;
     }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb {
+      font-size: 11px; color: var(--purple-light);
+      margin-bottom: 0.5rem; display: flex; align-items: center; gap: 5px;
+    }
+    .breadcrumb a { color: var(--purple-light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--purple); }
+    .breadcrumb span { color: var(--purple); }
+
     .topbar h1 {
       font-size: 17px; font-weight: 700; color: var(--purple);
       letter-spacing: -0.02em; margin-bottom: 0.85rem;
@@ -107,10 +136,24 @@
     .tab.active { color: var(--purple-dark); border-bottom-color: var(--purple-dark); font-weight: 700; }
 
     /* ── CONTENT ── */
-    .content { flex: 1; overflow-y: auto; background: var(--bg); }
-    .content-inner { padding: 1.25rem 1.75rem 2rem; }
+    .content { flex: 1; overflow-y: auto; background: var(--bg); position: relative; }
+    .content-inner { padding: 1.25rem 1.75rem 4rem; }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
+
+    /* ── BACK TO TOP ── */
+    .back-to-top {
+      position: fixed; bottom: 1.5rem; right: 1.5rem;
+      background: var(--purple); color: #fff;
+      border: none; border-radius: 50%; width: 36px; height: 36px;
+      font-size: 16px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s; z-index: 100;
+      box-shadow: 0 2px 8px rgba(83,74,183,0.3);
+    }
+    .back-to-top.visible { opacity: 1; pointer-events: all; }
+    .back-to-top:hover { background: var(--purple-dark); }
 
     /* ── TYPOGRAPHY ── */
     .intro-text {
@@ -126,7 +169,16 @@
       letter-spacing: 0.07em; text-transform: uppercase;
       margin: 1.6rem 0 0.6rem;
       border-bottom: 1px solid var(--purple-border); padding-bottom: 5px;
+      scroll-margin-top: 1rem;
+      display: flex; align-items: center; justify-content: space-between;
     }
+    .anchor-btn {
+      font-size: 12px; color: var(--purple-light); cursor: pointer;
+      background: none; border: none; padding: 0;
+      opacity: 0; transition: opacity 0.15s;
+    }
+    .section-title:hover .anchor-btn { opacity: 1; }
+    .anchor-btn:hover { color: var(--purple); }
 
     /* ── CARDS ── */
     .card-grid {
@@ -193,6 +245,16 @@
     .faq-q { font-size: 14px; font-weight: 700; color: var(--purple); margin-bottom: 3px; }
     .faq-a { font-size: 13px; color: var(--text-body); line-height: 1.75; }
 
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 4rem; right: 1.5rem;
+      background: var(--purple-dark); color: #fff;
+      font-size: 11px; padding: 6px 12px; border-radius: 100px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s; z-index: 200;
+    }
+    .toast.show { opacity: 1; }
+
     /* ── SCROLLBAR ── */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -210,57 +272,72 @@
       <small>Tec de Monterrey</small>
     </div>
 
-    <span class="sidebar-label">// inicio</span>
-    <a class="sidebar-item active" onclick="activeSide(this); setTab('descripcion', null)">
-      <i class="ti ti-home" aria-hidden="true"></i>¿qué son las HD?
-    </a>
-    <a class="sidebar-item" href="./formacion-humanistica.html">
-      <i class="ti ti-users" aria-hidden="true"></i>formación humanística
-    </a>
+    <span class="sidebar-label" onclick="toggleGroup('grupo-inicio', this)">
+      // inicio <i class="ti ti-chevron-down toggle-icon"></i>
+    </span>
+    <div class="sidebar-group" id="grupo-inicio">
+      <a class="sidebar-item active" data-page="index" onclick="activeSide(this); setTab('descripcion', null)">
+        <i class="ti ti-home" aria-hidden="true"></i>¿qué son las HD?
+      </a>
+      <a class="sidebar-item" href="./formacion-humanistica.html">
+        <i class="ti ti-users" aria-hidden="true"></i>formación humanística
+      </a>
+    </div>
 
-    <span class="sidebar-label">// módulos</span>
-    <a class="sidebar-item" href="./ejemplos-proyectos-hd.html">
-      <i class="ti ti-database" aria-hidden="true"></i>01_ejemplos-proyectos-hd
-    </a>
-    <a class="sidebar-item" href="./recomendaciones-hd.html">
-      <i class="ti ti-chart-bar" aria-hidden="true"></i>02_recomendaciones-hd
-    </a>
-    <a class="sidebar-item" href="./formacion-humanistica.html">
-      <i class="ti ti-file-text" aria-hidden="true"></i>03_formacion-humanistica
-    </a>
-    <a class="sidebar-item" onclick="activeSide(this); setTab('mod', null)">
-      <i class="ti ti-network" aria-hidden="true"></i>04_proximos-modulos
-    </a>
+    <span class="sidebar-label" onclick="toggleGroup('grupo-modulos', this)">
+      // módulos <i class="ti ti-chevron-down toggle-icon"></i>
+    </span>
+    <div class="sidebar-group" id="grupo-modulos">
+      <a class="sidebar-item" href="./ejemplos-proyectos-hd.html">
+        <i class="ti ti-database" aria-hidden="true"></i>01_ejemplos-proyectos-hd
+      </a>
+      <a class="sidebar-item" href="./recomendaciones-hd.html">
+        <i class="ti ti-chart-bar" aria-hidden="true"></i>02_recomendaciones-hd
+      </a>
+      <a class="sidebar-item" href="./formacion-humanistica.html">
+        <i class="ti ti-file-text" aria-hidden="true"></i>03_formacion-humanistica
+      </a>
+      <a class="sidebar-item" onclick="activeSide(this); setTab('mod', null)">
+        <i class="ti ti-network" aria-hidden="true"></i>04_proximos-modulos
+      </a>
+    </div>
 
-    <span class="sidebar-label">// recursos</span>
-    <a class="sidebar-item" href="./herramientas.html">
-      <i class="ti ti-tool" aria-hidden="true"></i>herramientas
-    </a>
-    <a class="sidebar-item" href="./lecturas.html">
-      <i class="ti ti-books" aria-hidden="true"></i>lecturas
-    </a>
-    <a class="sidebar-item" onclick="activeSide(this); setTab('mod', null)">
-      <i class="ti ti-pencil" aria-hidden="true"></i>ejercicios
-    </a>
+    <span class="sidebar-label" onclick="toggleGroup('grupo-recursos', this)">
+      // recursos <i class="ti ti-chevron-down toggle-icon"></i>
+    </span>
+    <div class="sidebar-group" id="grupo-recursos">
+      <a class="sidebar-item" href="./herramientas.html">
+        <i class="ti ti-tool" aria-hidden="true"></i>herramientas
+      </a>
+      <a class="sidebar-item" href="./lecturas.html">
+        <i class="ti ti-books" aria-hidden="true"></i>lecturas
+      </a>
+    </div>
   </nav>
 
   <!-- MAIN -->
   <div class="main">
     <div class="margin-line" aria-hidden="true"></div>
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
 
     <div class="topbar">
+      <div class="breadcrumb">
+        <a href="./index.html">HD_DOCENTES</a>
+        <i class="ti ti-chevron-right" style="font-size:9px;"></i>
+        <span id="breadcrumb-current">inicio</span>
+      </div>
       <h1>// humanidades_digitales_y_formacion_humanistica</h1>
       <div class="tabs" role="tablist">
         <div class="tab active" id="tab-btn-descripcion" role="tab"
              onclick="setTab('descripcion', this)">descripcion.md</div>
         <div class="tab" id="tab-btn-formacion" role="tab"
-             onclick="window.location.href='./formacion-humanistica.html'" >formacion_humanistica.md</div>
+             onclick="window.location.href='./formacion-humanistica.html'">formacion_humanistica.md</div>
         <div class="tab" id="tab-btn-faq" role="tab"
              onclick="setTab('faq', this)">faq.md</div>
       </div>
     </div>
 
-    <div class="content">
+    <div class="content" id="main-content">
       <div class="content-inner">
 
         <!-- DESCRIPCIÓN -->
@@ -275,7 +352,10 @@
           </p>
           <p>Para ver detalles de lo que es formación humanística, haz clic en el botón correspondiente en la parte superior.</p>
 
-          <p class="section-title">// ¿qué encontrarás aquí?</p>
+          <p class="section-title" id="sec-que">
+            // ¿qué encontrarás aquí?
+            <button class="anchor-btn" onclick="copyAnchor('sec-que')" title="Copiar enlace"><i class="ti ti-link"></i></button>
+          </p>
           <div class="card-grid">
             <a class="card" href="./ejemplos-proyectos-hd.html">
               <div class="card-icon"><i class="ti ti-chart-dots" aria-hidden="true"></i></div>
@@ -299,7 +379,10 @@
             </a>
           </div>
 
-          <p class="section-title">// el concepto central</p>
+          <p class="section-title" id="sec-concepto">
+            // el concepto central
+            <button class="anchor-btn" onclick="copyAnchor('sec-concepto')" title="Copiar enlace"><i class="ti ti-link"></i></button>
+          </p>
           <div class="highlight-box">
             Implementar Humanidades Digitales no significa que todo el proyecto deba ser digital.
             Se trata de usar herramientas digitales para explorar preguntas humanísticas, como la historia,
@@ -311,7 +394,10 @@
             de dos siglos.
           </div>
 
-          <p class="section-title">// métodos comunes en HD</p>
+          <p class="section-title" id="sec-metodos">
+            // métodos comunes en HD
+            <button class="anchor-btn" onclick="copyAnchor('sec-metodos')" title="Copiar enlace"><i class="ti ti-link"></i></button>
+          </p>
           <div class="method-list">
             <div class="method-item">
               <i class="ti ti-scan" aria-hidden="true"></i>
@@ -331,7 +417,10 @@
             </div>
           </div>
 
-          <p class="section-title">// herramientas populares para principiantes</p>
+          <p class="section-title" id="sec-herramientas">
+            // herramientas populares para principiantes
+            <button class="anchor-btn" onclick="copyAnchor('sec-herramientas')" title="Copiar enlace"><i class="ti ti-link"></i></button>
+          </p>
           <p>No necesitas ser programador para hacer HD. Muchas plataformas están diseñadas específicamente para principiantes:</p>
           <div class="tool-grid">
             <div class="tool-item">
@@ -364,7 +453,7 @@
 
         <!-- FAQ -->
         <div id="tab-faq" class="tab-panel">
-          <p class="section-title">// faq</p>
+          <p class="section-title" id="sec-faq">// faq</p>
           <div class="faq-list">
             <div>
               <div class="faq-q">¿Necesito saber programar?</div>
@@ -390,12 +479,28 @@
   </div>
 </div>
 
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="Volver arriba">
+  <i class="ti ti-arrow-up"></i>
+</button>
+
+<!-- TOAST -->
+<div class="toast" id="toast">// enlace copiado</div>
+
 <script>
   const TAB_MAP = {
     descripcion: 'tab-btn-descripcion',
     formacion:   'tab-btn-formacion',
     faq:         'tab-btn-faq'
   };
+
+  const breadcrumbLabels = {
+    descripcion: 'inicio → descripcion.md',
+    formacion:   'inicio → formacion_humanistica.md',
+    faq:         'inicio → faq.md',
+    mod:         'inicio → módulo en construcción'
+  };
+
   function setTab(id, el) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -405,11 +510,59 @@
       const btn = document.getElementById(TAB_MAP[id] || 'tab-btn-descripcion');
       if (btn) btn.classList.add('active');
     }
+    // breadcrumb
+    document.getElementById('breadcrumb-current').textContent = breadcrumbLabels[id] || id;
+    // reset scroll
+    document.getElementById('main-content').scrollTop = 0;
   }
+
   function activeSide(el) {
     document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
     el.classList.add('active');
   }
+
+  // ── ACCORDION ──
+  function toggleGroup(id, labelEl) {
+    const group = document.getElementById(id);
+    const isCollapsed = group.classList.toggle('collapsed');
+    labelEl.classList.toggle('collapsed', isCollapsed);
+  }
+
+  // ── PROGRESS BAR ──
+  const content = document.getElementById('main-content');
+  const progress = document.getElementById('progress');
+  content.addEventListener('scroll', () => {
+    const { scrollTop, scrollHeight, clientHeight } = content;
+    const pct = scrollHeight <= clientHeight ? 0 : (scrollTop / (scrollHeight - clientHeight)) * 100;
+    progress.style.width = pct + '%';
+    document.getElementById('backToTop').classList.toggle('visible', scrollTop > 200);
+  });
+
+  // ── BACK TO TOP ──
+  function scrollToTop() {
+    content.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── COPY ANCHOR ──
+  function copyAnchor(id) {
+    const url = window.location.href.split('#')[0] + '#' + id;
+    navigator.clipboard.writeText(url).then(() => {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    });
+  }
+
+  // ── HANDLE ANCHOR ON LOAD ──
+  window.addEventListener('load', () => {
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      setTimeout(() => {
+        const el = document.getElementById(hash);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  });
 </script>
 
 </body>
