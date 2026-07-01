@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#534AB7" />
   <title>Formación Humanística — HD Docentes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,7 +21,7 @@
     .layout{display:flex;flex:1;overflow:hidden;position:relative;}
 
     /* ── SIDEBAR ── */
-    .sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sidebar-bg);border-right:1.5px solid var(--purple-border);display:flex;flex-direction:column;overflow-y:auto;}
+    .sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sidebar-bg);border-right:1.5px solid var(--purple-border);display:flex;flex-direction:column;overflow-y:auto;transition:transform 0.25s ease;z-index:50;}
     .sidebar-logo{padding:1rem 1.25rem;border-bottom:1px solid var(--purple-border);margin-bottom:0.25rem;flex-shrink:0;}
     .sidebar-logo .logo-name{font-size:15px;font-weight:700;color:var(--purple-dark);line-height:1.2;letter-spacing:-0.02em;display:block;}
     .sidebar-logo small{font-size:10px;color:var(--purple);letter-spacing:0.06em;text-transform:uppercase;}
@@ -29,80 +30,99 @@
     .sidebar-label.collapsed .toggle-icon{transform:rotate(-90deg);}
     .sidebar-group{overflow:hidden;transition:max-height 0.25s ease;}
     .sidebar-group.collapsed{max-height:0;}
-    .sidebar-item{display:flex;align-items:center;gap:8px;padding:0.3rem 1.25rem;font-size:12px;color:var(--text-body);cursor:pointer;border-left:3px solid transparent;transition:background 0.12s,color 0.12s;text-decoration:none;font-family:var(--mono);}
+    .sidebar-item{display:flex;align-items:center;gap:8px;padding:0.35rem 1.25rem;font-size:12px;color:var(--text-body);cursor:pointer;border-left:3px solid transparent;transition:background 0.12s,color 0.12s;text-decoration:none;font-family:var(--mono);min-height:36px;}
     .sidebar-item i{font-size:13px;color:var(--purple);flex-shrink:0;}
     .sidebar-item:hover{background:#E5E3FA;color:var(--purple-dark);}
     .sidebar-item.active{color:var(--purple-dark);font-weight:700;border-left-color:var(--purple-dark);background:var(--purple-pale);}
+
+    /* ── OVERLAY ── */
+    .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(38,33,92,0.35);z-index:40;}
+    .sidebar-overlay.visible{display:block;}
 
     /* ── MARGIN LINE ── */
     .margin-line{position:absolute;left:18px;top:0;bottom:0;width:1px;background:var(--red-margin);opacity:0.4;pointer-events:none;}
 
     /* ── MAIN ── */
-    .main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;}
+    .main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;min-width:0;}
 
     /* ── PROGRESS BAR ── */
     .progress-bar{height:2px;background:var(--purple-border);flex-shrink:0;}
     .progress-fill{height:100%;background:var(--purple);width:0%;transition:width 0.1s;}
 
     /* ── TOPBAR ── */
-    .topbar{padding:1.25rem 1.75rem 0;border-bottom:2px solid var(--purple-border);background:var(--bg);flex-shrink:0;}
-    .breadcrumb{font-size:11px;color:var(--purple-light);margin-bottom:0.5rem;display:flex;align-items:center;gap:5px;}
-    .breadcrumb a{color:var(--purple-light);text-decoration:none;}
+    .topbar{padding:0.9rem 1.25rem 0;border-bottom:2px solid var(--purple-border);background:var(--bg);flex-shrink:0;}
+    .topbar-row{display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;}
+    .menu-btn{display:none;background:none;border:none;cursor:pointer;color:var(--purple);font-size:20px;padding:2px;flex-shrink:0;min-width:32px;min-height:32px;align-items:center;justify-content:center;}
+    .breadcrumb{font-size:11px;color:var(--purple-light);display:flex;align-items:center;gap:5px;flex-wrap:wrap;min-width:0;flex:1;}
+    .breadcrumb a{color:var(--purple-light);text-decoration:none;white-space:nowrap;}
     .breadcrumb a:hover{color:var(--purple);}
     .breadcrumb span{color:var(--purple);}
-    .topbar h1{font-size:17px;font-weight:700;color:var(--purple);letter-spacing:-0.02em;margin-bottom:0.85rem;}
-    .tabs{display:flex;}
-    .tab{padding:0.45rem 1.1rem;font-size:12px;cursor:pointer;border-bottom:3px solid transparent;color:var(--purple);font-family:var(--mono);transition:color 0.12s,border-color 0.12s,background 0.12s;white-space:nowrap;}
+    .topbar h1{font-size:15px;font-weight:700;color:var(--purple);letter-spacing:-0.02em;margin-bottom:0.75rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .tabs{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+    .tabs::-webkit-scrollbar{height:0;}
+    .tab{padding:0.45rem 0.9rem;font-size:11.5px;cursor:pointer;border-bottom:3px solid transparent;color:var(--purple);font-family:var(--mono);transition:color 0.12s,border-color 0.12s,background 0.12s;white-space:nowrap;flex-shrink:0;min-height:40px;display:flex;align-items:center;}
     .tab:hover:not(.active){background:var(--purple-pale);}
     .tab.active{color:var(--purple-dark);border-bottom-color:var(--purple-dark);font-weight:700;}
 
     /* ── CONTENT ── */
-    .content{flex:1;overflow-y:auto;background:var(--bg);}
-    .content-inner{padding:1.25rem 1.75rem 4rem;max-width:720px;}
+    .content{flex:1;overflow-y:auto;background:var(--bg);-webkit-overflow-scrolling:touch;}
+    .content-inner{padding:1.25rem 1.25rem 4rem;max-width:720px;}
     .tab-panel{display:none;}.tab-panel.active{display:block;}
 
     /* ── BACK TO TOP ── */
-    .back-to-top{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--purple);color:#fff;border:none;border-radius:50%;width:36px;height:36px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;z-index:100;box-shadow:0 2px 8px rgba(83,74,183,0.3);}
+    .back-to-top{position:fixed;bottom:1.5rem;right:1.25rem;background:var(--purple);color:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;z-index:100;box-shadow:0 2px 8px rgba(83,74,183,0.35);}
     .back-to-top.visible{opacity:1;pointer-events:all;}
     .back-to-top:hover{background:var(--purple-dark);}
 
     /* ── TOAST ── */
-    .toast{position:fixed;bottom:4rem;right:1.5rem;background:var(--purple-dark);color:#fff;font-size:11px;padding:6px 12px;border-radius:100px;opacity:0;pointer-events:none;transition:opacity 0.2s;z-index:200;}
+    .toast{position:fixed;bottom:4.5rem;right:1.25rem;background:var(--purple-dark);color:#fff;font-size:11px;padding:6px 12px;border-radius:100px;opacity:0;pointer-events:none;transition:opacity 0.2s;z-index:200;}
     .toast.show{opacity:1;}
 
     /* ── TYPOGRAPHY ── */
-    .intro-text{font-size:14px;line-height:1.95;color:var(--text-body);margin-bottom:1.1rem;}
-    p{font-size:14px;line-height:1.85;color:var(--text-body);margin-bottom:0.9rem;}
-    .section-title{font-size:13px;font-weight:700;color:var(--purple);letter-spacing:0.07em;text-transform:uppercase;margin:1.6rem 0 0.75rem;border-bottom:1px solid var(--purple-border);padding-bottom:5px;scroll-margin-top:1rem;display:flex;align-items:center;justify-content:space-between;}
+    .intro-text{font-size:13.5px;line-height:1.95;color:var(--text-body);margin-bottom:1.1rem;}
+    p{font-size:13.5px;line-height:1.85;color:var(--text-body);margin-bottom:0.9rem;}
+    .section-title{font-size:12px;font-weight:700;color:var(--purple);letter-spacing:0.07em;text-transform:uppercase;margin:1.6rem 0 0.75rem;border-bottom:1px solid var(--purple-border);padding-bottom:5px;scroll-margin-top:1rem;display:flex;align-items:center;justify-content:space-between;}
     .section-title:first-child{margin-top:0;}
-    .anchor-btn{font-size:12px;color:var(--purple-light);cursor:pointer;background:none;border:none;padding:0;opacity:0;transition:opacity 0.15s;}
+    .anchor-btn{font-size:13px;color:var(--purple-light);cursor:pointer;background:none;border:none;padding:4px;opacity:0;transition:opacity 0.15s;}
     .section-title:hover .anchor-btn{opacity:1;}
     .anchor-btn:hover{color:var(--purple);}
 
     /* ── HIGHLIGHT BOX ── */
-    .highlight-box{background:var(--purple-pale);border-left:3px solid var(--purple);border-radius:0 6px 6px 0;padding:0.9rem 1.1rem;margin:1rem 0 1.25rem;font-size:14px;line-height:1.85;color:var(--text-body);}
+    .highlight-box{background:var(--purple-pale);border-left:3px solid var(--purple);border-radius:0 6px 6px 0;padding:0.9rem 1.1rem;margin:1rem 0 1.25rem;font-size:13.5px;line-height:1.85;color:var(--text-body);}
 
     /* ── CAPACIDADES ── */
     .cap-list{display:flex;flex-direction:column;gap:8px;margin:0.5rem 0 1.25rem;}
-    .cap-item{display:flex;align-items:flex-start;gap:12px;background:#fff;border:1px solid var(--purple-border);border-left:3px solid var(--purple);border-radius:0 6px 6px 0;padding:0.75rem 1rem;}
+    .cap-item{display:flex;align-items:flex-start;gap:12px;background:#fff;border:1px solid var(--purple-border);border-left:3px solid var(--purple);border-radius:0 6px 6px 0;padding:0.75rem 1rem;min-height:44px;}
     .cap-number{font-size:18px;font-weight:700;color:var(--purple-light);flex-shrink:0;line-height:1;margin-top:1px;min-width:20px;}
     .cap-body{flex:1;}
-    .cap-name{font-size:14px;font-weight:700;color:var(--purple-dark);margin-bottom:2px;}
-    .cap-desc{font-size:13px;color:var(--text-body);line-height:1.65;}
+    .cap-name{font-size:13.5px;font-weight:700;color:var(--purple-dark);margin-bottom:2px;}
+    .cap-desc{font-size:12.5px;color:var(--text-body);line-height:1.65;}
 
     /* ── DIM GRID ── */
-    .dim-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin:0.5rem 0 1rem;}
+    .dim-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:0.5rem 0 1rem;}
     .dim-item{background:var(--purple-pale);border:0.5px solid var(--purple-border);border-radius:6px;padding:0.7rem 0.9rem;display:flex;align-items:flex-start;gap:8px;}
     .dim-item i{font-size:15px;color:var(--purple);flex-shrink:0;margin-top:1px;}
-    .dim-text{font-size:13px;color:var(--text-body);line-height:1.5;}
+    .dim-text{font-size:12.5px;color:var(--text-body);line-height:1.5;}
 
-    ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--purple-light);border-radius:3px;}
+    ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--purple-light);border-radius:3px;}
+
+    /* ── MOBILE ── */
+    @media (max-width: 640px) {
+      .sidebar{position:fixed;top:0;left:0;bottom:0;transform:translateX(-100%);box-shadow:2px 0 16px rgba(38,33,92,0.15);}
+      .sidebar.open{transform:translateX(0);}
+      .menu-btn{display:flex;}
+      .margin-line{display:none;}
+      .topbar h1{font-size:13px;}
+      .content-inner{padding:1rem 1rem 4rem;}
+      .dim-grid{grid-template-columns:repeat(auto-fit,minmax(120px,1fr));}
+    }
   </style>
 </head>
 <body>
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
 <div class="layout">
 
-  <nav class="sidebar" aria-label="Navegación principal">
+  <nav class="sidebar" id="sidebar" aria-label="Navegación principal">
     <div class="sidebar-logo">
       <span class="logo-name">HD_DOCENTES/</span>
       <small>Tec de Monterrey</small>
@@ -122,6 +142,9 @@
       // módulos <i class="ti ti-chevron-down toggle-icon"></i>
     </span>
     <div class="sidebar-group" id="grupo-modulos">
+      <a class="sidebar-item" href="./transferencias.html">
+        <i class="ti ti-transfer" aria-hidden="true"></i>00_transferencias
+      </a>
       <a class="sidebar-item" href="./ejemplos-proyectos-hd.html">
         <i class="ti ti-database" aria-hidden="true"></i>01_ejemplos-proyectos-hd
       </a>
@@ -153,19 +176,22 @@
     <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
 
     <div class="topbar">
-      <div class="breadcrumb">
-        <a href="./index.html">HD_DOCENTES</a>
-        <i class="ti ti-chevron-right" style="font-size:9px;"></i>
-        <a href="./index.html">módulos</a>
-        <i class="ti ti-chevron-right" style="font-size:9px;"></i>
-        <span id="breadcrumb-current">03_formacion-humanistica → capacidades.md</span>
+      <div class="topbar-row">
+        <button class="menu-btn" onclick="openSidebar()" aria-label="Abrir menú">
+          <i class="ti ti-menu-2"></i>
+        </button>
+        <div class="breadcrumb">
+          <a href="./index.html">HD_DOCENTES</a>
+          <i class="ti ti-chevron-right" style="font-size:9px;"></i>
+          <a href="./index.html">módulos</a>
+          <i class="ti ti-chevron-right" style="font-size:9px;"></i>
+          <span id="breadcrumb-current">03_formacion-humanistica → capacidades.md</span>
+        </div>
       </div>
       <h1>// módulos/03_formacion-humanistica</h1>
       <div class="tabs" role="tablist">
-        <div class="tab active" id="tab-btn-capacidades" role="tab"
-             onclick="setTab('capacidades',this)">capacidades.md</div>
-        <div class="tab" id="tab-btn-hd" role="tab"
-             onclick="setTab('hd',this)">hd-continuidad.md</div>
+        <div class="tab active" id="tab-btn-capacidades" role="tab" onclick="setTab('capacidades',this)">capacidades.md</div>
+        <div class="tab" id="tab-btn-hd" role="tab" onclick="setTab('hd',this)">hd-continuidad.md</div>
       </div>
     </div>
 
@@ -209,7 +235,6 @@
         <!-- HD COMO CONTINUIDAD -->
         <div id="tab-hd" class="tab-panel">
           <p class="intro-text">Las humanidades digitales añaden nuevas dimensiones a las capacidades humanísticas tradicionales.</p>
-
           <p class="section-title" id="sec-dimensiones">
             // nuevas dimensiones HD
             <button class="anchor-btn" onclick="copyAnchor('sec-dimensiones')" title="Copiar enlace"><i class="ti ti-link"></i></button>
@@ -222,7 +247,6 @@
             <div class="dim-item"><i class="ti ti-photo-video"></i><div class="dim-text">Producción multimodal</div></div>
             <div class="dim-item"><i class="ti ti-users-group"></i><div class="dim-text">Trabajo colaborativo en plataformas</div></div>
           </div>
-
           <p class="section-title" id="sec-continuidad">
             // una continuidad crítica
             <button class="anchor-btn" onclick="copyAnchor('sec-continuidad')" title="Copiar enlace"><i class="ti ti-link"></i></button>
@@ -268,6 +292,17 @@
     labelEl.classList.toggle('collapsed',c);
   }
 
+  function openSidebar(){
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('overlay').classList.add('visible');
+    document.body.style.overflow='hidden';
+  }
+  function closeSidebar(){
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('visible');
+    document.body.style.overflow='';
+  }
+
   const content=document.getElementById('main-content');
   const progress=document.getElementById('progress');
   content.addEventListener('scroll',()=>{
@@ -292,6 +327,8 @@
     const hash=window.location.hash.slice(1);
     if(hash){setTimeout(()=>{const el=document.getElementById(hash);if(el)el.scrollIntoView({behavior:'smooth'});},100);}
   });
+
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSidebar();});
 </script>
 </body>
 </html>
