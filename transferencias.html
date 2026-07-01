@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#534AB7" />
   <title>Transferencias — HD Docentes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,7 +20,8 @@
     body{font-family:var(--mono);background:var(--bg);color:var(--text-body);display:flex;flex-direction:column;height:100vh;overflow:hidden;}
     .layout{display:flex;flex:1;overflow:hidden;position:relative;}
 
-    .sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sidebar-bg);border-right:1.5px solid var(--purple-border);display:flex;flex-direction:column;overflow-y:auto;}
+    /* ── SIDEBAR ── */
+    .sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sidebar-bg);border-right:1.5px solid var(--purple-border);display:flex;flex-direction:column;overflow-y:auto;transition:transform 0.25s ease;z-index:50;}
     .sidebar-logo{padding:1rem 1.25rem;border-bottom:1px solid var(--purple-border);margin-bottom:0.25rem;flex-shrink:0;}
     .sidebar-logo .logo-name{font-size:15px;font-weight:700;color:var(--purple-dark);line-height:1.2;letter-spacing:-0.02em;display:block;}
     .sidebar-logo small{font-size:10px;color:var(--purple);letter-spacing:0.06em;text-transform:uppercase;}
@@ -28,74 +30,103 @@
     .sidebar-label.collapsed .toggle-icon{transform:rotate(-90deg);}
     .sidebar-group{overflow:hidden;transition:max-height 0.25s ease;}
     .sidebar-group.collapsed{max-height:0;}
-    .sidebar-item{display:flex;align-items:center;gap:8px;padding:0.3rem 1.25rem;font-size:12px;color:var(--text-body);cursor:pointer;border-left:3px solid transparent;transition:background 0.12s,color 0.12s;text-decoration:none;font-family:var(--mono);}
+    .sidebar-item{display:flex;align-items:center;gap:8px;padding:0.35rem 1.25rem;font-size:12px;color:var(--text-body);cursor:pointer;border-left:3px solid transparent;transition:background 0.12s,color 0.12s;text-decoration:none;font-family:var(--mono);min-height:36px;}
     .sidebar-item i{font-size:13px;color:var(--purple);flex-shrink:0;}
     .sidebar-item:hover{background:#E5E3FA;color:var(--purple-dark);}
     .sidebar-item.active{color:var(--purple-dark);font-weight:700;border-left-color:var(--purple-dark);background:var(--purple-pale);}
 
+    /* ── OVERLAY ── */
+    .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(38,33,92,0.35);z-index:40;}
+    .sidebar-overlay.visible{display:block;}
+
+    /* ── MARGIN LINE ── */
     .margin-line{position:absolute;left:18px;top:0;bottom:0;width:1px;background:var(--red-margin);opacity:0.4;pointer-events:none;}
-    .main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;}
+
+    /* ── MAIN ── */
+    .main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;min-width:0;}
+
+    /* ── PROGRESS BAR ── */
     .progress-bar{height:2px;background:var(--purple-border);flex-shrink:0;}
     .progress-fill{height:100%;background:var(--purple);width:0%;transition:width 0.1s;}
 
-    .topbar{padding:1.25rem 1.75rem 0;border-bottom:2px solid var(--purple-border);background:var(--bg);flex-shrink:0;}
-    .breadcrumb{font-size:11px;color:var(--purple-light);margin-bottom:0.5rem;display:flex;align-items:center;gap:5px;}
-    .breadcrumb a{color:var(--purple-light);text-decoration:none;}
+    /* ── TOPBAR ── */
+    .topbar{padding:0.9rem 1.25rem 0;border-bottom:2px solid var(--purple-border);background:var(--bg);flex-shrink:0;}
+    .topbar-row{display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;}
+    .menu-btn{display:none;background:none;border:none;cursor:pointer;color:var(--purple);font-size:20px;padding:2px;flex-shrink:0;min-width:32px;min-height:32px;align-items:center;justify-content:center;}
+    .breadcrumb{font-size:11px;color:var(--purple-light);display:flex;align-items:center;gap:5px;flex-wrap:wrap;min-width:0;flex:1;}
+    .breadcrumb a{color:var(--purple-light);text-decoration:none;white-space:nowrap;}
     .breadcrumb a:hover{color:var(--purple);}
     .breadcrumb span{color:var(--purple);}
-    .topbar h1{font-size:17px;font-weight:700;color:var(--purple);letter-spacing:-0.02em;margin-bottom:0.85rem;}
-    .tabs{display:flex;}
-    .tab{padding:0.45rem 1.1rem;font-size:12px;cursor:pointer;border-bottom:3px solid transparent;color:var(--purple);font-family:var(--mono);transition:color 0.12s,border-color 0.12s,background 0.12s;white-space:nowrap;}
+    .topbar h1{font-size:15px;font-weight:700;color:var(--purple);letter-spacing:-0.02em;margin-bottom:0.75rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .tabs{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+    .tabs::-webkit-scrollbar{height:0;}
+    .tab{padding:0.45rem 0.9rem;font-size:11.5px;cursor:pointer;border-bottom:3px solid transparent;color:var(--purple);font-family:var(--mono);transition:color 0.12s,border-color 0.12s,background 0.12s;white-space:nowrap;flex-shrink:0;min-height:40px;display:flex;align-items:center;}
     .tab:hover:not(.active){background:var(--purple-pale);}
     .tab.active{color:var(--purple-dark);border-bottom-color:var(--purple-dark);font-weight:700;}
 
-    .content{flex:1;overflow-y:auto;background:var(--bg);}
-    .content-inner{padding:1.25rem 1.75rem 4rem;max-width:720px;}
+    /* ── CONTENT ── */
+    .content{flex:1;overflow-y:auto;background:var(--bg);-webkit-overflow-scrolling:touch;}
+    .content-inner{padding:1.25rem 1.25rem 4rem;max-width:720px;}
     .tab-panel{display:none;}.tab-panel.active{display:block;}
 
-    .back-to-top{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--purple);color:#fff;border:none;border-radius:50%;width:36px;height:36px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;z-index:100;box-shadow:0 2px 8px rgba(83,74,183,0.3);}
+    /* ── BACK TO TOP ── */
+    .back-to-top{position:fixed;bottom:1.5rem;right:1.25rem;background:var(--purple);color:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;z-index:100;box-shadow:0 2px 8px rgba(83,74,183,0.35);}
     .back-to-top.visible{opacity:1;pointer-events:all;}
     .back-to-top:hover{background:var(--purple-dark);}
-    .toast{position:fixed;bottom:4rem;right:1.5rem;background:var(--purple-dark);color:#fff;font-size:11px;padding:6px 12px;border-radius:100px;opacity:0;pointer-events:none;transition:opacity 0.2s;z-index:200;}
+
+    /* ── TOAST ── */
+    .toast{position:fixed;bottom:4.5rem;right:1.25rem;background:var(--purple-dark);color:#fff;font-size:11px;padding:6px 12px;border-radius:100px;opacity:0;pointer-events:none;transition:opacity 0.2s;z-index:200;}
     .toast.show{opacity:1;}
 
     /* ── TYPOGRAPHY ── */
-    .intro-text{font-size:14px;line-height:1.9;color:var(--text-body);margin-bottom:1.25rem;}
-    .section-title{font-size:13px;font-weight:700;color:var(--purple);letter-spacing:0.07em;text-transform:uppercase;margin:1.6rem 0 0.75rem;border-bottom:1px solid var(--purple-border);padding-bottom:5px;scroll-margin-top:1rem;display:flex;align-items:center;justify-content:space-between;}
+    .intro-text{font-size:13.5px;line-height:1.9;color:var(--text-body);margin-bottom:1.25rem;}
+    .section-title{font-size:12px;font-weight:700;color:var(--purple);letter-spacing:0.07em;text-transform:uppercase;margin:1.6rem 0 0.75rem;border-bottom:1px solid var(--purple-border);padding-bottom:5px;scroll-margin-top:1rem;display:flex;align-items:center;justify-content:space-between;}
     .section-title:first-child{margin-top:0;}
-    .anchor-btn{font-size:12px;color:var(--purple-light);cursor:pointer;background:none;border:none;padding:0;opacity:0;transition:opacity 0.15s;}
+    .anchor-btn{font-size:13px;color:var(--purple-light);cursor:pointer;background:none;border:none;padding:4px;opacity:0;transition:opacity 0.15s;}
     .section-title:hover .anchor-btn{opacity:1;}
     .anchor-btn:hover{color:var(--purple);}
 
     /* ── TRANSFER LINKS ── */
     .transfer-list{display:flex;flex-direction:column;gap:6px;margin-bottom:0.5rem;}
-    .transfer-item{display:flex;align-items:flex-start;gap:12px;padding:0.75rem 0.9rem;border-radius:6px;border:1px solid transparent;transition:background 0.12s,border-color 0.12s;text-decoration:none;color:inherit;}
-    .transfer-item:hover{background:var(--purple-pale);border-color:var(--purple-border);}
+    .transfer-item{display:flex;align-items:flex-start;gap:12px;padding:0.75rem 0.9rem;border-radius:6px;border:1px solid transparent;transition:background 0.12s,border-color 0.12s;text-decoration:none;color:inherit;min-height:44px;}
+    .transfer-item:hover,.transfer-item:active{background:var(--purple-pale);border-color:var(--purple-border);}
     .transfer-item i{font-size:18px;color:var(--purple);flex-shrink:0;margin-top:2px;}
-    .transfer-body{flex:1;}
+    .transfer-body{flex:1;min-width:0;}
     .transfer-code{font-size:11px;font-weight:700;color:var(--purple-mid);margin-bottom:2px;letter-spacing:0.05em;}
-    .transfer-name{font-size:14px;font-weight:700;color:var(--purple-dark);}
+    .transfer-name{font-size:13.5px;font-weight:700;color:var(--purple-dark);}
     .transfer-item:hover .transfer-name{color:var(--purple);}
     .transfer-ext{font-size:11px;color:var(--purple-light);margin-top:2px;}
 
     /* ── RUTA CARD ── */
     .ruta-card{background:#fff;border:1px solid var(--purple-border);border-left:3px solid var(--purple);border-radius:0 6px 6px 0;padding:0.9rem 1rem;margin-bottom:0.5rem;}
-    .ruta-step{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--text-body);line-height:1.7;padding:0.3rem 0;}
+    .ruta-step{display:flex;align-items:flex-start;gap:10px;font-size:12.5px;color:var(--text-body);line-height:1.7;padding:0.35rem 0;}
     .ruta-step i{font-size:15px;color:var(--purple);flex-shrink:0;margin-top:2px;}
     .ruta-step a{color:var(--purple);text-decoration:underline;}
     .ruta-step a:hover{color:var(--purple-dark);}
 
     /* ── TABLERO BTN ── */
-    .tablero-btn{display:inline-flex;align-items:center;gap:8px;margin-top:1rem;padding:0.6rem 1.2rem;background:var(--purple);color:#fff;border-radius:6px;text-decoration:none;font-size:13px;font-weight:700;font-family:var(--mono);transition:background 0.12s;}
+    .tablero-btn{display:inline-flex;align-items:center;gap:8px;margin-top:1rem;padding:0.65rem 1.2rem;background:var(--purple);color:#fff;border-radius:6px;text-decoration:none;font-size:13px;font-weight:700;font-family:var(--mono);transition:background 0.12s;}
     .tablero-btn:hover{background:var(--purple-dark);}
 
-    ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--purple-light);border-radius:3px;}
+    ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--purple-light);border-radius:3px;}
+
+    /* ── MOBILE ── */
+    @media (max-width: 640px) {
+      .sidebar{position:fixed;top:0;left:0;bottom:0;transform:translateX(-100%);box-shadow:2px 0 16px rgba(38,33,92,0.15);}
+      .sidebar.open{transform:translateX(0);}
+      .menu-btn{display:flex;}
+      .margin-line{display:none;}
+      .topbar h1{font-size:13px;}
+      .content-inner{padding:1rem 1rem 4rem;}
+      .tablero-btn{width:100%;justify-content:center;}
+    }
   </style>
 </head>
 <body>
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
 <div class="layout">
 
-  <nav class="sidebar" aria-label="Navegación principal">
+  <nav class="sidebar" id="sidebar" aria-label="Navegación principal">
     <div class="sidebar-logo">
       <span class="logo-name">HD_DOCENTES/</span>
       <small>Tec de Monterrey</small>
@@ -149,171 +180,92 @@
     <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
 
     <div class="topbar">
-      <div class="breadcrumb">
-        <a href="./index.html">HD_DOCENTES</a>
-        <i class="ti ti-chevron-right" style="font-size:9px;"></i>
-        <a href="./index.html">módulos</a>
-        <i class="ti ti-chevron-right" style="font-size:9px;"></i>
-        <span>00_transferencias → transferencias.md</span>
+      <div class="topbar-row">
+        <button class="menu-btn" onclick="openSidebar()" aria-label="Abrir menú">
+          <i class="ti ti-menu-2"></i>
+        </button>
+        <div class="breadcrumb">
+          <a href="./index.html">HD_DOCENTES</a>
+          <i class="ti ti-chevron-right" style="font-size:9px;"></i>
+          <a href="./index.html">módulos</a>
+          <i class="ti ti-chevron-right" style="font-size:9px;"></i>
+          <span>00_transferencias → transferencias.md</span>
+        </div>
       </div>
       <h1>// módulos/00_transferencias</h1>
       <div class="tabs" role="tablist">
-        <div class="tab active" id="tab-btn-transferencias" role="tab"
-             onclick="setTab('transferencias',this)">transferencias.md</div>
-        <div class="tab" id="tab-btn-ia" role="tab"
-             onclick="setTab('ia',this)">formacion-ia.md</div>
+        <div class="tab active" id="tab-btn-transferencias" role="tab" onclick="setTab('transferencias',this)">transferencias.md</div>
+        <div class="tab" id="tab-btn-ia" role="tab" onclick="setTab('ia',this)">formacion-ia.md</div>
       </div>
     </div>
 
     <div class="content" id="main-content">
       <div class="content-inner">
 
+        <!-- TRANSFERENCIAS -->
         <div id="tab-transferencias" class="tab-panel active">
-          <p class="intro-text">
-            Vínculos directos para materiales de transferencias de UF. Asegúrate de ingresar con tus credenciales del Tec.
-          </p>
-          <p style="font-size:13px;line-height:1.8;color:var(--text-body);margin-bottom:1.25rem;max-width:620px;">
+          <p class="intro-text">Vínculos directos para materiales de transferencias de UF. Asegúrate de ingresar con tus credenciales del Tec.</p>
+          <p style="font-size:13px;line-height:1.8;color:var(--text-body);margin-bottom:1.25rem;">
             En la pestaña <strong>formacion-ia.md</strong> encontrarás el contexto institucional sobre la Estrategia de IA Educativa del Tec de Monterrey, así como los cuatro cursos autogestivos de CEDDIE que forman parte de la formación básica requerida para el nuevo bloque HCM de planes 2026.
           </p>
 
-          <p class="section-title" id="sec-uf">
-            // vínculos por unidad de formación
-            <button class="anchor-btn" onclick="copyAnchor('sec-uf')" title="Copiar enlace"><i class="ti ti-link"></i></button>
-          </p>
+          <p class="section-title" id="sec-uf">// vínculos por unidad de formación <button class="anchor-btn" onclick="copyAnchor('sec-uf')" title="Copiar enlace"><i class="ti ti-link"></i></button></p>
           <div class="transfer-list">
             <a class="transfer-item" href="https://tecmx.sharepoint.com/sites/TransferenciasUnidadesformacin/Documentos%20compartidos/Forms/AllItems.aspx?csf=1&web=1&e=5opoaQ&CID=76aaf194%2Dd048%2D4437%2Db0a0%2Df9a5b7dc44a1&FolderCTID=0x01200092E13532A1DA554CAB7604C2F3EE3433&id=%2Fsites%2FTransferenciasUnidadesformacin%2FDocumentos%20compartidos%2FPlanes%202026%2FEHE%2FHCM%2FCO1003B%20Cultura%20digital%20e%20inteligencia%20artificial" target="_blank" rel="noopener">
-              <i class="ti ti-external-link" aria-hidden="true"></i>
-              <div class="transfer-body">
-                <div class="transfer-code">CO1003B</div>
-                <div class="transfer-name">Cultura digital e inteligencia artificial</div>
-                <div class="transfer-ext">SharePoint · Planes 2026 / EHE / HCM</div>
-              </div>
+              <i class="ti ti-external-link"></i>
+              <div class="transfer-body"><div class="transfer-code">CO1003B</div><div class="transfer-name">Cultura digital e inteligencia artificial</div><div class="transfer-ext">SharePoint · Planes 2026 / EHE / HCM</div></div>
             </a>
             <a class="transfer-item" href="https://tecmx.sharepoint.com/sites/TransferenciasUnidadesformacin/Documentos%20compartidos/Forms/AllItems.aspx?csf=1&web=1&e=Swp3ZQ&CID=fc5fdabb%2D8837%2D440c%2Da9cf%2D3ee44999eb28&FolderCTID=0x01200092E13532A1DA554CAB7604C2F3EE3433&id=%2Fsites%2FTransferenciasUnidadesformacin%2FDocumentos%20compartidos%2FPlanes%202026%2FEHE%2FHCM%2FAV1003B%20Producci%C3%B3n%20de%20contenidos%20I%20Texto%2Dimagen%2Dsonido" target="_blank" rel="noopener">
-              <i class="ti ti-external-link" aria-hidden="true"></i>
-              <div class="transfer-body">
-                <div class="transfer-code">AV1003B</div>
-                <div class="transfer-name">Producción de contenidos I: Texto-imagen-sonido</div>
-                <div class="transfer-ext">SharePoint · Planes 2026 / EHE / HCM</div>
-              </div>
+              <i class="ti ti-external-link"></i>
+              <div class="transfer-body"><div class="transfer-code">AV1003B</div><div class="transfer-name">Producción de contenidos I: Texto-imagen-sonido</div><div class="transfer-ext">SharePoint · Planes 2026 / EHE / HCM</div></div>
             </a>
             <a class="transfer-item" href="https://tecmx.sharepoint.com/sites/TransferenciasUnidadesformacin/Documentos%20compartidos/Forms/AllItems.aspx?csf=1&web=1&e=FC1mZy&CID=c8c5b599%2D1253%2D4115%2Da137%2De65db54764d8&FolderCTID=0x01200092E13532A1DA554CAB7604C2F3EE3433&id=%2Fsites%2FTransferenciasUnidadesformacin%2FDocumentos%20compartidos%2FPlanes%202026%2FEHE%2FHCM%2FCO1004B%20Exploraci%C3%B3n%20de%20pr%C3%A1cticas%2C%20tendencias%20y%20audiencias" target="_blank" rel="noopener">
-              <i class="ti ti-external-link" aria-hidden="true"></i>
-              <div class="transfer-body">
-                <div class="transfer-code">CO1004B</div>
-                <div class="transfer-name">Exploración de prácticas, tendencias y audiencias</div>
-                <div class="transfer-ext">SharePoint · Planes 2026 / EHE / HCM</div>
-              </div>
+              <i class="ti ti-external-link"></i>
+              <div class="transfer-body"><div class="transfer-code">CO1004B</div><div class="transfer-name">Exploración de prácticas, tendencias y audiencias</div><div class="transfer-ext">SharePoint · Planes 2026 / EHE / HCM</div></div>
             </a>
           </div>
 
-          <p class="section-title" id="sec-ruta">
-            // ruta de acceso
-            <button class="anchor-btn" onclick="copyAnchor('sec-ruta')" title="Copiar enlace"><i class="ti ti-link"></i></button>
-          </p>
+          <p class="section-title" id="sec-ruta">// ruta de acceso <button class="anchor-btn" onclick="copyAnchor('sec-ruta')" title="Copiar enlace"><i class="ti ti-link"></i></button></p>
           <div class="ruta-card">
-            <div class="ruta-step">
-              <i class="ti ti-circle-number-1" aria-hidden="true"></i>
-              <span>Entra a la página de CEDDIE e inicia sesión: <a href="https://ceddie.tec.mx/es" target="_blank" rel="noopener">ceddie.tec.mx/es</a></span>
-            </div>
-            <div class="ruta-step">
-              <i class="ti ti-circle-number-2" aria-hidden="true"></i>
-              <span>En el menú selecciona <strong>Modelo Educativo / Transferencias de UF</strong></span>
-            </div>
-            <div class="ruta-step">
-              <i class="ti ti-circle-number-3" aria-hidden="true"></i>
-              <span>Al final de la página encontrarás el vínculo a los planes de estudio 2026 y, posteriormente, <strong>Entrar al tablero de transferencias</strong></span>
-            </div>
+            <div class="ruta-step"><i class="ti ti-circle-number-1"></i><span>Entra a la página de CEDDIE e inicia sesión: <a href="https://ceddie.tec.mx/es" target="_blank" rel="noopener">ceddie.tec.mx/es</a></span></div>
+            <div class="ruta-step"><i class="ti ti-circle-number-2"></i><span>En el menú selecciona <strong>Modelo Educativo / Transferencias de UF</strong></span></div>
+            <div class="ruta-step"><i class="ti ti-circle-number-3"></i><span>Al final de la página encontrarás el vínculo a los planes de estudio 2026 y, posteriormente, <strong>Entrar al tablero de transferencias</strong></span></div>
           </div>
-
           <a class="tablero-btn" href="https://datastudio.google.com/u/0/reporting/2ac60fa8-414e-4b57-89df-5f975d5aaa82/page/p_4unxg1euod" target="_blank" rel="noopener">
-            <i class="ti ti-chart-bar" aria-hidden="true"></i>
-            Ir al tablero de transferencias
+            <i class="ti ti-chart-bar"></i> Ir al tablero de transferencias
           </a>
         </div>
 
         <!-- FORMACIÓN IA -->
         <div id="tab-ia" class="tab-panel">
-          <p class="intro-text">
-            Poco después de la irrupción de la inteligencia artificial generativa —y, en particular, de ChatGPT— en numerosos ámbitos de la actividad humana a finales de 2022, nuestra institución decidió incorporarla de manera crítica, ética y estratégica en los procesos de enseñanza y aprendizaje.
-          </p>
+          <p class="intro-text">Poco después de la irrupción de la inteligencia artificial generativa —y, en particular, de ChatGPT— en numerosos ámbitos de la actividad humana a finales de 2022, nuestra institución decidió incorporarla de manera crítica, ética y estratégica en los procesos de enseñanza y aprendizaje.</p>
 
-          <p class="section-title" id="sec-estrategia">
-            // estrategia institucional
-            <button class="anchor-btn" onclick="copyAnchor('sec-estrategia')" title="Copiar enlace"><i class="ti ti-link"></i></button>
-          </p>
+          <p class="section-title" id="sec-estrategia">// estrategia institucional <button class="anchor-btn" onclick="copyAnchor('sec-estrategia')" title="Copiar enlace"><i class="ti ti-link"></i></button></p>
           <div class="ruta-card">
-            <div class="ruta-step">
-              <i class="ti ti-file-text" aria-hidden="true"></i>
-              <span>Publicación de los <strong>Lineamientos para el uso ético de la inteligencia artificial</strong>, dirigidos al profesorado y al estudiantado.</span>
-            </div>
-            <div class="ruta-step">
-              <i class="ti ti-target" aria-hidden="true"></i>
-              <span>La adopción de la IA se integró en la cuarta prioridad del <strong>Plan Estratégico rumbo al 2030</strong>: "Consolidar nuestro liderazgo educativo para un mundo con inteligencia artificial y otras tecnologías emergentes" (p. 7).</span>
-            </div>
-            <div class="ruta-step">
-              <i class="ti ti-sitemap" aria-hidden="true"></i>
-              <span>La Vicerrectoría Académica definió la <strong>Estrategia de IA Educativa</strong>, estructurada en tres líneas de acción:</span>
-            </div>
+            <div class="ruta-step"><i class="ti ti-file-text"></i><span>Publicación de los <strong>Lineamientos para el uso ético de la inteligencia artificial</strong>, dirigidos al profesorado y al estudiantado.</span></div>
+            <div class="ruta-step"><i class="ti ti-target"></i><span>La adopción de la IA se integró en la cuarta prioridad del <strong>Plan Estratégico rumbo al 2030</strong>: "Consolidar nuestro liderazgo educativo para un mundo con inteligencia artificial y otras tecnologías emergentes" (p. 7).</span></div>
+            <div class="ruta-step"><i class="ti ti-sitemap"></i><span>La Vicerrectoría Académica definió la <strong>Estrategia de IA Educativa</strong>, estructurada en tres líneas de acción:</span></div>
           </div>
           <div class="transfer-list" style="margin-top:0.5rem;">
-            <div class="transfer-item" style="cursor:default;">
-              <i class="ti ti-circle-letter-a" aria-hidden="true" style="color:var(--purple);"></i>
-              <div class="transfer-body"><div class="transfer-name">Aprovechamiento de la IA en el proceso de enseñanza-aprendizaje</div></div>
-            </div>
-            <div class="transfer-item" style="cursor:default;">
-              <i class="ti ti-circle-letter-b" aria-hidden="true" style="color:var(--purple);"></i>
-              <div class="transfer-body"><div class="transfer-name">Desarrollo de profesionistas que integren la IA en su disciplina</div></div>
-            </div>
-            <div class="transfer-item" style="cursor:default;">
-              <i class="ti ti-circle-letter-c" aria-hidden="true" style="color:var(--purple);"></i>
-              <div class="transfer-body"><div class="transfer-name">Fundamentos de IA para potenciar las habilidades humanas</div></div>
-            </div>
+            <div class="transfer-item" style="cursor:default;"><i class="ti ti-circle-letter-a" style="color:var(--purple);"></i><div class="transfer-body"><div class="transfer-name">Aprovechamiento de la IA en el proceso de enseñanza-aprendizaje</div></div></div>
+            <div class="transfer-item" style="cursor:default;"><i class="ti ti-circle-letter-b" style="color:var(--purple);"></i><div class="transfer-body"><div class="transfer-name">Desarrollo de profesionistas que integren la IA en su disciplina</div></div></div>
+            <div class="transfer-item" style="cursor:default;"><i class="ti ti-circle-letter-c" style="color:var(--purple);"></i><div class="transfer-body"><div class="transfer-name">Fundamentos de IA para potenciar las habilidades humanas</div></div></div>
           </div>
 
-          <p class="section-title" id="sec-cursos">
-            // cursos autogestivos CEDDIE
-            <button class="anchor-btn" onclick="copyAnchor('sec-cursos')" title="Copiar enlace"><i class="ti ti-link"></i></button>
-          </p>
-          <p style="font-size:13px;line-height:1.8;color:var(--text-body);margin-bottom:0.75rem;">
-            CEDDIE ha desarrollado cuatro cursos autogestivos que podrás realizar a tu propio ritmo. Los encontrarás en <strong>SuccessFactors</strong>, dentro de la sección <em>Mis cursos</em>:
-          </p>
+          <p class="section-title" id="sec-cursos">// cursos autogestivos CEDDIE <button class="anchor-btn" onclick="copyAnchor('sec-cursos')" title="Copiar enlace"><i class="ti ti-link"></i></button></p>
+          <p style="font-size:13px;line-height:1.8;color:var(--text-body);margin-bottom:0.75rem;">CEDDIE ha desarrollado cuatro cursos autogestivos que podrás realizar a tu propio ritmo. Los encontrarás en <strong>SuccessFactors</strong>, dentro de la sección <em>Mis cursos</em>:</p>
           <div class="transfer-list">
-            <div class="transfer-item" style="cursor:default;">
-              <i class="ti ti-robot" aria-hidden="true"></i>
-              <div class="transfer-body"><div class="transfer-code">a</div><div class="transfer-name">IA Generativa en la Educación</div></div>
-            </div>
-            <div class="transfer-item" style="cursor:default;">
-              <i class="ti ti-message-chatbot" aria-hidden="true"></i>
-              <div class="transfer-body"><div class="transfer-code">b</div><div class="transfer-name">Conviértete en un Prompt Master</div></div>
-            </div>
-            <div class="transfer-item" style="cursor:default;">
-              <i class="ti ti-bulb" aria-hidden="true"></i>
-              <div class="transfer-body"><div class="transfer-code">c</div><div class="transfer-name">Estrategias didácticas potenciadas por IA</div></div>
-            </div>
-            <div class="transfer-item" style="cursor:default;">
-              <i class="ti ti-shield-check" aria-hidden="true"></i>
-              <div class="transfer-body"><div class="transfer-code">d</div><div class="transfer-name">Ciudadanía digital en la era de la IA</div></div>
-            </div>
+            <div class="transfer-item" style="cursor:default;"><i class="ti ti-robot"></i><div class="transfer-body"><div class="transfer-code">a</div><div class="transfer-name">IA Generativa en la Educación</div></div></div>
+            <div class="transfer-item" style="cursor:default;"><i class="ti ti-message-chatbot"></i><div class="transfer-body"><div class="transfer-code">b</div><div class="transfer-name">Conviértete en un Prompt Master</div></div></div>
+            <div class="transfer-item" style="cursor:default;"><i class="ti ti-bulb"></i><div class="transfer-body"><div class="transfer-code">c</div><div class="transfer-name">Estrategias didácticas potenciadas por IA</div></div></div>
+            <div class="transfer-item" style="cursor:default;"><i class="ti ti-shield-check"></i><div class="transfer-body"><div class="transfer-code">d</div><div class="transfer-name">Ciudadanía digital en la era de la IA</div></div></div>
           </div>
 
-          <p class="section-title" id="sec-nota">
-            // notas importantes
-            <button class="anchor-btn" onclick="copyAnchor('sec-nota')" title="Copiar enlace"><i class="ti ti-link"></i></button>
-          </p>
+          <p class="section-title" id="sec-nota">// notas importantes <button class="anchor-btn" onclick="copyAnchor('sec-nota')" title="Copiar enlace"><i class="ti ti-link"></i></button></p>
           <div class="ruta-card">
-            <div class="ruta-step">
-              <i class="ti ti-award" aria-hidden="true"></i>
-              <span>Estos cursos son la <strong>formación básica requerida</strong> para avanzar en la microcredencial de integración de tecnología para el aprendizaje, dentro del nuevo Modelo de Desarrollo y Bienestar de la Facultad.</span>
-            </div>
-            <div class="ruta-step">
-              <i class="ti ti-mail" aria-hidden="true"></i>
-              <span>Para apoyo en localización o realización de cursos, contacta a <strong>Juan Alberto Amézquita</strong>: <a href="mailto:ja.amezquita@tec.mx">ja.amezquita@tec.mx</a></span>
-            </div>
-            <div class="ruta-step">
-              <i class="ti ti-sun" aria-hidden="true"></i>
-              <span>Te invitamos a aprovechar esta temporada de verano para fortalecer tus conocimientos y habilidades en inteligencia artificial.</span>
-            </div>
+            <div class="ruta-step"><i class="ti ti-award"></i><span>Estos cursos son la <strong>formación básica requerida</strong> para avanzar en la microcredencial de integración de tecnología para el aprendizaje, dentro del nuevo Modelo de Desarrollo y Bienestar de la Facultad.</span></div>
+            <div class="ruta-step"><i class="ti ti-mail"></i><span>Para apoyo en localización o realización de cursos, contacta a <strong>Juan Alberto Amézquita</strong>: <a href="mailto:ja.amezquita@tec.mx">ja.amezquita@tec.mx</a></span></div>
+            <div class="ruta-step"><i class="ti ti-sun"></i><span>Te invitamos a aprovechar esta temporada de verano para fortalecer tus conocimientos y habilidades en inteligencia artificial.</span></div>
           </div>
         </div>
 
@@ -329,6 +281,7 @@
 
 <script>
   const TAB_MAP = { transferencias:'tab-btn-transferencias', ia:'tab-btn-ia' };
+
   function setTab(id,el){
     document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -341,6 +294,17 @@
     const g=document.getElementById(id);
     const c=g.classList.toggle('collapsed');
     labelEl.classList.toggle('collapsed',c);
+  }
+
+  function openSidebar(){
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('overlay').classList.add('visible');
+    document.body.style.overflow='hidden';
+  }
+  function closeSidebar(){
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('visible');
+    document.body.style.overflow='';
   }
 
   const content=document.getElementById('main-content');
@@ -367,6 +331,8 @@
     const hash=window.location.hash.slice(1);
     if(hash){setTimeout(()=>{const el=document.getElementById(hash);if(el)el.scrollIntoView({behavior:'smooth'});},100);}
   });
+
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSidebar();});
 </script>
 </body>
 </html>
